@@ -1,0 +1,717 @@
+<!DOCTYPE html>
+<html lang="en" translate="no">
+
+<head>
+    <meta charset="UTF-8">
+    <script>
+        // Theme initialization to prevent flicker
+        (function () {
+            const savedTheme = localStorage.getItem('qrm-theme') || 'dark';
+            if (savedTheme === 'system') {
+                document.documentElement.removeAttribute('data-theme');
+            } else {
+                document.documentElement.setAttribute('data-theme', savedTheme);
+            }
+        })();
+    </script>
+    <meta name="google" content="notranslate">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+
+    <!-- Primary SEO Metadata -->
+    <title>QR Maker | Generate & Customize QR Codes</title>
+    <meta name="description"
+        content="Create customizable QR codes in your browser. Generate QR codes for URLs, text, WiFi, and more. Export as PNG or SVG. No dependencies, no server.">
+    <meta name="keywords"
+        content="QR code generator, QR maker, custom QR code, WiFi QR code, URL QR code, free QR generator, offline QR code">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://qrmaker.ryanmarch.me/">
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="QR Maker">
+    <meta property="og:url" content="https://qrmaker.ryanmarch.me/">
+    <meta property="og:title" content="QR Maker | Generate & Customize QR Codes">
+    <meta property="og:description"
+        content="Create customizable QR codes in your browser. Export as PNG or SVG. No dependencies, no server.">
+
+    <!-- Google Structured Data -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "QR Maker",
+      "url": "https://qrmaker.ryanmarch.me/",
+      "description": "Generate and customize QR codes entirely in the browser. No server, no build step, no dependencies.",
+      "applicationCategory": "UtilitiesApplication",
+      "operatingSystem": "All",
+      "browserRequirements": "Requires JavaScript. Requires HTML5 Canvas.",
+      "creator": {
+        "@type": "Person",
+        "name": "Ryan March"
+      },
+      "offers": {
+        "@type": "Offer",
+        "price": "0.00",
+        "priceCurrency": "USD"
+      }
+    }
+    </script>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body id="main-body">
+
+    <main class="container" id="tool-container">
+
+        <!-- Preview Column -->
+        <section class="preview-section" aria-label="QR Code Preview">
+            <div class="preview-header">
+                <h1>QR Maker</h1>
+                <button id="theme-toggle" class="theme-toggle" aria-label="Toggle theme" title="Toggle theme">
+                    <svg class="sun-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                    <svg class="moon-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                </button>
+            </div>
+
+            <div class="qr-canvas-wrapper" id="qr-canvas-wrapper">
+                <canvas id="qr-canvas" width="400" height="400" aria-label="QR Code Preview"></canvas>
+                <div class="qr-placeholder" id="qr-placeholder">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <rect x="3" y="3" width="7" height="7" rx="1"></rect>
+                        <rect x="14" y="3" width="7" height="7" rx="1"></rect>
+                        <rect x="3" y="14" width="7" height="7" rx="1"></rect>
+                        <rect x="5" y="5" width="3" height="3" fill="currentColor" stroke="none"></rect>
+                        <rect x="16" y="5" width="3" height="3" fill="currentColor" stroke="none"></rect>
+                        <rect x="5" y="16" width="3" height="3" fill="currentColor" stroke="none"></rect>
+                        <line x1="14" y1="14" x2="14" y2="14"></line>
+                        <line x1="17" y1="14" x2="17" y2="14"></line>
+                        <line x1="20" y1="14" x2="20" y2="14"></line>
+                        <line x1="14" y1="17" x2="14" y2="17"></line>
+                        <line x1="17" y1="17" x2="17" y2="17"></line>
+                        <line x1="20" y1="17" x2="20" y2="17"></line>
+                        <line x1="14" y1="20" x2="14" y2="20"></line>
+                        <line x1="17" y1="20" x2="17" y2="20"></line>
+                        <line x1="20" y1="20" x2="20" y2="20"></line>
+                    </svg>
+                    <span>Enter content to generate a QR code</span>
+                </div>
+                <div class="qr-error-msg" id="qr-error-msg"></div>
+            </div>
+
+            <div class="preview-actions-container">
+                <div class="preview-actions">
+                    <div class="share-wrapper">
+                        <button id="share-btn" class="btn secondary" onclick="handleShareClick()"
+                            title="Share QR configuration">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                stroke-linecap="round" stroke-linejoin="round" width="16" height="16">
+                                <circle cx="18" cy="5" r="3"></circle>
+                                <circle cx="6" cy="12" r="3"></circle>
+                                <circle cx="18" cy="19" r="3"></circle>
+                                <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line>
+                                <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line>
+                            </svg>
+                            Share
+                        </button>
+                        <div class="share-menu" id="share-menu">
+                            <button class="share-item" onclick="nativeShare()" id="share-item-native">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                    stroke-linecap="round" stroke-linejoin="round" width="14" height="14">
+                                    <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                                    <polyline points="15 3 21 3 21 9"></polyline>
+                                    <line x1="10" y1="14" x2="21" y2="3"></line>
+                                </svg>
+                                Share with…
+                            </button>
+                            <button class="share-item" onclick="copyShareURL()" id="share-item-copy">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                    stroke-linecap="round" stroke-linejoin="round" width="14" height="14">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                </svg>
+                                Copy Link
+                            </button>
+                        </div>
+                    </div>
+                    <button class="btn btn-export" id="export-svg-btn" onclick="exportSVG()" title="Export as SVG">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round" width="16" height="16">
+                            <polyline points="8 17 12 21 16 17"></polyline>
+                            <line x1="12" y1="12" x2="12" y2="21"></line>
+                            <path d="M20.88 18.09A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.29"></path>
+                        </svg>
+                        SVG
+                    </button>
+
+                    <!-- Split Export PNG button -->
+                    <div class="export-split-btn" id="export-split-btn">
+                        <button class="export-split-main" id="export-png-btn" onclick="exportPNG()" title="Export as PNG">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                stroke-linecap="round" stroke-linejoin="round" width="16" height="16">
+                                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                                <polyline points="7 10 12 15 17 10"></polyline>
+                                <line x1="12" y1="15" x2="12" y2="3"></line>
+                            </svg>
+                            Export PNG
+                        </button>
+                        <button class="export-split-size" id="export-size-trigger" onclick="toggleSizePopover(event)" aria-label="Change export size" title="Change export size">
+                            <span id="export-size-label">1024px</span>
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                                stroke-linecap="round" stroke-linejoin="round" width="10" height="10">
+                                <polyline points="6 9 12 15 18 9"></polyline>
+                            </svg>
+                        </button>
+                    </div>
+
+                    <!-- Size popover -->
+                    <div class="size-popover" id="size-popover" role="menu" aria-label="Export size">
+                        <button class="size-option" id="size-opt-512" onclick="setSizeFromPopover(512)" role="menuitem">512px</button>
+                        <button class="size-option active" id="size-opt-1024" onclick="setSizeFromPopover(1024)" role="menuitem">1024px</button>
+                        <button class="size-option" id="size-opt-2048" onclick="setSizeFromPopover(2048)" role="menuitem">2048px</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <hr class="mobile-divider">
+
+        <!-- Controls Column -->
+        <section class="controls-section" aria-label="QR Code Settings">
+
+            <!-- Input Type Tabs -->
+            <div class="tab-group" id="input-tabs" role="tablist" aria-label="Input type">
+                <button class="tab active" id="tab-url" role="tab" aria-selected="true" aria-controls="panel-url"
+                    onclick="switchTab('url')">
+                    <svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path>
+                        <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
+                    </svg>
+                    URL
+                </button>
+                <button class="tab" id="tab-text" role="tab" aria-selected="false" aria-controls="panel-text"
+                    onclick="switchTab('text')">
+                    <svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                        <polyline points="14 2 14 8 20 8"></polyline>
+                        <line x1="16" y1="13" x2="8" y2="13"></line>
+                        <line x1="16" y1="17" x2="8" y2="17"></line>
+                        <polyline points="10 9 9 9 8 9"></polyline>
+                    </svg>
+                    Text
+                </button>
+                <button class="tab" id="tab-wifi" role="tab" aria-selected="false" aria-controls="panel-wifi"
+                    onclick="switchTab('wifi')">
+                    <svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M5 12.55a11 11 0 0 1 14.08 0"></path>
+                        <path d="M1.42 9a16 16 0 0 1 21.16 0"></path>
+                        <path d="M8.53 16.11a6 6 0 0 1 6.95 0"></path>
+                        <line x1="12" y1="20" x2="12.01" y2="20"></line>
+                    </svg>
+                    WiFi
+                </button>
+                <button class="tab" id="tab-contact" role="tab" aria-selected="false" aria-controls="panel-contact"
+                    onclick="switchTab('contact')">
+                    <svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                        <circle cx="12" cy="7" r="4"></circle>
+                    </svg>
+                    Contact
+                </button>
+                <div class="tab-more-container" id="tab-more-container">
+                    <button class="tab" id="tab-more" role="button" aria-haspopup="true" aria-expanded="false"
+                        onclick="toggleTabDropdown(event)">
+                        <span class="tab-more-btn-content"
+                            style="display: flex; flex-direction: column; align-items: center; gap: 0.25rem;">
+                            <svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                class="more-icon-svg">
+                                <circle cx="12" cy="12" r="1"></circle>
+                                <circle cx="19" cy="12" r="1"></circle>
+                                <circle cx="5" cy="12" r="1"></circle>
+                            </svg>
+                            <span class="more-text-label">More</span>
+                        </span>
+                    </button>
+                    <div class="tab-dropdown" id="tab-dropdown">
+                        <button class="dropdown-item" onclick="selectDropdownTab('email', event)">
+                            <svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z">
+                                </path>
+                                <polyline points="22,6 12,13 2,6"></polyline>
+                            </svg>
+                            Email
+                        </button>
+                        <button class="dropdown-item" onclick="selectDropdownTab('phone', event)">
+                            <svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path
+                                    d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z">
+                                </path>
+                            </svg>
+                            Phone
+                        </button>
+                        <button class="dropdown-item" onclick="selectDropdownTab('location', event)">
+                            <svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                                <circle cx="12" cy="10" r="3"></circle>
+                            </svg>
+                            Location
+                        </button>
+                        <button class="dropdown-item" onclick="selectDropdownTab('sms', event)">
+                            <svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                            </svg>
+                            SMS
+                        </button>
+                        <button class="dropdown-item" onclick="selectDropdownTab('event', event)">
+                            <svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                                <line x1="16" y1="2" x2="16" y2="6"></line>
+                                <line x1="8" y1="2" x2="8" y2="6"></line>
+                                <line x1="3" y1="10" x2="21" y2="10"></line>
+                            </svg>
+                            Event
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- URL Panel -->
+            <div class="input-panel active" id="panel-url" role="tabpanel" aria-labelledby="tab-url">
+                <div class="control-group">
+                    <label for="input-url">URL</label>
+                    <input type="url" id="input-url" class="text-input" placeholder="https://example.com"
+                        oninput="scheduleGenerate()" autocomplete="off" spellcheck="false">
+                </div>
+            </div>
+
+            <!-- Text Panel -->
+            <div class="input-panel" id="panel-text" role="tabpanel" aria-labelledby="tab-text">
+                <div class="control-group">
+                    <label for="input-text">Text</label>
+                    <textarea id="input-text" class="text-input textarea" placeholder="Enter any text…" rows="4"
+                        oninput="scheduleGenerate()"></textarea>
+                </div>
+            </div>
+
+            <!-- WiFi Panel -->
+            <div class="input-panel" id="panel-wifi" role="tabpanel" aria-labelledby="tab-wifi">
+                <div class="control-group">
+                    <label for="input-wifi-ssid">Network Name (SSID)</label>
+                    <input type="text" id="input-wifi-ssid" class="text-input" placeholder="MyNetwork"
+                        oninput="scheduleGenerate()" autocomplete="off" spellcheck="false">
+                </div>
+                <div class="control-group">
+                    <label for="input-wifi-pass">Password</label>
+                    <div class="password-wrapper">
+                        <input type="password" id="input-wifi-pass" class="text-input" placeholder="Password"
+                            oninput="scheduleGenerate()" autocomplete="off" spellcheck="false">
+                        <button class="password-toggle" id="password-toggle-btn" onclick="togglePasswordVisibility()"
+                            aria-label="Toggle password visibility" title="Show/hide password">
+                            <svg class="eye-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                stroke-linecap="round" stroke-linejoin="round" width="16" height="16">
+                                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                                <circle cx="12" cy="12" r="3"></circle>
+                            </svg>
+                            <svg class="eye-off-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"
+                                style="display:none">
+                                <path
+                                    d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24">
+                                </path>
+                                <line x1="1" y1="1" x2="23" y2="23"></line>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label for="input-wifi-security">Security</label>
+                    <select id="input-wifi-security" class="select-input" onchange="scheduleGenerate()">
+                        <option value="WPA">WPA/WPA2</option>
+                        <option value="WEP">WEP</option>
+                        <option value="">None (open)</option>
+                    </select>
+                </div>
+                <div class="control-group checkbox-group">
+                    <input type="checkbox" id="input-wifi-hidden" onchange="scheduleGenerate()">
+                    <label for="input-wifi-hidden">Hidden network</label>
+                </div>
+            </div>
+
+            <!-- Email Panel -->
+            <div class="input-panel" id="panel-email" role="tabpanel" aria-labelledby="tab-email">
+                <div class="control-group">
+                    <label for="input-email-to">To</label>
+                    <input type="email" id="input-email-to" class="text-input" placeholder="hello@example.com"
+                        oninput="scheduleGenerate()" autocomplete="off" spellcheck="false">
+                </div>
+                <div class="control-group">
+                    <label for="input-email-subject">Subject <span class="label-optional">optional</span></label>
+                    <input type="text" id="input-email-subject" class="text-input" placeholder="Subject line"
+                        oninput="scheduleGenerate()" autocomplete="off">
+                </div>
+                <div class="control-group">
+                    <label for="input-email-body">Body <span class="label-optional">optional</span></label>
+                    <textarea id="input-email-body" class="text-input textarea" placeholder="Email body…" rows="3"
+                        oninput="scheduleGenerate()"></textarea>
+                </div>
+            </div>
+
+            <!-- Phone Panel -->
+            <div class="input-panel" id="panel-phone" role="tabpanel" aria-labelledby="tab-phone">
+                <div class="control-group">
+                    <label for="input-phone">Phone Number</label>
+                    <input type="tel" id="input-phone" class="text-input" placeholder="+1 (555) 000-0000"
+                        oninput="scheduleGenerate()" autocomplete="off" spellcheck="false">
+                </div>
+            </div>
+
+            <!-- Location Panel -->
+            <div class="input-panel" id="panel-location" role="tabpanel" aria-labelledby="tab-location">
+                <div class="control-row">
+                    <div class="control-group">
+                        <label for="input-geo-lat">Latitude</label>
+                        <input type="number" step="any" id="input-geo-lat" class="text-input" placeholder="40.712776"
+                            oninput="scheduleGenerate()" autocomplete="off">
+                    </div>
+                    <div class="control-group">
+                        <label for="input-geo-lng">Longitude</label>
+                        <input type="number" step="any" id="input-geo-lng" class="text-input" placeholder="-74.005974"
+                            oninput="scheduleGenerate()" autocomplete="off">
+                    </div>
+                </div>
+                <div class="control-group">
+                    <button type="button" class="btn secondary" id="geo-detect-btn" onclick="getUserLocation()"
+                        style="display: flex; align-items: center; justify-content: center; gap: 0.5rem; width: 100%;">
+                        <svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                            stroke-linejoin="round" width="16" height="16" fill="none">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <line x1="22" y1="12" x2="18" y2="12"></line>
+                            <line x1="6" y1="12" x2="2" y2="12"></line>
+                            <line x1="12" y1="6" x2="12" y2="2"></line>
+                            <line x1="12" y1="22" x2="12" y2="18"></line>
+                        </svg>
+                        Use Current Location
+                    </button>
+                    <div id="geo-error"
+                        style="color: var(--text-subtle); font-size: 0.75rem; text-align: center; margin-top: 0.25rem; display: none;">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Contact Panel -->
+            <div class="input-panel" id="panel-contact" role="tabpanel" aria-labelledby="tab-contact">
+                <div class="control-row">
+                    <div class="control-group">
+                        <label for="input-contact-first">First Name</label>
+                        <input type="text" id="input-contact-first" class="text-input" placeholder="Jane"
+                            oninput="scheduleGenerate()" autocomplete="off">
+                    </div>
+                    <div class="control-group">
+                        <label for="input-contact-last">Last Name</label>
+                        <input type="text" id="input-contact-last" class="text-input" placeholder="Doe"
+                            oninput="scheduleGenerate()" autocomplete="off">
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label for="input-contact-org">Organization <span class="label-optional">optional</span></label>
+                    <input type="text" id="input-contact-org" class="text-input" placeholder="Acme Inc."
+                        oninput="scheduleGenerate()" autocomplete="off">
+                </div>
+                <div class="control-group">
+                    <label for="input-contact-phone">Phone</label>
+                    <input type="tel" id="input-contact-phone" class="text-input" placeholder="+1 (555) 000-0000"
+                        oninput="scheduleGenerate()" autocomplete="off">
+                </div>
+                <div class="control-group">
+                    <label for="input-contact-email">Email</label>
+                    <input type="email" id="input-contact-email" class="text-input" placeholder="jane@example.com"
+                        oninput="scheduleGenerate()" autocomplete="off">
+                </div>
+            </div>
+
+            <!-- SMS Panel -->
+            <div class="input-panel" id="panel-sms" role="tabpanel" aria-labelledby="tab-sms">
+                <div class="control-group">
+                    <label for="input-sms-phone">Phone Number</label>
+                    <input type="tel" id="input-sms-phone" class="text-input" placeholder="+1 (555) 000-0000"
+                        oninput="scheduleGenerate()" autocomplete="off">
+                </div>
+                <div class="control-group">
+                    <label for="input-sms-message">Message</label>
+                    <textarea id="input-sms-message" class="text-input textarea" placeholder="Enter message text…"
+                        rows="3" oninput="scheduleGenerate()"></textarea>
+                </div>
+            </div>
+
+            <!-- Event Panel -->
+            <div class="input-panel" id="panel-event" role="tabpanel" aria-labelledby="tab-event">
+                <div class="control-group">
+                    <label for="input-event-title">Event Title</label>
+                    <input type="text" id="input-event-title" class="text-input" placeholder="Meeting / Party"
+                        oninput="scheduleGenerate()" autocomplete="off">
+                </div>
+                <div class="control-row">
+                    <div class="control-group">
+                        <label for="input-event-start">Start Time</label>
+                        <input type="datetime-local" id="input-event-start" class="text-input"
+                            oninput="scheduleGenerate()">
+                    </div>
+                    <div class="control-group">
+                        <label for="input-event-end">End Time</label>
+                        <input type="datetime-local" id="input-event-end" class="text-input"
+                            oninput="scheduleGenerate()">
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label for="input-event-location">Location <span class="label-optional">optional</span></label>
+                    <input type="text" id="input-event-location" class="text-input" placeholder="123 Main St"
+                        oninput="scheduleGenerate()" autocomplete="off">
+                </div>
+                <div class="control-group">
+                    <label for="input-event-desc">Description <span class="label-optional">optional</span></label>
+                    <textarea id="input-event-desc" class="text-input textarea" placeholder="Details about the event…"
+                        rows="2" oninput="scheduleGenerate()"></textarea>
+                </div>
+            </div>
+
+            <hr class="section-divider">
+
+            <!-- Appearance -->
+            <div class="section-label">Appearance</div>
+
+            <div class="control-group">
+                <div class="control-label-with-actions">
+                    <label for="color-trigger-btn">Color</label>
+                </div>
+                <div class="color-trigger-btn" id="color-trigger-btn">
+                    <span class="color-trigger-preview" id="color-trigger-preview"
+                        onclick="toggleColorPickerSheet(); event.stopPropagation();" title="Toggle color picker"></span>
+                    <input type="text" class="color-trigger-hex" id="color-hex-input" value="#FFFFFF" maxlength="7"
+                        placeholder="#FFFFFF" aria-label="Hex color code">
+                </div>
+
+                <!-- Inline Expandable Color Picker Panel -->
+                <div class="inline-color-picker" id="color-picker-sheet">
+                    <div class="sheet-body">
+                        <!-- Background Type Selector -->
+                        <div class="color-picker-mode-row">
+                            <label class="mode-label">Background</label>
+                            <div class="segmented-control" id="bg-mode-control" role="group" aria-label="Background mode">
+                                <button type="button" class="seg-btn active" id="bg-mode-solid" onclick="setBackgroundMode('solid')" aria-pressed="true">Solid</button>
+                                <button type="button" class="seg-btn" id="bg-mode-transparent" onclick="setBackgroundMode('transparent')" aria-pressed="false">Transparent</button>
+                            </div>
+                        </div>
+
+                        <!-- Transparent Pixel Preset Row (visible only when transparent is selected) -->
+                        <div class="color-picker-mode-row" id="transparent-options-row" style="display: none;">
+                            <label class="mode-label">Pixels</label>
+                            <div class="segmented-control" id="pixel-color-control" role="group" aria-label="Pixel color mode">
+                                <button type="button" class="seg-btn" id="px-color-black" onclick="setTransparentPixelColor('#000000')" aria-pressed="false">Black</button>
+                                <button type="button" class="seg-btn" id="px-color-white" onclick="setTransparentPixelColor('#ffffff')" aria-pressed="false">White</button>
+                                <button type="button" class="seg-btn" id="px-color-custom" onclick="setTransparentPixelColor('custom')" aria-pressed="false">Custom</button>
+                            </div>
+                        </div>
+
+                        <!-- Color spectrum canvas -->
+                        <div class="spectrum-container">
+                            <canvas id="color-spectrum-canvas" width="300" height="150"></canvas>
+                            <div class="spectrum-cursor" id="spectrum-cursor"></div>
+                        </div>
+
+                        <!-- Preset Swatches + Randomizer -->
+                        <div class="swatches-row">
+                            <button type="button" class="swatch-btn shuffle-btn" onclick="shuffleThemeColor()"
+                                title="Shuffle color">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                    stroke-linecap="round" stroke-linejoin="round" width="16" height="16">
+                                    <polyline points="16 3 21 3 21 8"></polyline>
+                                    <line x1="4" y1="20" x2="21" y2="3"></line>
+                                    <polyline points="21 16 21 21 16 21"></polyline>
+                                    <line x1="15" y1="15" x2="21" y2="21"></line>
+                                    <line x1="4" y1="4" x2="9" y2="9"></line>
+                                </svg>
+                            </button>
+                            <button type="button" class="swatch-btn color-swatch" style="background-color: #ffffff;"
+                                onclick="selectSwatch('#ffffff')" title="White"></button>
+                            <button type="button" class="swatch-btn color-swatch" style="background-color: #ef4444;"
+                                onclick="selectSwatch('#ef4444')"></button>
+                            <button type="button" class="swatch-btn color-swatch" style="background-color: #f97316;"
+                                onclick="selectSwatch('#f97316')"></button>
+                            <button type="button" class="swatch-btn color-swatch" style="background-color: #eab308;"
+                                onclick="selectSwatch('#eab308')"></button>
+                            <button type="button" class="swatch-btn color-swatch" style="background-color: #22c55e;"
+                                onclick="selectSwatch('#22c55e')"></button>
+                            <button type="button" class="swatch-btn color-swatch" style="background-color: #06b6d4;"
+                                onclick="selectSwatch('#06b6d4')"></button>
+                            <button type="button" class="swatch-btn color-swatch" style="background-color: #3b82f6;"
+                                onclick="selectSwatch('#3b82f6')"></button>
+                            <button type="button" class="swatch-btn color-swatch" style="background-color: #a855f7;"
+                                onclick="selectSwatch('#a855f7')"></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label for="pixel-style">Pixel Style</label>
+                <div class="segmented-control" id="pixel-style" role="group" aria-label="Pixel style">
+                    <button class="seg-btn active" id="pixel-square" data-value="square"
+                        onclick="setPixelStyle('square')" aria-pressed="true">Square</button>
+                    <button class="seg-btn" id="pixel-rounded" data-value="rounded" onclick="setPixelStyle('rounded')"
+                        aria-pressed="false">Round</button>
+                    <button class="seg-btn" id="pixel-dot" data-value="dot" onclick="setPixelStyle('dot')"
+                        aria-pressed="false">Dot</button>
+                    <button class="seg-btn" id="pixel-pill-h" data-value="pill-h" onclick="setPixelStyle('pill-h')"
+                        aria-pressed="false">Pills</button>
+                    <button class="seg-btn" id="pixel-pill-v" data-value="pill-v" onclick="setPixelStyle('pill-v')"
+                        aria-pressed="false">Capsules</button>
+                    <button class="seg-btn" id="pixel-connected" data-value="connected"
+                        onclick="setPixelStyle('connected')" aria-pressed="false">Connected</button>
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label for="corner-style">Corner Markers</label>
+                <div class="segmented-control" id="corner-style" role="group" aria-label="Corner markers style">
+                    <button class="seg-btn active" id="corner-rounded" data-value="rounded"
+                        onclick="setCornerStyle('rounded')" aria-pressed="true">Round</button>
+                    <button class="seg-btn" id="corner-square" data-value="square" onclick="setCornerStyle('square')"
+                        aria-pressed="false">Square</button>
+                    <button class="seg-btn" id="corner-circle" data-value="circle" onclick="setCornerStyle('circle')"
+                        aria-pressed="false">Circle</button>
+                    <button class="seg-btn" id="corner-leaf" data-value="leaf" onclick="setCornerStyle('leaf')"
+                        aria-pressed="false">Leaf</button>
+                    <button class="seg-btn" id="corner-beveled" data-value="beveled" onclick="setCornerStyle('beveled')"
+                        aria-pressed="false">Beveled</button>
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label for="bg-corners-slider">
+                    Corner Radius
+                    <span class="label-value" id="bg-corners-label">50%</span>
+                </label>
+                <input type="range" id="bg-corners-slider" min="0" max="100" value="50"
+                    oninput="updateBgCornersLabel(); scheduleGenerate()">
+            </div>
+
+            <div class="control-group">
+                <label for="margin-slider">
+                    Margin
+                    <span class="label-value" id="margin-label">2</span>
+                </label>
+                <input type="range" id="margin-slider" min="0" max="10" value="2"
+                    oninput="updateMarginLabel(); scheduleGenerate()">
+            </div>
+
+
+            <hr class="section-divider">
+
+            <!-- Logo -->
+            <div class="section-label">Logo</div>
+
+            <div class="logo-upload-container">
+                <div class="logo-dropzone" id="logo-dropzone" onclick="triggerLogoInput()">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+                        stroke-linejoin="round" width="24" height="24">
+                        <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                        <circle cx="8.5" cy="8.5" r="1.5"></circle>
+                        <polyline points="21 15 16 10 5 21"></polyline>
+                    </svg>
+                    <span>Click or drag logo image here</span>
+                </div>
+                <input type="file" id="logo-input" accept="image/*" style="display: none"
+                    onchange="handleLogoFileSelect(event)">
+
+                <div class="logo-preview-wrapper" id="logo-preview-wrapper" style="display: none">
+                    <img class="logo-thumbnail" id="logo-preview-thumbnail" src="" alt="Logo thumbnail">
+                    <div class="logo-info">
+                        <span class="logo-filename" id="logo-preview-filename">logo.png</span>
+                        <span class="logo-status" id="logo-upload-status">Local preview</span>
+                    </div>
+                    <button class="logo-remove-btn" onclick="clearLogo()" title="Remove logo">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round" width="14" height="14">
+                            <line x1="18" y1="6" x2="6" y2="18"></line>
+                            <line x1="6" y1="6" x2="18" y2="18"></line>
+                        </svg>
+                    </button>
+                </div>
+
+                <div class="logo-controls" id="logo-controls" style="display: none">
+                    <div class="control-group">
+                        <label for="logo-size-slider">
+                            Logo Size
+                            <span class="label-value" id="logo-size-label">20%</span>
+                        </label>
+                        <input type="range" id="logo-size-slider" min="10" max="35" value="20"
+                            oninput="updateLogoSizeLabel(); scheduleGenerate()">
+                    </div>
+
+                    <div class="control-group checkbox-group">
+                        <input type="checkbox" id="logo-clear-behind" checked
+                            onchange="state.logoClearBehind = this.checked; scheduleGenerate()">
+                        <label for="logo-clear-behind">Draw card behind logo</label>
+                    </div>
+
+                    <div class="control-group" id="logo-shape-group">
+                        <label for="logo-shape">Card Shape</label>
+                        <div class="segmented-control" id="logo-shape" role="group" aria-label="Logo card shape">
+                            <button class="seg-btn" id="shape-square" data-value="square"
+                                onclick="setLogoCardShape('square')" aria-pressed="false">Square</button>
+                            <button class="seg-btn active" id="shape-rounded" data-value="rounded"
+                                onclick="setLogoCardShape('rounded')" aria-pressed="true">Round</button>
+                            <button class="seg-btn" id="shape-circle" data-value="circle"
+                                onclick="setLogoCardShape('circle')" aria-pressed="false">Circle</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <hr class="section-divider">
+
+            <div class="footer-actions">
+                <button type="button" class="btn primary btn-random" onclick="randomizeAppearance()">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16">
+                        <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/>
+                    </svg>
+                    Random
+                </button>
+                <button type="button" class="btn-reset-subtle" onclick="resetAppearance()" title="Reset to defaults">
+                    Reset
+                </button>
+            </div>
+
+        </section>
+
+    </main>
+
+
+
+    <!-- Toast notification -->
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+    <script src="qrcode-lib.js"></script>
+    <script src="script.js"></script>
+</body>
+
+</html>
