@@ -22,6 +22,7 @@ GET /api/qr
 | `transparent`| Boolean | No | `false` | Set to `true` (or `1`) to make the background transparent. |
 | `margin` | Number | No | `2` | Number of quiet-zone modules surrounding the QR code. Range: `0` to `10`. |
 | `ecl` | String | No | `M` | Error Correction Level: `L` (Low), `M` (Medium), `Q` (Quartile), `H` (High). |
+| `bgCorners` / `bgc` | Number | No | `0` | Background corner radius percentage. Range: `0` to `100`. |
 
 ---
 

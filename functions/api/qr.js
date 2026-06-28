@@ -84,6 +84,7 @@ export async function onRequestGet({ request, env }) {
   const transparent = params.get('transparent') === 'true' || params.get('transparent') === '1';
   const margin      = params.has('margin') && !isNaN(Number(params.get('margin'))) ? Math.min(Math.max(Number(params.get('margin')), 0), 10) : 2;
   const ecl         = ['L', 'M', 'Q', 'H'].includes(params.get('ecl')) ? params.get('ecl') : 'M';
+  const bgCorners   = Math.min(Math.max(Number(params.get('bgCorners') || params.get('bgc')) || 0, 0), 100);
 
   // Build QR module matrix
   let matrix;
@@ -95,14 +96,14 @@ export async function onRequestGet({ request, env }) {
 
   // Render
   if (format === 'svg') {
-    const svg = toSVG(matrix, fgColor, bgColor, transparent);
+    const svg = toSVG(matrix, fgColor, bgColor, transparent, bgCorners);
     return new Response(svg, {
       headers: { ...CORS_HEADERS, 'Content-Type': 'image/svg+xml; charset=utf-8' },
     });
   }
 
   // PNG or base64
-  const pngBytes = toPNG(matrix, size, fgColor, bgColor, transparent);
+  const pngBytes = toPNG(matrix, size, fgColor, bgColor, transparent, bgCorners);
 
   if (format === 'base64') {
     const b64 = uint8ToBase64(pngBytes);
@@ -155,7 +156,7 @@ function buildMatrix(content, ecl, margin) {
 
 // ─── SVG renderer ────────────────────────────────────────────────────────────
 
-function toSVG(matrix, fgColor, bgColor, transparent) {
+function toSVG(matrix, fgColor, bgColor, transparent, bgCorners = 0) {
   const size = matrix.length;
   const fg = rgbToHex(fgColor);
   const bg = rgbToHex(bgColor);
@@ -169,9 +170,12 @@ function toSVG(matrix, fgColor, bgColor, transparent) {
     }
   }
 
+  const bgRSvg = size * 0.25 * (bgCorners / 100);
   const bgRect = transparent
     ? ''
-    : `<rect width="${size}" height="${size}" fill="${bg}"/>`;
+    : (bgRSvg > 0
+      ? `<rect width="${size}" height="${size}" rx="${bgRSvg}" ry="${bgRSvg}" fill="${bg}"/>`
+      : `<rect width="${size}" height="${size}" fill="${bg}"/>`);
 
   return [
     `<?xml version="1.0" encoding="UTF-8"?>`,
@@ -184,19 +188,21 @@ function toSVG(matrix, fgColor, bgColor, transparent) {
 
 // ─── PNG renderer ────────────────────────────────────────────────────────────
 
-function toPNG(matrix, outputSize, fgColor, bgColor, transparent) {
+function toPNG(matrix, outputSize, fgColor, bgColor, transparent, bgCorners = 0) {
   const modules = matrix.length;
   // Scale: each module becomes cellSize × cellSize pixels
   const cellSize = Math.max(1, Math.floor(outputSize / modules));
   const px = modules * cellSize; // actual pixel dimensions
 
-  const channels = transparent ? 4 : 3;
+  const hasRoundedCorners = bgCorners > 0;
+  const channels = (transparent || hasRoundedCorners) ? 4 : 3;
   const scanline = px * channels;
   // PNG raw data: 1 filter byte per row + pixel data
   const rawData = new Uint8Array((scanline + 1) * px);
 
   const [fr, fg2, fb] = fgColor;
   const [br, bg2, bb] = bgColor;
+  const bgRadius = px * 0.25 * (bgCorners / 100);
 
   for (let row = 0; row < px; row++) {
     const moduleRow = Math.floor(row / cellSize);
@@ -207,9 +213,34 @@ function toPNG(matrix, outputSize, fgColor, bgColor, transparent) {
       const dark = matrix[moduleRow]?.[moduleCol] ?? false;
       const offset = row * (scanline + 1) + 1 + col * channels;
 
+      let isOutsideCorners = false;
+      if (bgRadius > 0) {
+        if (col < bgRadius && row < bgRadius) {
+          const dx = col - bgRadius;
+          const dy = row - bgRadius;
+          if (dx * dx + dy * dy > bgRadius * bgRadius) isOutsideCorners = true;
+        } else if (col >= px - bgRadius && row < bgRadius) {
+          const dx = col - (px - bgRadius);
+          const dy = row - bgRadius;
+          if (dx * dx + dy * dy > bgRadius * bgRadius) isOutsideCorners = true;
+        } else if (col < bgRadius && row >= px - bgRadius) {
+          const dx = col - bgRadius;
+          const dy = row - (px - bgRadius);
+          if (dx * dx + dy * dy > bgRadius * bgRadius) isOutsideCorners = true;
+        } else if (col >= px - bgRadius && row >= px - bgRadius) {
+          const dx = col - (px - bgRadius);
+          const dy = row - (px - bgRadius);
+          if (dx * dx + dy * dy > bgRadius * bgRadius) isOutsideCorners = true;
+        }
+      }
+
       if (channels === 4) {
-        // RGBA
-        if (transparent && !dark) {
+        if (isOutsideCorners) {
+          rawData[offset]     = 0;
+          rawData[offset + 1] = 0;
+          rawData[offset + 2] = 0;
+          rawData[offset + 3] = 0; // fully transparent
+        } else if (transparent && !dark) {
           rawData[offset]     = br;
           rawData[offset + 1] = bg2;
           rawData[offset + 2] = bb;
@@ -230,7 +261,7 @@ function toPNG(matrix, outputSize, fgColor, bgColor, transparent) {
   }
 
   const compressed = zlibSync(rawData, { level: 6 });
-  return assemblePNG(px, px, compressed, transparent);
+  return assemblePNG(px, px, compressed, transparent || hasRoundedCorners);
 }
 
 // ─── PNG binary assembler ─────────────────────────────────────────────────────
