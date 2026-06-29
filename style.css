@@ -5,38 +5,26 @@
 
 /* ---- Design Tokens ---- */
 :root {
-    --bg-color: #09090b;
-    /* Zinc 950 */
-    --panel-bg: #09090b;
-    --sidebar-bg: #09090b;
-    --preview-bg: #18181b;
-    /* Zinc 900 */
-    --canvas-bg: #18181b;
-    --control-bg: #18181b;
-    --control-bg-hover: #27272a;
-    /* Zinc 800 */
-    --accent: #327DFF;
-    /* Crisp Utility Blue */
-    --accent-hover: #1d4ed8;
+    --bg-color: #121214;
+    --panel-bg: #121214;
+    --sidebar-bg: #121214;
+    --preview-bg: #1a1a1e;
+    --canvas-bg: #1a1a1e;
+    --control-bg: #222226;
+    --control-bg-hover: #2d2d33;
+    --accent: #60a5fa;
+    --accent-hover: #93c5fd;
     --text-main: #fafafa;
-    /* Zinc 50 */
     --text-muted: #d4d4d8;
-    /* Zinc 300 */
     --text-subtle: #dedede;
-    /* Zinc 400 */
     --radius: 0px;
-    /* Flush layout containers */
     --radius-sm: 6px;
-    /* Native control elements */
     --border-color: #27272a;
-    /* Zinc 800 */
     --border-color-strong: #3f3f46;
-    /* Zinc 700 */
-    --input-bg: #09090b;
-    /* Zinc 950 */
+    --input-bg: #121214;
     --input-border: rgb(100, 100, 100);
     --input-border-hover: rgb(135, 135, 135);
-    --input-border-focus: #2563eb;
+    --input-border-focus: #60a5fa;
     --input-placeholder: #707070;
     /* Zinc 600 */
     --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.2);
