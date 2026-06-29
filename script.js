@@ -1461,7 +1461,7 @@ function updateAppTint(baseColorHex) {
 
     let tintBg;
     if (s === 0) {
-        tintBg = isDarkTheme ? '#0b0f19' : '#f1f5f9';
+        tintBg = isDarkTheme ? '#18181b' : '#f4f4f5';
     } else {
         if (isDarkTheme) {
             tintBg = `hsl(${h}, ${Math.min(s, 24)}%, 11%)`;
@@ -2483,7 +2483,7 @@ function positionIosPrompt() {
     if (!prompt) return;
 
     // Check if we are in the single-column mobile layout
-    const isSingleColumnMobile = window.innerWidth <= 899 && !window.matchMedia('(orientation: landscape) and (max-height: 500px)').matches;
+    const isSingleColumnMobile = window.innerWidth <= 960 && !window.matchMedia('(orientation: landscape) and (max-height: 500px)').matches;
     const controlsSections = document.querySelectorAll('.controls-section');
     const lastControlsSection = controlsSections[controlsSections.length - 1];
 
@@ -2589,7 +2589,7 @@ function positionDesktopPrompt() {
     const prompt = document.getElementById('desktop-pwa-prompt');
     if (!prompt) return;
 
-    const isSingleColumnMobile = window.innerWidth <= 899 && !window.matchMedia('(orientation: landscape) and (max-height: 500px)').matches;
+    const isSingleColumnMobile = window.innerWidth <= 960 && !window.matchMedia('(orientation: landscape) and (max-height: 500px)').matches;
     const lastControlsSection = document.querySelector('.controls-section:not(.seo-features-mobile)');
 
     if (isSingleColumnMobile) {
@@ -2776,3 +2776,25 @@ registerServiceWorker();
 initIosPwaPrompt();
 // Check for Safari Desktop PWA support (macOS Sonoma+)
 initDesktopPwaPrompt();
+
+// Mobile scroll handler to collapse preview header
+function handleMobileScroll() {
+    if (window.innerWidth <= 960) {
+        if (window.scrollY > 10) {
+            if (!document.body.classList.contains('scrolled')) {
+                document.body.classList.add('scrolled');
+                if (typeof closeSizePopover === 'function') {
+                    closeSizePopover();
+                }
+            }
+        } else {
+            document.body.classList.remove('scrolled');
+        }
+    } else {
+        document.body.classList.remove('scrolled');
+    }
+}
+window.addEventListener('scroll', handleMobileScroll, { passive: true });
+window.addEventListener('resize', handleMobileScroll, { passive: true });
+handleMobileScroll();
+

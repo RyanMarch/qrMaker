@@ -1,4 +1,4 @@
-const CACHE_NAME = 'qrmaker-v1.0.0';
+const CACHE_NAME = 'qrmaker-v1.0.4';
 const ASSETS = [
     '/',
     '/index.html',
@@ -61,7 +61,7 @@ self.addEventListener('fetch', (event) => {
                             caches.open(CACHE_NAME).then((cache) => cache.put(event.request, networkResponse));
                         }
                     })
-                    .catch(() => {/* Ignore network failures in background fetch */});
+                    .catch(() => {/* Ignore network failures in background fetch */ });
                 return cachedResponse;
             }
 
@@ -71,8 +71,8 @@ self.addEventListener('fetch', (event) => {
                 if (
                     networkResponse.status === 200 &&
                     (url.hostname.includes('fonts.googleapis.com') ||
-                     url.hostname.includes('fonts.gstatic.com') ||
-                     url.hostname.includes('unpkg.com'))
+                        url.hostname.includes('fonts.gstatic.com') ||
+                        url.hostname.includes('unpkg.com'))
                 ) {
                     const responseClone = networkResponse.clone();
                     caches.open(CACHE_NAME).then((cache) => cache.put(event.request, responseClone));
