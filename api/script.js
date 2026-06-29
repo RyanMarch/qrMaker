@@ -5,7 +5,7 @@
 document.addEventListener('DOMContentLoaded', () => {
     // ---- Theme Toggle ----
     const themeToggle = document.getElementById('theme-toggle');
-    
+
     function setTheme(theme) {
         if (theme === 'system') {
             document.documentElement.removeAttribute('data-theme');
@@ -14,7 +14,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         localStorage.setItem('qrm-theme', theme);
     }
-    
+
     themeToggle.addEventListener('click', () => {
         const currentTheme = localStorage.getItem('qrm-theme') || 'dark';
         const newTheme = currentTheme === 'light' ? 'dark' : 'light';
@@ -56,7 +56,7 @@ document.addEventListener('DOMContentLoaded', () => {
     tabBtns.forEach(btn => {
         btn.addEventListener('click', () => {
             const tabId = btn.getAttribute('data-tab');
-            
+
             tabBtns.forEach(b => b.classList.remove('active'));
             tabContents.forEach(c => c.classList.remove('active'));
 
@@ -77,30 +77,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const playIconBg = document.getElementById('play-icon-bg');
     const playMargin = document.getElementById('play-margin');
     const playCornerRadius = document.getElementById('play-corner-radius');
-    
-    const playgroundPlaceholder = document.getElementById('playground-placeholder');
-    const placeholderText = document.getElementById('placeholder-text');
-    const playgroundImage = document.getElementById('playground-image');
-    const base64Indicator = document.getElementById('base64-indicator');
     const playgroundUrlInput = document.getElementById('playground-url');
-
-    // Load state handlers
-    playgroundImage.addEventListener('load', () => {
-        playgroundPlaceholder.classList.add('hidden');
-        playgroundImage.classList.remove('hidden');
-    });
-
-    playgroundImage.addEventListener('error', () => {
-        // If we failed loading from a local hostname, fall back to production
-        const prodUrl = playgroundUrlInput.value;
-        if (playgroundImage.src !== prodUrl && (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')) {
-            playgroundImage.src = prodUrl;
-        } else {
-            playgroundPlaceholder.classList.remove('hidden');
-            playgroundImage.classList.add('hidden');
-            placeholderText.textContent = "API Offline. Please check your connection.";
-        }
-    });
 
     // Synchronize color picker inputs
     function syncColorPicker(picker, textInput) {
@@ -119,7 +96,7 @@ document.addEventListener('DOMContentLoaded', () => {
     syncColorPicker(playFgPicker, playFg);
     syncColorPicker(playBgPicker, playBg);
 
-    // Update playground preview
+    // Update playground preview URL
     function updatePlayground() {
         const content = encodeURIComponent(playContent.value.trim() || 'https://qrmaker.ryanmarch.me');
         const format = playFormat.value;
@@ -133,7 +110,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Base API path
         let apiUrl = `https://qrmaker.ryanmarch.me/api/qr?content=${content}&fgColor=${fg}&bgColor=${bg}&cornerStyle=${style}&margin=${margin}&cornerRadius=${cornerRadius}`;
-        
+
         if (format !== 'png') {
             apiUrl += `&format=${format}`;
         }
@@ -143,51 +120,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Set visual text URL
         playgroundUrlInput.value = apiUrl;
-
-        // Reset display to show placeholder while loading new src
-        playgroundPlaceholder.classList.remove('hidden');
-        playgroundImage.classList.add('hidden');
-        placeholderText.textContent = "Loading preview...";
-
-        // Local vs Prod request selection
-        let requestUrl = apiUrl;
-        if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
-            requestUrl = apiUrl.replace('https://qrmaker.ryanmarch.me', window.location.origin);
-        }
-
-        // Load preview
-        if (format === 'base64') {
-            // Base64 returns JSON, so we must fetch it to set preview img src
-            base64Indicator.classList.remove('hidden');
-            
-            fetch(requestUrl)
-                .then(res => res.json())
-                .then(json => {
-                    playgroundImage.src = json.data;
-                })
-                .catch(() => {
-                    // Fallback to fetch from production if local fetch fails
-                    if (requestUrl !== apiUrl) {
-                        fetch(apiUrl)
-                            .then(res => res.json())
-                            .then(json => {
-                                playgroundImage.src = json.data;
-                            })
-                            .catch(() => {
-                                playgroundPlaceholder.classList.remove('hidden');
-                                playgroundImage.classList.add('hidden');
-                                placeholderText.textContent = "API Offline. Please check your connection.";
-                            });
-                    } else {
-                        playgroundPlaceholder.classList.remove('hidden');
-                        playgroundImage.classList.add('hidden');
-                        placeholderText.textContent = "API Offline. Please check your connection.";
-                    }
-                });
-        } else {
-            base64Indicator.classList.add('hidden');
-            playgroundImage.src = requestUrl;
-        }
     }
 
     // Attach listeners to playground form controls
@@ -223,6 +155,118 @@ document.addEventListener('DOMContentLoaded', () => {
                 });
         });
     });
+
+    // ---- Dynamic Bruno / Postman Collection Generator ----
+    const btnDownloadCollection = document.getElementById('btn-download-collection');
+    if (btnDownloadCollection) {
+        btnDownloadCollection.addEventListener('click', () => {
+            const rows = document.querySelectorAll('.params-table tbody tr');
+            const queryParams = [];
+
+            rows.forEach(row => {
+                const nameEl = row.querySelector('td:nth-child(1) code.param-name');
+                const descEl = row.querySelector('td:nth-child(5)');
+                const defaultEl = row.querySelector('td:nth-child(4)');
+
+                if (nameEl && descEl) {
+                    const key = nameEl.textContent.trim();
+                    let description = descEl.textContent.trim();
+                    let defaultValue = '';
+
+                    if (defaultEl) {
+                        defaultValue = defaultEl.textContent.trim();
+                        if (defaultValue === '—') {
+                            defaultValue = '';
+                        }
+                    }
+
+                    // Sensible default values for testing
+                    let value = defaultValue;
+                    if (key === 'content') {
+                        value = 'https://qrmaker.ryanmarch.me';
+                    } else if (key === 'format') {
+                        value = 'png';
+                    } else if (key === 'size') {
+                        value = '512';
+                    } else if (key === 'fgColor') {
+                        value = '000000';
+                    } else if (key === 'bgColor') {
+                        value = 'ffffff';
+                    } else if (key === 'transparent') {
+                        value = 'false';
+                    } else if (key === 'margin') {
+                        value = '2';
+                    } else if (key === 'cornerRadius') {
+                        value = '0';
+                    } else if (key === 'cornerStyle') {
+                        value = 'square';
+                    } else if (key === 'icon') {
+                        value = 'link';
+                    } else if (key === 'iconBg') {
+                        value = 'ffffff';
+                    } else if (key === 'iconColor') {
+                        value = '000000';
+                    }
+
+                    queryParams.push({
+                        key: key,
+                        value: value,
+                        description: description
+                    });
+                }
+            });
+
+            const formattedDate = new Date().toLocaleDateString('en-US', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+            });
+
+            const collection = {
+                info: {
+                    _postman_id: "7b0b263b-3bf1-4d37-8898-0c6778f5f6bb",
+                    name: "QR Maker API",
+                    description: `QR Maker API sample request. Downloaded on ${formattedDate}.\n\nDocumentation: https://qrmaker.ryanmarch.me/api/`,
+                    schema: "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+                },
+                item: [
+                    {
+                        name: "Generate QR Code",
+                        request: {
+                            method: "GET",
+                            header: [],
+                            description: "Generate customized QR codes dynamically on the fly. Returns raw binary data for PNG/SVG, or JSON for base64 format.",
+                            url: {
+                                raw: "",
+                                protocol: "https",
+                                host: ["qrmaker", "ryanmarch", "me"],
+                                path: ["api", "qr"],
+                                query: queryParams
+                            }
+                        },
+                        response: []
+                    }
+                ]
+            };
+
+            // Set raw URL
+            const rawUrlParams = queryParams
+                .map(p => `${p.key}=${encodeURIComponent(p.value)}`)
+                .join('&');
+            collection.item[0].request.url.raw = `https://qrmaker.ryanmarch.me/api/qr?${rawUrlParams}`;
+
+            // Trigger file download
+            const blob = new Blob([JSON.stringify(collection, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'qrMaker.postman_collection.json';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        });
+    }
 
     // Run initial update on load
     updatePlayground();
