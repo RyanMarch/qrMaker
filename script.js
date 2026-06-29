@@ -16,7 +16,7 @@ let state = {
     ecl: 'M',
     pixelStyle: 'square',
     cornerStyle: 'rounded',
-    bgCorners: 0,
+    cornerRadius: 0,
     exportSize: 1024,
     margin: 2,
     fgColor: '#000000',
@@ -196,7 +196,7 @@ function drawQR(qr, canvas, targetPx) {
         ctx.clearRect(0, 0, totalPx, totalPx);
     } else {
         ctx.fillStyle = state.bgColor;
-        const bgR = totalPx * 0.25 * (state.bgCorners / 100);
+        const bgR = totalPx * 0.25 * (state.cornerRadius / 100);
         if (bgR > 0) {
             roundRect(ctx, 0, 0, totalPx, totalPx, bgR);
         } else {
@@ -622,7 +622,7 @@ function exportSVG() {
         }
     }
 
-    const bgRSvg = size * 0.25 * (state.bgCorners / 100);
+    const bgRSvg = size * 0.25 * (state.cornerRadius / 100);
     const bgRect = state.bgColor === 'transparent' ? '' : (bgRSvg > 0 ? `\n  <rect width="${size}" height="${size}" rx="${bgRSvg}" ry="${bgRSvg}" fill="${state.bgColor}"/>` : `\n  <rect width="${size}" height="${size}" fill="${state.bgColor}"/>`);
     const svg = `<?xml version="1.0" encoding="UTF-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 ${size} ${size}" width="${size}" height="${size}">${bgRect}
@@ -650,7 +650,7 @@ function buildShareURL() {
     url.searchParams.set('ecl', state.ecl);
     url.searchParams.set('ps', state.pixelStyle);
     url.searchParams.set('cms', state.cornerStyle);
-    url.searchParams.set('bgc', state.bgCorners);
+    url.searchParams.set('bgc', state.cornerRadius);
     url.searchParams.set('fg', state.fgColor.replace('#', ''));
     url.searchParams.set('bg', state.bgColor.replace('#', ''));
     url.searchParams.set('margin', state.margin);
@@ -719,7 +719,7 @@ function loadFromURL() {
     if (params.has('bgc')) {
         const bgc = parseInt(params.get('bgc'), 10);
         if (!isNaN(bgc)) {
-            state.bgCorners = bgc;
+            state.cornerRadius = bgc;
             const bgSlider = document.getElementById('bg-corners-slider');
             if (bgSlider) bgSlider.value = bgc;
         }
@@ -793,7 +793,7 @@ function loadFromURL() {
         };
         img.src = logoUrl;
     }
-    updateBgCornersLabel();
+    updateCornerRadiusLabel();
     updateColorHex();
 }
 
@@ -905,11 +905,11 @@ function setCornerStyle(style, generate = true) {
     if (generate) scheduleGenerate();
 }
 
-function updateBgCornersLabel() {
+function updateCornerRadiusLabel() {
     const slider = document.getElementById('bg-corners-slider');
     if (!slider) return;
     const val = parseInt(slider.value, 10);
-    state.bgCorners = val;
+    state.cornerRadius = val;
     document.getElementById('bg-corners-label').textContent = `${val}%`;
 }
 
@@ -995,10 +995,10 @@ function randomizeAppearance() {
     
     // 4. Randomize Background Corner Radius (0-50)
     const randomRadius = Math.floor(Math.random() * 51);
-    state.bgCorners = randomRadius;
+    state.cornerRadius = randomRadius;
     const bgSlider = document.getElementById('bg-corners-slider');
     if (bgSlider) bgSlider.value = randomRadius;
-    updateBgCornersLabel();
+    updateCornerRadiusLabel();
     
     // Redraw
     scheduleGenerate();
@@ -1018,10 +1018,10 @@ function resetAppearance() {
     setCornerStyle('rounded', false);
     
     // 4. Reset corner radius (50)
-    state.bgCorners = 50;
+    state.cornerRadius = 50;
     const bgSlider = document.getElementById('bg-corners-slider');
     if (bgSlider) bgSlider.value = 50;
-    updateBgCornersLabel();
+    updateCornerRadiusLabel();
     
     // 5. Reset margin (2)
     state.margin = 2;

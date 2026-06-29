@@ -17,12 +17,13 @@ GET /api/qr
 | `content` | String | **Yes** | — | The text or URL to encode in the QR code (must be URL-encoded). |
 | `format` | String | No | `png` | The response format: `png` (raw binary), `svg` (XML markup), or `base64` (JSON object). |
 | `size` | Number | No | `1024` | Dimension in pixels (applies to `png` and `base64`). Range: `64` to `4096`. |
-| `fgColor` | String | No | `#000000` | Hex color for the foreground modules (e.g. `ff0000` or `#ff0000`). |
-| `bgColor` | String | No | `#ffffff` | Hex color for the background (ignored if `transparent=true`). |
+| `fgColor` | String | No | `000000` | Hex color for the foreground modules (e.g. `ff0000`). Do not include the `#` symbol. |
+| `bgColor` | String | No | `ffffff` | Hex color for the background (e.g. `ffffff`, ignored if `transparent=true`). Do not include the `#` symbol. |
 | `transparent`| Boolean | No | `false` | Set to `true` (or `1`) to make the background transparent. |
 | `margin` | Number | No | `2` | Number of quiet-zone modules surrounding the QR code. Range: `0` to `10`. |
 | `ecl` | String | No | `M` | Error Correction Level: `L` (Low), `M` (Medium), `Q` (Quartile), `H` (High). |
-| `bgCorners` / `bgc` | Number | No | `0` | Background corner radius percentage. Range: `0` to `100`. |
+| `cornerRadius` | Number | No | `0` | Background corner radius percentage. Range: `0` to `100`. |
+| `cornerStyle` | String | No | `square` | Corner marker style: `square`, `rounded`, `circle`, `leaf`, `beveled`. |
 
 ---
 
@@ -49,6 +50,18 @@ Returns a JSON object wrapping a Data URL.
     "data": "data:image/png;base64,iVBORw0KGgoAAA..."
   }
   ```
+
+---
+
+## Caching
+
+To optimize performance and avoid redundant generation overhead, all successful responses include a `Cache-Control` header:
+
+```http
+Cache-Control: public, max-age=31536000, immutable
+```
+
+This instructs browsers and CDNs (such as Cloudflare) to cache the generated QR code indefinitely for the exact same set of query parameters.
 
 ---
 

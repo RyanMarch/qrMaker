@@ -84,7 +84,8 @@ export async function onRequestGet({ request, env }) {
   const transparent = params.get('transparent') === 'true' || params.get('transparent') === '1';
   const margin      = params.has('margin') && !isNaN(Number(params.get('margin'))) ? Math.min(Math.max(Number(params.get('margin')), 0), 10) : 2;
   const ecl         = ['L', 'M', 'Q', 'H'].includes(params.get('ecl')) ? params.get('ecl') : 'M';
-  const bgCorners   = Math.min(Math.max(Number(params.get('bgCorners') || params.get('bgc')) || 0, 0), 100);
+  const cornerRadius = Math.min(Math.max(Number(params.get('cornerRadius') || params.get('bgCorners') || params.get('bgc')) || 0, 0), 100);
+  const cornerStyle  = ['square', 'rounded', 'circle', 'leaf', 'beveled'].includes(params.get('cornerStyle') || params.get('cms')) ? (params.get('cornerStyle') || params.get('cms')) : 'square';
 
   // Build QR module matrix
   let matrix;
@@ -96,20 +97,29 @@ export async function onRequestGet({ request, env }) {
 
   // Render
   if (format === 'svg') {
-    const svg = toSVG(matrix, fgColor, bgColor, transparent, bgCorners);
+    const svg = toSVG(matrix, fgColor, bgColor, transparent, cornerRadius, cornerStyle, margin);
     return new Response(svg, {
-      headers: { ...CORS_HEADERS, 'Content-Type': 'image/svg+xml; charset=utf-8' },
+      headers: {
+        ...CORS_HEADERS,
+        'Content-Type': 'image/svg+xml; charset=utf-8',
+        'Cache-Control': 'public, max-age=31536000, immutable',
+      },
     });
   }
 
   // PNG or base64
-  const pngBytes = toPNG(matrix, size, fgColor, bgColor, transparent, bgCorners);
+  const pngBytes = toPNG(matrix, size, fgColor, bgColor, transparent, cornerRadius, cornerStyle, margin);
 
   if (format === 'base64') {
     const b64 = uint8ToBase64(pngBytes);
     return Response.json(
       { data: `data:image/png;base64,${b64}` },
-      { headers: CORS_HEADERS }
+      {
+        headers: {
+          ...CORS_HEADERS,
+          'Cache-Control': 'public, max-age=31536000, immutable',
+        },
+      }
     );
   }
 
@@ -119,6 +129,7 @@ export async function onRequestGet({ request, env }) {
       ...CORS_HEADERS,
       'Content-Type': 'image/png',
       'Content-Disposition': 'inline; filename="qr.png"',
+      'Cache-Control': 'public, max-age=31536000, immutable',
     },
   });
 }
@@ -156,21 +167,30 @@ function buildMatrix(content, ecl, margin) {
 
 // ─── SVG renderer ────────────────────────────────────────────────────────────
 
-function toSVG(matrix, fgColor, bgColor, transparent, bgCorners = 0) {
+function toSVG(matrix, fgColor, bgColor, transparent, cornerRadius = 0, cornerStyle = 'square', margin = 2) {
   const size = matrix.length;
   const fg = rgbToHex(fgColor);
   const bg = rgbToHex(bgColor);
+  const count = size - margin * 2;
 
   const rects = [];
   for (let row = 0; row < size; row++) {
     for (let col = 0; col < size; col++) {
+      if (isFinderPattern(row, col, size, margin)) continue;
       if (matrix[row][col]) {
         rects.push(`<rect x="${col}" y="${row}" width="1" height="1" fill="${fg}"/>`);
       }
     }
   }
 
-  const bgRSvg = size * 0.25 * (bgCorners / 100);
+  // Draw custom finder patterns in SVG
+  const finderPatterns = [
+    getFinderPatternSvg(margin, margin, cornerStyle, 'TL', fg),
+    getFinderPatternSvg(margin + count - 7, margin, cornerStyle, 'TR', fg),
+    getFinderPatternSvg(margin, margin + count - 7, cornerStyle, 'BL', fg),
+  ];
+
+  const bgRSvg = size * 0.25 * (cornerRadius / 100);
   const bgRect = transparent
     ? ''
     : (bgRSvg > 0
@@ -182,19 +202,20 @@ function toSVG(matrix, fgColor, bgColor, transparent, bgCorners = 0) {
     `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${size} ${size}" shape-rendering="crispEdges">`,
     bgRect,
     ...rects,
+    ...finderPatterns,
     `</svg>`,
   ].join('\n');
 }
 
 // ─── PNG renderer ────────────────────────────────────────────────────────────
 
-function toPNG(matrix, outputSize, fgColor, bgColor, transparent, bgCorners = 0) {
+function toPNG(matrix, outputSize, fgColor, bgColor, transparent, cornerRadius = 0, cornerStyle = 'square', margin = 2) {
   const modules = matrix.length;
   // Scale: each module becomes cellSize × cellSize pixels
   const cellSize = Math.max(1, Math.floor(outputSize / modules));
   const px = modules * cellSize; // actual pixel dimensions
 
-  const hasRoundedCorners = bgCorners > 0;
+  const hasRoundedCorners = cornerRadius > 0;
   const channels = (transparent || hasRoundedCorners) ? 4 : 3;
   const scanline = px * channels;
   // PNG raw data: 1 filter byte per row + pixel data
@@ -202,7 +223,7 @@ function toPNG(matrix, outputSize, fgColor, bgColor, transparent, bgCorners = 0)
 
   const [fr, fg2, fb] = fgColor;
   const [br, bg2, bb] = bgColor;
-  const bgRadius = px * 0.25 * (bgCorners / 100);
+  const bgRadius = px * 0.25 * (cornerRadius / 100);
 
   for (let row = 0; row < px; row++) {
     const moduleRow = Math.floor(row / cellSize);
@@ -210,7 +231,16 @@ function toPNG(matrix, outputSize, fgColor, bgColor, transparent, bgCorners = 0)
 
     for (let col = 0; col < px; col++) {
       const moduleCol = Math.floor(col / cellSize);
-      const dark = matrix[moduleRow]?.[moduleCol] ?? false;
+      
+      // Determine pixel color based on finder patterns or regular modules
+      let dark = false;
+      const fpPixel = getFinderPatternPixel(row, col, px, cellSize, margin, cornerStyle);
+      if (fpPixel !== null) {
+        dark = fpPixel;
+      } else {
+        dark = matrix[moduleRow]?.[moduleCol] ?? false;
+      }
+      
       const offset = row * (scanline + 1) + 1 + col * channels;
 
       let isOutsideCorners = false;
@@ -262,6 +292,197 @@ function toPNG(matrix, outputSize, fgColor, bgColor, transparent, bgCorners = 0)
 
   const compressed = zlibSync(rawData, { level: 6 });
   return assemblePNG(px, px, compressed, transparent || hasRoundedCorners);
+}
+
+// ─── Finder pattern style helpers ─────────────────────────────────────────────
+
+function isFinderPattern(row, col, totalSize, margin) {
+  const r = row - margin;
+  const c = col - margin;
+  const count = totalSize - margin * 2;
+  if (r < 0 || c < 0 || r >= count || c >= count) return false;
+  if (r < 7 && c < 7) return true;
+  if (r < 7 && c >= count - 7) return true;
+  if (r >= count - 7 && c < 7) return true;
+  return false;
+}
+
+function getCustomRectSvgPath(x, y, w, h, rtl, rtr, rbr, rbl) {
+  return `M ${x + rtl} ${y} ` +
+         `h ${w - rtl - rtr} ` +
+         (rtr > 0 ? `a ${rtr} ${rtr} 0 0 1 ${rtr} ${rtr} ` : '') +
+         `v ${h - rtr - rbr} ` +
+         (rbr > 0 ? `a ${rbr} ${rbr} 0 0 1 -${rbr} ${rbr} ` : '') +
+         `h -${w - rbr - rbl} ` +
+         (rbl > 0 ? `a ${rbl} ${rbl} 0 0 1 -${rbl} -${rbl} ` : '') +
+         `v -${h - rbl - rtl} ` +
+         (rtl > 0 ? `a ${rtl} ${rtl} 0 0 1 ${rtl} -${rtl} ` : '') +
+         `z`;
+}
+
+function getBeveledSvgPath(x, y, size, bevel) {
+  return `M ${x + bevel} ${y} ` +
+         `L ${x + size - bevel} ${y} ` +
+         `L ${x + size} ${y + bevel} ` +
+         `L ${x + size} ${y + size - bevel} ` +
+         `L ${x + size - bevel} ${y + size} ` +
+         `L ${x + bevel} ${y + size} ` +
+         `L ${x} ${y + size - bevel} ` +
+         `L ${x} ${y + bevel} ` +
+         `z`;
+}
+
+function getFinderPatternSvg(x, y, style, pos, fgColorHex) {
+  if (style === 'circle') {
+    const cx = x + 3.5;
+    const cy = y + 3.5;
+    const framePath = `M ${cx} ${y} a 3.5 3.5 0 1 0 0 7 a 3.5 3.5 0 1 0 0 -7 M ${cx} ${y + 1} a 2.5 2.5 0 1 0 0 5 a 2.5 2.5 0 1 0 0 -5`;
+    const eyePath = `M ${cx} ${y + 2} a 1.5 1.5 0 1 0 0 3 a 1.5 1.5 0 1 0 0 -3`;
+    return `<path fill="${fgColorHex}" fill-rule="evenodd" d="${framePath}"/>\n  <path fill="${fgColorHex}" d="${eyePath}"/>`;
+  } else if (style === 'rounded') {
+    const framePath = getCustomRectSvgPath(x, y, 7, 7, 2, 2, 2, 2) + ' ' + getCustomRectSvgPath(x + 1, y + 1, 5, 5, 1.2, 1.2, 1.2, 1.2);
+    const eyePath = getCustomRectSvgPath(x + 2, y + 2, 3, 3, 0.9, 0.9, 0.9, 0.9);
+    return `<path fill="${fgColorHex}" fill-rule="evenodd" d="${framePath}"/>\n  <path fill="${fgColorHex}" d="${eyePath}"/>`;
+  } else if (style === 'leaf') {
+    let rtl = 0, rtr = 0, rbr = 0, rbl = 0;
+    if (pos === 'TL') rtl = 3.5;
+    else if (pos === 'TR') rtr = 3.5;
+    else if (pos === 'BL') rbl = 3.5;
+
+    let irtl = 0, irtr = 0, irbr = 0, irbl = 0;
+    if (pos === 'TL') irtl = 2.5;
+    else if (pos === 'TR') irtr = 2.5;
+    else if (pos === 'BL') irbl = 2.5;
+
+    let ertl = 0, ertr = 0, erbr = 0, erbl = 0;
+    if (pos === 'TL') ertl = 1.5;
+    else if (pos === 'TR') ertr = 1.5;
+    else if (pos === 'BL') erbl = 1.5;
+
+    const framePath = getCustomRectSvgPath(x, y, 7, 7, rtl, rtr, rbr, rbl) + ' ' + getCustomRectSvgPath(x + 1, y + 1, 5, 5, irtl, irtr, irbr, irbl);
+    const eyePath = getCustomRectSvgPath(x + 2, y + 2, 3, 3, ertl, ertr, erbr, erbl);
+    return `<path fill="${fgColorHex}" fill-rule="evenodd" d="${framePath}"/>\n  <path fill="${fgColorHex}" d="${eyePath}"/>`;
+  } else if (style === 'beveled') {
+    const framePath = getBeveledSvgPath(x, y, 7, 1.75) + ' ' + getBeveledSvgPath(x + 1, y + 1, 5, 1.05);
+    const eyePath = getBeveledSvgPath(x + 2, y + 2, 3, 0.7);
+    return `<path fill="${fgColorHex}" fill-rule="evenodd" d="${framePath}"/>\n  <path fill="${fgColorHex}" d="${eyePath}"/>`;
+  } else {
+    // square
+    const framePath = `M ${x} ${y} h 7 v 7 h -7 z M ${x + 1} ${y + 1} h 5 v 5 h -5 z`;
+    const eyePath = `M ${x + 2} ${y + 2} h 3 v 3 h -3 z`;
+    return `<path fill="${fgColorHex}" fill-rule="evenodd" d="${framePath}"/>\n  <path fill="${fgColorHex}" d="${eyePath}"/>`;
+  }
+}
+
+// ─── PNG pixel geometry helpers ──────────────────────────────────────────────
+
+function isInsideRoundRect(x, y, w, rad) {
+  if (x < 0 || y < 0 || x > w || y > w) return false;
+  if (x < rad && y < rad) {
+    return (x - rad) * (x - rad) + (y - rad) * (y - rad) <= rad * rad;
+  }
+  if (x > w - rad && y < rad) {
+    const dx = x - (w - rad);
+    return dx * dx + (y - rad) * (y - rad) <= rad * rad;
+  }
+  if (x < rad && y > w - rad) {
+    const dy = y - (w - rad);
+    return (x - rad) * (x - rad) + dy * dy <= rad * rad;
+  }
+  if (x > w - rad && y > w - rad) {
+    const dx = x - (w - rad);
+    const dy = y - (w - rad);
+    return dx * dx + dy * dy <= rad * rad;
+  }
+  return true;
+}
+
+function isInsideLeaf(x, y, w, rad, pos) {
+  if (x < 0 || y < 0 || x > w || y > w) return false;
+  if (pos === 'TL' && x < rad && y < rad) {
+    return (x - rad) * (x - rad) + (y - rad) * (y - rad) <= rad * rad;
+  }
+  if (pos === 'TR' && x > w - rad && y < rad) {
+    const dx = x - (w - rad);
+    return dx * dx + (y - rad) * (y - rad) <= rad * rad;
+  }
+  if (pos === 'BL' && x < rad && y > w - rad) {
+    const dy = y - (w - rad);
+    return (x - rad) * (x - rad) + dy * dy <= rad * rad;
+  }
+  return true;
+}
+
+function isInsideBeveled(x, y, size, bevel) {
+  if (x < 0 || y < 0 || x > size || y > size) return false;
+  if (x + y < bevel) return false;
+  if (x - y > size - bevel) return false;
+  if (y - x > size - bevel) return false;
+  if (x + y > 2 * size - bevel) return false;
+  return true;
+}
+
+function getFinderPatternPixel(row, col, px, cellSize, margin, cornerStyle) {
+  const count = px / cellSize - margin * 2;
+  const topBorder = margin * cellSize;
+  const bottomBorder = (margin + 7) * cellSize;
+  const leftBorder = margin * cellSize;
+  const rightBorder = (margin + 7) * cellSize;
+
+  const trLeft = (margin + count - 7) * cellSize;
+  const trRight = (margin + count) * cellSize;
+  const blTop = (margin + count - 7) * cellSize;
+  const blBottom = (margin + count) * cellSize;
+
+  let rPixel, cPixel, pos;
+  if (row >= topBorder && row < bottomBorder && col >= leftBorder && col < rightBorder) {
+    rPixel = row - topBorder;
+    cPixel = col - leftBorder;
+    pos = 'TL';
+  } else if (row >= topBorder && row < bottomBorder && col >= trLeft && col < trRight) {
+    rPixel = row - topBorder;
+    cPixel = col - trLeft;
+    pos = 'TR';
+  } else if (row >= blTop && row < blBottom && col >= leftBorder && col < rightBorder) {
+    rPixel = row - blTop;
+    cPixel = col - leftBorder;
+    pos = 'BL';
+  } else {
+    return null; // Not in any finder pattern
+  }
+
+  // Convert to modular coordinate floats inside the 7x7 pattern
+  const c = cPixel / cellSize;
+  const r = rPixel / cellSize;
+
+  if (cornerStyle === 'circle') {
+    const d = Math.sqrt((c - 3.5) * (c - 3.5) + (r - 3.5) * (r - 3.5));
+    if (d <= 1.5) return true;
+    if (d <= 2.5) return false;
+    if (d <= 3.5) return true;
+    return false;
+  } else if (cornerStyle === 'rounded') {
+    if (isInsideRoundRect(c - 2, r - 2, 3, 0.9)) return true;
+    if (isInsideRoundRect(c - 1, r - 1, 5, 1.2)) return false;
+    if (isInsideRoundRect(c, r, 7, 2)) return true;
+    return false;
+  } else if (cornerStyle === 'leaf') {
+    if (isInsideLeaf(c - 2, r - 2, 3, 1.5, pos)) return true;
+    if (isInsideLeaf(c - 1, r - 1, 5, 2.5, pos)) return false;
+    if (isInsideLeaf(c, r, 7, 3.5, pos)) return true;
+    return false;
+  } else if (cornerStyle === 'beveled') {
+    if (isInsideBeveled(c - 2, r - 2, 3, 0.7)) return true;
+    if (isInsideBeveled(c - 1, r - 1, 5, 1.05)) return false;
+    if (isInsideBeveled(c, r, 7, 1.75)) return true;
+    return false;
+  } else {
+    // Default: square
+    if (c >= 2 && c < 5 && r >= 2 && r < 5) return true;
+    if (c >= 1 && c < 6 && r >= 1 && r < 6) return false;
+    if (c >= 0 && c < 7 && r >= 0 && r < 7) return true;
+    return false;
+  }
 }
 
 // ─── PNG binary assembler ─────────────────────────────────────────────────────
