@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="en" translate="no">
+
+<head>
+    <meta charset="UTF-8">
+    <script>
+        // Theme initialization to prevent flicker
+        (function () {
+            const savedTheme = localStorage.getItem('qrm-theme') || 'dark';
+            if (savedTheme === 'system') {
+                document.documentElement.removeAttribute('data-theme');
+            } else {
+                document.documentElement.setAttribute('data-theme', savedTheme);
+            }
+        })();
+    </script>
+    <meta name="google" content="notranslate">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+
+    <title>QR Maker API Documentation</title>
+    <meta name="description"
+        content="Developer API documentation for QR Maker. Learn how to generate customized QR codes on the fly using standard HTTP requests.">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@500;700;800&family=Fira+Code:wght@400;500&display=swap"
+        rel="stylesheet">
+
+    <!-- Favicons -->
+    <link rel="icon" type="image/png" href="/assets/favicon/favicon-96x96.png" sizes="96x96" />
+    <link rel="icon" type="image/svg+xml" href="/assets/favicon/favicon.svg" />
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <!-- Header -->
+    <header class="api-header">
+        <div class="header-left">
+            <a href="/" class="logo-link">
+                <span class="logo-text">QR Maker</span>
+                <span class="badge">API Docs</span>
+            </a>
+        </div>
+        <div class="header-right">
+            <a href="/" class="nav-link">Back to Generator</a>
+            <button id="theme-toggle" class="theme-toggle" aria-label="Toggle theme" title="Toggle theme">
+                <svg class="sun-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="5"></circle>
+                    <line x1="12" y1="1" x2="12" y2="3"></line>
+                    <line x1="12" y1="21" x2="12" y2="23"></line>
+                    <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                    <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                    <line x1="1" y1="12" x2="3" y2="12"></line>
+                    <line x1="21" y1="12" x2="23" y2="12"></line>
+                    <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                    <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                </svg>
+                <svg class="moon-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                </svg>
+            </button>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="api-container">
+        <!-- Sidebar Navigation -->
+        <nav class="api-sidebar" aria-label="Documentation sections">
+            <ul>
+                <li><a href="#overview" class="sidebar-link active">Overview</a></li>
+                <li><a href="#endpoint" class="sidebar-link">Endpoint</a></li>
+                <li><a href="#parameters" class="sidebar-link">Query Parameters</a></li>
+                <li><a href="#responses" class="sidebar-link">Response Formats</a></li>
+                <li><a href="#playground" class="sidebar-link">API Playground</a></li>
+                <li><a href="#code-examples" class="sidebar-link">Code Examples</a></li>
+            </ul>
+            <div class="sidebar-footer">
+                <p>Need custom designs? Try the main web UI.</p>
+                <a href="/#about" class="about-app-link">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <line x1="12" y1="16" x2="12" y2="12"></line>
+                        <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                    </svg>
+                    About QR Maker & Features
+                </a>
+            </div>
+        </nav>
+
+        <!-- Content Area -->
+        <section class="api-content" aria-label="API Documentation Content">
+
+            <!-- Overview -->
+            <article id="overview" class="doc-section">
+                <h1>Developer API Reference</h1>
+                <p class="lead">
+                    Generate customized, production-ready QR codes dynamically using simple HTTP GET requests.
+                    No registration required, zero rate limits, and hosted directly on Cloudflare edge nodes for
+                    sub-millisecond response times.
+                </p>
+                <p>
+                    All API requests are optimized for edge caching, returning full
+                    <code>Cache-Control: public, max-age=31536000, immutable</code> headers. This guarantees instant
+                    load speeds when embedded directly in HTML tags or Markdown files.
+                </p>
+            </article>
+
+            <hr class="section-divider">
+
+            <!-- Endpoint -->
+            <article id="endpoint" class="doc-section">
+                <h2>Base Endpoint</h2>
+                <div class="endpoint-block">
+                    <span class="method get">GET</span>
+                    <code class="endpoint-url">https://qrmaker.ryanmarch.me/api/qr</code>
+                </div>
+            </article>
+
+            <hr class="section-divider">
+
+            <!-- Parameters -->
+            <article id="parameters" class="doc-section">
+                <h2>Query Parameters</h2>
+                <p>Customize your generated QR codes by appending the following parameters to the URL query string.</p>
+
+                <div class="table-wrapper">
+                    <table class="params-table">
+                        <thead>
+                            <tr>
+                                <th>Parameter</th>
+                                <th>Type</th>
+                                <th>Required</th>
+                                <th>Default</th>
+                                <th>Description</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><code class="param-name">content</code></td>
+                                <td><code>String</code></td>
+                                <td><span class="req-yes">Yes</span></td>
+                                <td>—</td>
+                                <td>The URL or text content to encode. <strong>Must be properly URL-encoded.</strong>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><code class="param-name">format</code></td>
+                                <td><code>String</code></td>
+                                <td>No</td>
+                                <td><code>png</code></td>
+                                <td>Output format: <code>png</code> (raw binary file), <code>svg</code> (vector
+                                    graphic), or <code>base64</code> (JSON wrapping Data URI).</td>
+                            </tr>
+                            <tr>
+                                <td><code class="param-name">size</code></td>
+                                <td><code>Number</code></td>
+                                <td>No</td>
+                                <td><code>1024</code></td>
+                                <td>Width and height in pixels (for <code>png</code> and <code>base64</code>). Min:
+                                    <code>64</code>, Max: <code>4096</code>.</td>
+                            </tr>
+                            <tr>
+                                <td><code class="param-name">fgColor</code></td>
+                                <td><code>String</code></td>
+                                <td>No</td>
+                                <td><code>000000</code></td>
+                                <td>Hex color code for the foreground/pixels. <strong>Do not include a leading
+                                        <code>#</code>.</strong></td>
+                            </tr>
+                            <tr>
+                                <td><code class="param-name">bgColor</code></td>
+                                <td><code>String</code></td>
+                                <td>No</td>
+                                <td><code>ffffff</code></td>
+                                <td>Hex color code for background. Ignored if <code>transparent=true</code>. <strong>Do
+                                        not include <code>#</code>.</strong></td>
+                            </tr>
+                            <tr>
+                                <td><code class="param-name">transparent</code></td>
+                                <td><code>Boolean</code></td>
+                                <td>No</td>
+                                <td><code>false</code></td>
+                                <td>Set to <code>true</code> or <code>1</code> for a transparent background.</td>
+                            </tr>
+                            <tr>
+                                <td><code class="param-name">margin</code></td>
+                                <td><code>Number</code></td>
+                                <td>No</td>
+                                <td><code>2</code></td>
+                                <td>Quiet-zone border size in modules. Min: <code>0</code>, Max: <code>10</code>.</td>
+                            </tr>
+                            <tr>
+                                <td><code class="param-name">ecl</code></td>
+                                <td><code>String</code></td>
+                                <td>No</td>
+                                <td><code>M</code></td>
+                                <td>Error Correction Level: <code>L</code> (Low), <code>M</code> (Medium),
+                                    <code>Q</code> (Quartile), <code>H</code> (High).</td>
+                            </tr>
+                            <tr>
+                                <td><code class="param-name">cornerRadius</code></td>
+                                <td><code>Number</code></td>
+                                <td>No</td>
+                                <td><code>0</code></td>
+                                <td>Quiet-zone background card border radius percentage. Min: <code>0</code>, Max:
+                                    <code>100</code>.</td>
+                            </tr>
+                            <tr>
+                                <td><code class="param-name">cornerStyle</code></td>
+                                <td><code>String</code></td>
+                                <td>No</td>
+                                <td><code>square</code></td>
+                                <td>Rendering style of modules: <code>square</code>, <code>rounded</code>,
+                                    <code>circle</code>, <code>leaf</code>, <code>beveled</code>.</td>
+                            </tr>
+                            <tr>
+                                <td><code class="param-name">icon</code></td>
+                                <td><code>String</code></td>
+                                <td>No</td>
+                                <td><code>none</code></td>
+                                <td>Predefined overlay brand icon: <code>link</code>, <code>globe</code>,
+                                    <code>text</code>, <code>wifi</code>, <code>contact</code>, <code>email</code>,
+                                    <code>phone</code>, <code>map-pin</code>, <code>sms</code>, <code>event</code>,
+                                    <code>github</code>, <code>linkedin</code>, <code>instagram</code>,
+                                    <code>facebook</code>, <code>whatsapp</code>.</td>
+                            </tr>
+                            <tr>
+                                <td><code class="param-name">iconSize</code></td>
+                                <td><code>Number</code></td>
+                                <td>No</td>
+                                <td><code>20</code></td>
+                                <td>Percentage width of center overlay icon. Min: <code>10</code>, Max: <code>30</code>.
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><code class="param-name">iconColor</code></td>
+                                <td><code>String</code></td>
+                                <td>No</td>
+                                <td>—</td>
+                                <td>Hex color code for the center icon. Defaults to <code>fgColor</code>. <strong>Do not
+                                        include <code>#</code>.</strong></td>
+                            </tr>
+                            <tr>
+                                <td><code class="param-name">iconBg</code></td>
+                                <td><code>String</code></td>
+                                <td>No</td>
+                                <td><code>rounded</code></td>
+                                <td>Shape of the backing card behind the icon: <code>rounded</code>,
+                                    <code>circle</code>, <code>square</code>, or <code>none</code>.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </article>
+
+            <hr class="section-divider">
+
+            <!-- Responses -->
+            <article id="responses" class="doc-section">
+                <h2>Response Formats</h2>
+                <div class="response-formats">
+                    <div class="format-card">
+                        <h3>PNG Image (Default)</h3>
+                        <p>Returns raw image binary data directly. Ideal for embedding in static markups.</p>
+                        <pre><code>Content-Type: image/png</code></pre>
+                    </div>
+                    <div class="format-card">
+                        <h3>SVG XML</h3>
+                        <p>Returns standard, lightweight XML vector code.</p>
+                        <pre><code>Content-Type: image/svg+xml; charset=utf-8</code></pre>
+                    </div>
+                    <div class="format-card">
+                        <h3>Base64 Data JSON</h3>
+                        <p>Returns a clean JSON object containing a Base64-encoded Data URI string.</p>
+                        <pre><code class="language-json">{
+  "data": "data:image/png;base64,iVBORw0KGgo..."
+}</code></pre>
+                    </div>
+                </div>
+            </article>
+
+            <hr class="section-divider">
+
+            <!-- Playground / Try it out -->
+            <article id="playground" class="doc-section">
+                <h2>Interactive Playground</h2>
+                <p>Construct your API request parameters below and preview the generated QR code instantly.</p>
+
+                <div class="playground-wrapper">
+                    <div class="playground-controls">
+                        <div class="form-group">
+                            <label for="play-content">Content / URL</label>
+                            <input type="text" id="play-content" value="https://qrmaker.ryanmarch.me"
+                                placeholder="https://example.com">
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="play-fg">Foreground Color</label>
+                                <div class="color-picker-input-wrapper">
+                                    <input type="color" id="play-fg-picker" value="#000">
+                                    <input type="text" id="play-fg" value="000" pattern="^[0-9a-fA-F]{6}$"
+                                        maxlength="6">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="play-bg">Background Color</label>
+                                <div class="color-picker-input-wrapper">
+                                    <input type="color" id="play-bg-picker" value="#ffffff">
+                                    <input type="text" id="play-bg" value="ffffff" pattern="^[0-9a-fA-F]{6}$"
+                                        maxlength="6">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="play-format">Format</label>
+                                <select id="play-format">
+                                    <option value="png" selected>PNG (Image)</option>
+                                    <option value="svg">SVG (Vector)</option>
+                                    <option value="base64">Base64 (JSON)</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="play-style">Corner Style</label>
+                                <select id="play-style">
+                                    <option value="square" selected>Square</option>
+                                    <option value="rounded">Rounded</option>
+                                    <option value="circle">Circle</option>
+                                    <option value="leaf">Leaf</option>
+                                    <option value="beveled">Beveled</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="play-icon">Overlay Icon</label>
+                                <select id="play-icon">
+                                    <option value="none" selected>None</option>
+                                    <option value="link">Link</option>
+                                    <option value="globe">Globe</option>
+                                    <option value="github">GitHub</option>
+                                    <option value="linkedin">LinkedIn</option>
+                                    <option value="email">Email</option>
+                                    <option value="wifi">WiFi</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="play-icon-bg">Icon Shape</label>
+                                <select id="play-icon-bg">
+                                    <option value="rounded" selected>Rounded</option>
+                                    <option value="circle">Circle</option>
+                                    <option value="square">Square</option>
+                                    <option value="none">None</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="play-margin">Margin</label>
+                                <input type="number" id="play-margin" value="2" min="0" max="10">
+                            </div>
+                            <div class="form-group">
+                                <label for="play-corner-radius">Corner Radius</label>
+                                <input type="number" id="play-corner-radius" value="0" min="0" max="100">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="playground-preview">
+                        <div class="preview-box">
+                            <div id="playground-placeholder" class="preview-placeholder">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="48"
+                                    height="48">
+                                    <rect x="3" y="3" width="7" height="7" rx="1"></rect>
+                                    <rect x="14" y="3" width="7" height="7" rx="1"></rect>
+                                    <rect x="3" y="14" width="7" height="7" rx="1"></rect>
+                                    <rect x="5" y="5" width="3" height="3" fill="currentColor" stroke="none"></rect>
+                                    <rect x="16" y="5" width="3" height="3" fill="currentColor" stroke="none"></rect>
+                                    <rect x="5" y="16" width="3" height="3" fill="currentColor" stroke="none"></rect>
+                                </svg>
+                                <span id="placeholder-text">Loading preview...</span>
+                            </div>
+                            <img id="playground-image" src="" alt="API Live QR Code Preview" class="hidden">
+                            <div id="base64-indicator" class="hidden">Base64 JSON Response</div>
+                        </div>
+                    </div>
+
+                    <div class="url-output">
+                        <label>Request URL</label>
+                        <div class="url-field">
+                            <input type="text" id="playground-url" readonly>
+                            <button class="btn-copy" id="btn-copy-url" title="Copy URL">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16"
+                                    height="16">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                </svg>
+                                Copy
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </article>
+
+            <hr class="section-divider">
+
+            <!-- Code Examples -->
+            <article id="code-examples" class="doc-section">
+                <h2>Code Integration</h2>
+                <p>Easy-to-use snippets to programmatically fetch, generate, or embed QR codes in your application
+                    workflows.</p>
+
+                <div class="tab-container">
+                    <div class="tab-header">
+                        <button class="tab-btn active" data-tab="html">HTML</button>
+                        <button class="tab-btn" data-tab="curl">cURL</button>
+                        <button class="tab-btn" data-tab="js">JavaScript</button>
+                    </div>
+                    <div class="tab-content active" id="tab-html">
+                        <div class="code-block-wrapper">
+                            <pre><code class="language-html">&lt;!-- Embed custom PNG directly in your page --&gt;
+&lt;img src="https://qrmaker.ryanmarch.me/api/qr?content=https%3A%2F%2Fqrmaker.ryanmarch.me&amp;size=512&amp;fgColor=327DFF" alt="QR Code" /&gt;</code></pre>
+                            <button class="btn-copy-code" data-target="html">Copy</button>
+                        </div>
+                    </div>
+                    <div class="tab-content" id="tab-curl">
+                        <div class="code-block-wrapper">
+                            <pre><code class="language-bash"># Download a high-res custom SVG QR code 
+curl -o qr.svg "https://qrmaker.ryanmarch.me/api/qr?content=https%3A%2F%2Fqrmaker.ryanmarch.me&amp;format=svg&amp;fgColor=327DFF"</code></pre>
+                            <button class="btn-copy-code" data-target="curl">Copy</button>
+                        </div>
+                    </div>
+                    <div class="tab-content" id="tab-js">
+                        <div class="code-block-wrapper">
+                            <pre><code class="language-javascript">// Fetch Base64 data from the API
+fetch("https://qrmaker.ryanmarch.me/api/qr?content=https%3A%2F%2Fqrmaker.ryanmarch.me&amp;format=base64")
+  .then(res => res.json())
+  .then(json => {
+    console.log("Base64 Data URI:", json.data);
+    // document.getElementById('my-img').src = json.data;
+  });</code></pre>
+                            <button class="btn-copy-code" data-target="js">Copy</button>
+                        </div>
+                    </div>
+                </div>
+            </article>
+
+        </section>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+
+</html>

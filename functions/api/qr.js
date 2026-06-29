@@ -205,7 +205,7 @@ export async function onRequestGet({ request, env }) {
   if (!content) return jsonError('content query parameter is required', 400);
 
   const format      = ['png', 'svg', 'base64'].includes(params.get('format')) ? params.get('format') : 'png';
-  const size        = Math.min(Math.max(Number(params.get('size')) || 1024, 64), 4096);
+  const size        = Math.min(Math.max(Number(params.get('size')) || 512, 64), 4096);
   const fgColor     = parseHexColor(params.get('fgColor')) ?? [0, 0, 0];
   const bgColor     = parseHexColor(params.get('bgColor')) ?? [255, 255, 255];
   const transparent = params.get('transparent') === 'true' || params.get('transparent') === '1';
@@ -568,7 +568,7 @@ function toPNG(matrix, outputSize, fgColor, bgColor, transparent, cornerRadius =
     }
   }
 
-  const compressed = zlibSync(rawData, { level: 6 });
+  const compressed = zlibSync(rawData, { level: 3 });
   return assemblePNG(px, px, compressed, transparent || hasRoundedCorners);
 }
 
