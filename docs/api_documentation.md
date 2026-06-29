@@ -24,6 +24,11 @@ GET /api/qr
 | `ecl` | String | No | `M` | Error Correction Level: `L` (Low), `M` (Medium), `Q` (Quartile), `H` (High). |
 | `cornerRadius` | Number | No | `0` | Background corner radius percentage. Range: `0` to `100`. |
 | `cornerStyle` | String | No | `square` | Corner marker style: `square`, `rounded`, `circle`, `leaf`, `beveled`. |
+| `icon` | String | No | `none` | Predefined center overlay icon: `link`, `globe`, `text`, `wifi`, `contact`, `email`, `phone`, `map-pin`, `sms`, `event`, `github`, `linkedin`, `instagram`, `facebook`, `whatsapp`. |
+| `iconSize` | Number | No | `20` | Percentage of the QR code area for the icon. Range: `10` to `30` (e.g. `20` for 20%). |
+| `iconColor` | String | No | — | Hex color code for the icon (defaults to `fgColor`). Do not include the `#` symbol. |
+| `iconClear` | Boolean | No | `true` | Set to `false` (or `0`) to disable clearing the QR modules behind the icon. |
+| `iconBg` | String | No | `rounded` | Shape of the card drawn behind the icon: `rounded`, `circle`, `square`, or `none`. |
 
 ---
 

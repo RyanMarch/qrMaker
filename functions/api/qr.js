@@ -21,6 +21,132 @@
 import qrcode from './qr-lib.js';
 import { zlibSync } from 'fflate';
 
+// ─── Predefined Vector Icons ──────────────────────────────────────────────────
+const PREDEFINED_ICONS = {
+  link: {
+    type: 'stroke',
+    paths: [
+      'M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71',
+      'M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71'
+    ],
+    grid: '00000000000000000000000000000000000000000000f00000000007fe000000001f9f800000007c03c0000000f000e0000001e000e0000001c000700000008000700000000000300000000000380000000000380000000000380000000000380000000000700000fe0000700003ffc000e0000781e000e0001e007000e0003c003801c000780000038000f00000070001e000000e0003c00c001c0003801e00780007000f00f000070007efc0000e0001ff80000e00001000000c00000000001c00000000001c00000000001c00000000001c00000000000e00000000000e000180000007000380000007000700000007801e00000003f07c00000000fff0000000001f80000000000200000000000000000000000000000000000000000000'
+  },
+  globe: {
+    type: 'stroke',
+    paths: [
+      'M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2z',
+      'M2 12h20',
+      'M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z'
+    ],
+    grid: '00000000000000000000000000000000000000000f0000000001ffc0c0000003f1cfc000000f01e0f000001e02707800007806701e0000f00c380f0000e0181c070001c0381c03800380700e01c00380700e01c00700600600e00e00e00700700e00e00700700e00e00700700c00e00700301c00c00300381c01c00380381c01c00380381c01c00380381ffffffffff81ffffffffff81c01c00380381c01c00380381c01c00380380c01c00380300e00e00700700e00e00700700e00e00700700700e00700e00780600601e00380700e01c001c0700e038001e0381c078000f0381c0f0000781c381e00003e0e707c00000f0e70f0000007e7e7e0000001ffff800000003ffc0000000001800000000000000000000000000000000000000000'
+  },
+  text: {
+    type: 'stroke',
+    paths: [
+      'M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z',
+      'M14 2v6h6',
+      'M16 13H8',
+      'M16 17H8',
+      'M10 9H8'
+    ],
+    grid: '000000000000000000000000000000000000007ffffc000000fffffe000001c0001f000001c0001f800001c0001bc00001800019e00001800018f000018000187800018000183c00018000181e00018000180f000180001807800180001fff800180000fff800180f00001800180f00001800180000001800180000001800180000001800180000001800180000001800180ffff01800180ffff01800180000001800180000001800180000001800180000001800180000001800180000001800180ffff01800180ffff018001800000018001800000018001800000018001800000018001800000018001c00000038001c00000038000f000000f00007ffffffe00000ffffff000000000000000000000000000000000000000'
+  },
+  wifi: {
+    type: 'mixed',
+    paths: [
+      { type: 'stroke', d: 'M5 12.55a11 11 0 0 1 14.08 0' },
+      { type: 'stroke', d: 'M1.42 9a16 16 0 0 1 21.16 0' },
+      { type: 'stroke', d: 'M8.53 16.11a6 6 0 0 1 6.95 0' },
+      { type: 'fill', d: 'M12 20a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z' }
+    ],
+    grid: '00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000ff000000003ffffc000001ff00ff800007c00003e0000f000000f0003c0000003c00f80000001f01e000000007838000000001c00000000000800001ff800000001ffff80000007e007e000000f0000f800003c00003c00007800001e0000200000040000000000000000000000000000000000000000000000000000000ff0000000007ffe00000000781f0000000040020000000000000000000007e00000000007e00000000007e00000000007e00000000007e00000000000800000000000000000000000000000000000000000000000000000000000000000000000000000000000000000'
+  },
+  contact: {
+    type: 'stroke',
+    paths: [
+      'M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2',
+      'M12 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8z'
+    ],
+    grid: '000000000000000000000000000000000000000000000000000000000000000003c0000000001ff8000000007c3e00000000700e00000000e00700000000e00700000001c00380000001c00380000001c00380000001c00380000001c00380000000e00700000000e007000000006006000000007c3e000000003ffc0000000007e000000000018000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000007ffffe000001f0000f800007c00003e00007000000e0000e00000070000e00000070001c00000038001c000000380018000000180018000000180018000000180018000000180018000000180000000000000000000000000000000000000000000000000000000000000'
+  },
+  email: {
+    type: 'stroke',
+    paths: [
+      'M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z',
+      'M22 6l-10 7L2 6'
+    ],
+    grid: '00000000000000000000000000000000000000000000000000000000000000000000000000000000000007ffffffffe00ffffffffff01c00000000381c00000000381c00000000381e00000000781f80000001f81bc0000003d819e000000798187800001e18183c00003c18180f0000f01818078001e0181803e007c0181800f00f00181800781e001818001e78001818000ff00018180003c000181800018000181800000000181800000000181800000000181800000000181800000000181800000000181800000000181800000000181800000000181c00000000381c00000000380f00000000f007ffffffffe000ffffffff00000000000000000000000000000000000000000000000000000000000000000000000000000000000000'
+  },
+  phone: {
+    type: 'stroke',
+    paths: [
+      'M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z'
+    ],
+    grid: '00000000000000000000000000000000000003ff800000000fffc00000000e00e00000001c00e00000001c00700000001c00700000001c00700000001c00300000000c00380000000e00380000000e00380000000e00380000000e00300000000700700000000700700000000700e00000000381c00000000381c000000001c0e000000001c07000000000e03800000000e03c00000000701c00000000380e000000003c07807000001c03c3ff80000e01e78fe00007007e00f00003803c00380003c00000380001e000001000007800001800003c00001800001e00001800000f800018000003e00018000000f800180000003e00380000000fe03800000003fef0000000001fe0000000000100000000000000000000000000000000000000'
+  },
+  'map-pin': {
+    type: 'stroke',
+    paths: [
+      'M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z',
+      'M12 13a3 3 0 1 0 0-6 3 3 0 0 0 0 6z'
+    ],
+    grid: '00000000000000000ff000000000ffff00000003f00fc00000078001e000001f0000f800003c00003c00007800001e00007000000e0000e00000070001e00000078001c0000003800380000001c0038003c001c003001ff800c007003c3c00e00700381c00e00700700e00e00700700e00e00600700e00600700700e00e00700700e00e00700381c00e003003c3c00c003801ff801c0038007e001c00380018001c001c00000038001c00000038001c00000038000e000000700007000000e00007800001e00003800001c00001c00003800000e00007000000e0000700000070000e00000038001c0000001c00380000000f00f00000000781e000000003c3c000000001e78000000000ff00000000003c00000000001800000000000000000'
+  },
+  sms: {
+    type: 'stroke',
+    paths: [
+      'M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z'
+    ],
+    grid: '00000000000000000000000000000000000000000000000000000000000000ffffffff0003ffffffffc00380000001c00700000000e00700000000e00600000000600600000000600600000000600600000000600600000000600600000000600600000000600600000000600600000000600600000000600600000000600600000000600600000000600600000000600600000000600600000000600600000000600600000000600600000000600600000000600600000000e00600000000e00600000003c00607ffffffc0060ffffffe00061c0000000006380000000006700000000006e00000000007c000000000078000000000070000000000020000000000000000000000000000000000000000000000000000000000000000000000'
+  },
+  event: {
+    type: 'stroke',
+    paths: [
+      'M19 4H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2z',
+      'M16 2v4',
+      'M8 2v4',
+      'M3 10h18'
+    ],
+    grid: '0000000000000000000000000000000000000000000000000000000000000018001800000018001800001ffffffff8003ffffffffc00701800180e00701800180e00701800180e006018001806006000000006006000000006006000000006006000000006006000000006006000000006007ffffffffe007ffffffffe00600000000600600000000600600000000600600000000600600000000600600000000600600000000600600000000600600000000600600000000600600000000600600000000600600000000600600000000600600000000600600000000600600000000600600000000600600000000600700000000e00700000000e003c0000003c001ffffffff80003ffffffc00000000000000000000000000000000000000'
+  },
+  github: {
+    type: 'fill',
+    paths: [
+      'M12 2C6.477 2 2 6.477 2 12c0 4.42 2.865 8.166 6.839 9.489.5.092.682-.217.682-.482 0-.237-.008-.866-.013-1.7-2.782.603-3.369-1.34-3.369-1.34-.454-1.156-1.11-1.464-1.11-1.464-.908-.62.069-.608.069-.608 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.087 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.029-2.683-.103-.253-.446-1.27.098-2.647 0 0 .84-.269 2.75 1.025A9.564 9.564 0 0 1 12 6.844c.85.004 1.705.115 2.504.337 1.909-1.294 2.747-1.025 2.747-1.025.546 1.377.203 2.394.1 2.647.64.699 1.028 1.592 1.028 2.683 0 3.842-2.339 4.687-4.566 4.935.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.743 0 .267.18.577.688.479C19.138 20.164 22 16.418 22 12c0-5.523-4.477-10-10-10z'
+    ],
+    grid: '00000000000000000000000000000000000000000000000000001ff800000001ffff80000003ffffc000000ffffff000001ffffff800007ffffffe00007ffffffe0000ffffffff0001fcffff3f8001fc3c3c3f8003fc00003fc007f800001fe007fc00003fe007fc00003fe007f800001fe00ff800001ff00ff000000ff00ff000000ff00ff000000ff00ff000000ff00ff000000ff00ff000000ff00ff000000ff00ff800001ff00ff800001ff00ffc00003ff007ff0000ffe007ffe003ffe003eff81fffc003f7f00fffc001f3f00fff8000f8800fff00007c000ffe00003e000ffc00001ff00ff800000ff00ff0000007f00fe0000001f00f8000000000020000000000000000000000000000000000000000000000000000000000000000'
+  },
+  linkedin: {
+    type: 'fill',
+    paths: [
+      'M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z'
+    ],
+    grid: '00000000000007ffffffffe00ffffffffff03ffffffffffc3ffffffffffc7ffffffffffefffffffffffffff3ffffffffffe1ffffffffffc0ffffffffffc0ffffffffffc0ffffffffffe1fffffffffff3ffffffffffffffffffffffffffffffffffffffffffffffc0f0381fffffc0f03007ffffc0f02003ffffc0f00003ffffc0f00003ffffc0f00601ffffc0f01f81ffffc0f03fc1ffffc0f03fc0ffffc0f03fc0ffffc0f03fc0ffffc0f03fc0ffffc0f03fc0ffffc0f03fc0ffffc0f03fc0ffffc0f03fc0ffffc0f03fc0ffffc0f03fc0ffffc0f03fc0ffffc0f03fc0ffffc0f03fc0ffffc0f03fc0ffffffffffffffffffffffffffffffffffffffffffffffffff7ffffffffffe3ffffffffffc3ffffffffffc0ffffffffff007ffffffffe0'
+  },
+  instagram: {
+    type: 'mixed',
+    paths: [
+      { type: 'stroke', d: 'M17 2H7a5 5 0 0 0-5 5v10a5 5 0 0 0 5 5h10a5 5 0 0 0 5-5V7a5 5 0 0 0-5-5z' },
+      { type: 'stroke', d: 'M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z' },
+      { type: 'fill', d: 'M17.5 6.5a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0z' }
+    ],
+    grid: '000000000000000000000000000000000000007ffffffe0000ffffffff0003e0000007c00780000001e00700000000e00e00000000701e00000000781c00000000381c00000000381c0000000038180000006018180000002018180007e0001818001ff800181800383e00181800700e00181800e00700181801c00700181801c00380181801c00380181801c00380181801c00380181801c00380181801c00380181800e00780181800e00f00181800781e001818003efc001818000ff800181800020000181800000000181c00000000381c00000000381c00000000381c00000000380e00000000700700000000e00780000001e003c0000003c000fc00003f00007ffffffe000003ffffc000000000000000000000000000000000000000'
+  },
+  facebook: {
+    type: 'fill',
+    paths: [
+      'M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z'
+    ],
+    grid: '0000000000000000000000000000000000000000000000000000000000000000007ff000000000fff000000003fff000000003fff000000007fff00000000ffff00000000ffff00000000ffff00000000ff8000000000ff0000000000ff0000000000ff0000000000ff0000000000ff0000000000ff0000000000ff000000003fffff0000003fffff0000003fffff0000003ffffe0000003ffffe0000003ffffe0000003ffffe0000003ffffc00000000ff0000000000ff0000000000ff0000000000ff0000000000ff0000000000ff0000000000ff0000000000ff0000000000ff0000000000ff0000000000ff0000000000ff0000000000ff0000000000ff0000000000ff0000000000ff00000000000000000000000000000000000000000'
+  },
+  whatsapp: {
+    type: 'fill',
+    paths: [
+      'M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L0 24l6.335-1.662c1.746.953 3.71 1.455 5.703 1.457h.004c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z',
+    grid: '00000080000000001ffc00000003ffffc0000007ffffe000001ffffff800003ff007fc0000ff0000ff0001fe00007f8003f800001fc007f000000fe007e0000003e00fc0000003f01f80000001f81f01c00000f83f07e00000fc3e0fe000007e7c0ff000003e7c0ff000003e7c0ff000003e7c0ff800003e7c0ff000001ff80fe000001ff80fe000001ff807e000001ff803f000001ff803f800001ff801f800001ff800fe03001ff8007f0fc01f7c003fcff03e7c001ffff83e7c0007fff03e7e0003fff07e3e0001fff07e3f00007fe0fc1f00000701f81f00000001f81f00000003f03f00000007e03e0000000fc03e0000003fc07e3e00007f807dffe001fe007ffffe3ffc007ffffffff000fff7ffffe000ff007fff0000f00007e00000'
+  }
+};
+
 // ─── CORS headers ────────────────────────────────────────────────────────────
 
 const CORS_HEADERS = {
@@ -83,9 +209,32 @@ export async function onRequestGet({ request, env }) {
   const bgColor     = parseHexColor(params.get('bgColor')) ?? [255, 255, 255];
   const transparent = params.get('transparent') === 'true' || params.get('transparent') === '1';
   const margin      = params.has('margin') && !isNaN(Number(params.get('margin'))) ? Math.min(Math.max(Number(params.get('margin')), 0), 10) : 2;
-  const ecl         = ['L', 'M', 'Q', 'H'].includes(params.get('ecl')) ? params.get('ecl') : 'M';
+  let ecl           = ['L', 'M', 'Q', 'H'].includes(params.get('ecl')) ? params.get('ecl') : 'M';
   const cornerRadius = Math.min(Math.max(Number(params.get('cornerRadius') || params.get('bgCorners') || params.get('bgc')) || 0, 0), 100);
   const cornerStyle  = ['square', 'rounded', 'circle', 'leaf', 'beveled'].includes(params.get('cornerStyle') || params.get('cms')) ? (params.get('cornerStyle') || params.get('cms')) : 'square';
+
+  // Predefined Vector Icons parameters
+  const icon = params.get('icon') || 'none';
+  const iconSize = Math.min(Math.max(Number(params.get('iconSize') || params.get('iconsz')) || 20, 10), 30);
+  const iconColorParam = params.get('iconColor') || params.get('iconcol');
+  const iconColor = iconColorParam ? (parseHexColor(iconColorParam) ?? fgColor) : fgColor;
+  const iconClearParam = params.get('iconClear') || params.get('iconcl');
+  const iconClear = iconClearParam !== 'false' && iconClearParam !== '0';
+  const iconBgParam = params.get('iconBg') || params.get('iconbg');
+  let iconBg = 'rounded';
+  if (iconBgParam === 'false' || iconBgParam === '0') {
+    iconBg = 'none';
+  } else if (['circle', 'rounded', 'square'].includes(iconBgParam)) {
+    iconBg = iconBgParam;
+  } else if (iconBgParam === 'true' || iconBgParam === '1') {
+    iconBg = 'rounded';
+  }
+
+  // Adjust error correction level for icon overlay data loss if not explicitly set
+  const hasIcon = icon && icon !== 'none' && PREDEFINED_ICONS[icon];
+  if (hasIcon && !params.has('ecl')) {
+    ecl = iconSize > 22 ? 'H' : 'Q';
+  }
 
   // Build QR module matrix
   let matrix;
@@ -97,7 +246,7 @@ export async function onRequestGet({ request, env }) {
 
   // Render
   if (format === 'svg') {
-    const svg = toSVG(matrix, fgColor, bgColor, transparent, cornerRadius, cornerStyle, margin);
+    const svg = toSVG(matrix, fgColor, bgColor, transparent, cornerRadius, cornerStyle, margin, icon, iconSize, iconColor, iconClear, iconBg);
     return new Response(svg, {
       headers: {
         ...CORS_HEADERS,
@@ -108,7 +257,7 @@ export async function onRequestGet({ request, env }) {
   }
 
   // PNG or base64
-  const pngBytes = toPNG(matrix, size, fgColor, bgColor, transparent, cornerRadius, cornerStyle, margin);
+  const pngBytes = toPNG(matrix, size, fgColor, bgColor, transparent, cornerRadius, cornerStyle, margin, icon, iconSize, iconColor, iconClear, iconBg);
 
   if (format === 'base64') {
     const b64 = uint8ToBase64(pngBytes);
@@ -167,16 +316,39 @@ function buildMatrix(content, ecl, margin) {
 
 // ─── SVG renderer ────────────────────────────────────────────────────────────
 
-function toSVG(matrix, fgColor, bgColor, transparent, cornerRadius = 0, cornerStyle = 'square', margin = 2) {
+function toSVG(matrix, fgColor, bgColor, transparent, cornerRadius = 0, cornerStyle = 'square', margin = 2, icon = 'none', iconSize = 20, iconColor = fgColor, iconClear = true, iconBg = 'rounded') {
   const size = matrix.length;
   const fg = rgbToHex(fgColor);
   const bg = rgbToHex(bgColor);
   const count = size - margin * 2;
 
   const rects = [];
+  
+  // Icon configuration
+  const iconSizeModules = count * (iconSize / 100);
+  const centerModules = margin + count / 2;
+  const paddingModules = iconSizeModules * 0.15;
+  const cardSizeModules = iconSizeModules + paddingModules * 2;
+  const cardXModules = centerModules - cardSizeModules / 2;
+  const cardYModules = centerModules - cardSizeModules / 2;
+  
+  const cardShape = (typeof iconBg === 'string' && ['circle', 'rounded', 'square'].includes(iconBg))
+    ? iconBg
+    : (iconBg ? 'rounded' : 'none');
+
+  const hasIcon = icon && icon !== 'none' && PREDEFINED_ICONS[icon];
+
   for (let row = 0; row < size; row++) {
     for (let col = 0; col < size; col++) {
       if (isFinderPattern(row, col, size, margin)) continue;
+
+      // Skip modules covered by the card background if clearing is enabled
+      if (hasIcon && iconClear && cardShape !== 'none') {
+        if (isInsideCard(col + 0.5, row + 0.5, centerModules, cardSizeModules, cardShape)) {
+          continue;
+        }
+      }
+
       if (matrix[row][col]) {
         rects.push(`<rect x="${col}" y="${row}" width="1" height="1" fill="${fg}"/>`);
       }
@@ -197,23 +369,69 @@ function toSVG(matrix, fgColor, bgColor, transparent, cornerRadius = 0, cornerSt
       ? `<rect width="${size}" height="${size}" rx="${bgRSvg}" ry="${bgRSvg}" fill="${bg}"/>`
       : `<rect width="${size}" height="${size}" fill="${bg}"/>`);
 
+  let iconSvgContent = '';
+  if (hasIcon) {
+    const cardColor = transparent ? '#ffffff' : bg;
+    
+    // Draw background card if requested
+    if (cardShape !== 'none') {
+      if (cardShape === 'circle') {
+        iconSvgContent += `\n  <circle cx="${centerModules}" cy="${centerModules}" r="${cardSizeModules / 2}" fill="${cardColor}"/>`;
+      } else if (cardShape === 'rounded') {
+        const rx = cardSizeModules * 0.2;
+        iconSvgContent += `\n  <rect x="${cardXModules}" y="${cardYModules}" width="${cardSizeModules}" height="${cardSizeModules}" rx="${rx}" ry="${rx}" fill="${cardColor}"/>`;
+      } else if (cardShape === 'square') {
+        iconSvgContent += `\n  <rect x="${cardXModules}" y="${cardYModules}" width="${cardSizeModules}" height="${cardSizeModules}" fill="${cardColor}"/>`;
+      }
+    }
+
+    // Draw the icon itself
+    const iconXModules = centerModules - iconSizeModules / 2;
+    const iconYModules = centerModules - iconSizeModules / 2;
+    const scale = iconSizeModules / 24; // assuming viewBox is 24x24
+    const strokeHex = rgbToHex(iconColor);
+    const iconConfig = PREDEFINED_ICONS[icon];
+    
+    iconSvgContent += `\n  <g transform="translate(${iconXModules}, ${iconYModules}) scale(${scale})" stroke-linecap="round" stroke-linejoin="round">`;
+    if (iconConfig.type === 'stroke') {
+      for (const p of iconConfig.paths) {
+        iconSvgContent += `\n    <path d="${p}" fill="none" stroke="${strokeHex}" stroke-width="2"/>`;
+      }
+    } else if (iconConfig.type === 'fill') {
+      for (const p of iconConfig.paths) {
+        iconSvgContent += `\n    <path d="${p}" fill="${strokeHex}" stroke="none"/>`;
+      }
+    } else if (iconConfig.type === 'mixed') {
+      for (const p of iconConfig.paths) {
+        if (p.type === 'stroke') {
+          iconSvgContent += `\n    <path d="${p.d}" fill="none" stroke="${strokeHex}" stroke-width="2"/>`;
+        } else if (p.type === 'fill') {
+          iconSvgContent += `\n    <path d="${p.d}" fill="${strokeHex}" stroke="none"/>`;
+        }
+      }
+    }
+    iconSvgContent += `\n  </g>`;
+  }
+
   return [
     `<?xml version="1.0" encoding="UTF-8"?>`,
     `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${size} ${size}" shape-rendering="crispEdges">`,
     bgRect,
     ...rects,
     ...finderPatterns,
+    iconSvgContent,
     `</svg>`,
   ].join('\n');
 }
 
 // ─── PNG renderer ────────────────────────────────────────────────────────────
 
-function toPNG(matrix, outputSize, fgColor, bgColor, transparent, cornerRadius = 0, cornerStyle = 'square', margin = 2) {
+function toPNG(matrix, outputSize, fgColor, bgColor, transparent, cornerRadius = 0, cornerStyle = 'square', margin = 2, icon = 'none', iconSize = 20, iconColor = fgColor, iconClear = true, iconBg = 'rounded') {
   const modules = matrix.length;
   // Scale: each module becomes cellSize × cellSize pixels
   const cellSize = Math.max(1, Math.floor(outputSize / modules));
   const px = modules * cellSize; // actual pixel dimensions
+  const center = px / 2;
 
   const hasRoundedCorners = cornerRadius > 0;
   const channels = (transparent || hasRoundedCorners) ? 4 : 3;
@@ -225,6 +443,22 @@ function toPNG(matrix, outputSize, fgColor, bgColor, transparent, cornerRadius =
   const [br, bg2, bb] = bgColor;
   const bgRadius = px * 0.25 * (cornerRadius / 100);
 
+  // Icon geometry
+  const iconSizePx = px * (iconSize / 100);
+  const iconX = center - iconSizePx / 2;
+  const iconY = center - iconSizePx / 2;
+  const padding = iconSizePx * 0.15;
+  const cardSize = iconSizePx + padding * 2;
+  
+  const cardShape = (typeof iconBg === 'string' && ['circle', 'rounded', 'square'].includes(iconBg))
+    ? iconBg
+    : (iconBg ? 'rounded' : 'none');
+
+  const hasIcon = icon && icon !== 'none' && PREDEFINED_ICONS[icon];
+  const iconGridHex = hasIcon ? PREDEFINED_ICONS[icon].grid : '';
+  const [icR, icG, icB] = iconColor;
+  const cardR = br, cardG = bg2, cardB = bb;
+
   for (let row = 0; row < px; row++) {
     const moduleRow = Math.floor(row / cellSize);
     rawData[row * (scanline + 1)] = 0; // filter type: None
@@ -232,60 +466,103 @@ function toPNG(matrix, outputSize, fgColor, bgColor, transparent, cornerRadius =
     for (let col = 0; col < px; col++) {
       const moduleCol = Math.floor(col / cellSize);
       
-      // Determine pixel color based on finder patterns or regular modules
-      let dark = false;
-      const fpPixel = getFinderPatternPixel(row, col, px, cellSize, margin, cornerStyle);
-      if (fpPixel !== null) {
-        dark = fpPixel;
-      } else {
-        dark = matrix[moduleRow]?.[moduleCol] ?? false;
+      let inCard = false;
+      if (hasIcon && iconClear && cardShape !== 'none') {
+        inCard = isInsideCard(col, row, center, cardSize, cardShape);
       }
-      
-      const offset = row * (scanline + 1) + 1 + col * channels;
 
-      let isOutsideCorners = false;
-      if (bgRadius > 0) {
-        if (col < bgRadius && row < bgRadius) {
-          const dx = col - bgRadius;
-          const dy = row - bgRadius;
-          if (dx * dx + dy * dy > bgRadius * bgRadius) isOutsideCorners = true;
-        } else if (col >= px - bgRadius && row < bgRadius) {
-          const dx = col - (px - bgRadius);
-          const dy = row - bgRadius;
-          if (dx * dx + dy * dy > bgRadius * bgRadius) isOutsideCorners = true;
-        } else if (col < bgRadius && row >= px - bgRadius) {
-          const dx = col - bgRadius;
-          const dy = row - (px - bgRadius);
-          if (dx * dx + dy * dy > bgRadius * bgRadius) isOutsideCorners = true;
-        } else if (col >= px - bgRadius && row >= px - bgRadius) {
-          const dx = col - (px - bgRadius);
-          const dy = row - (px - bgRadius);
-          if (dx * dx + dy * dy > bgRadius * bgRadius) isOutsideCorners = true;
+      let inIcon = false;
+      let iconPixelDark = false;
+      if (hasIcon && col >= iconX && col < iconX + iconSizePx && row >= iconY && row < iconY + iconSizePx) {
+        const gridCol = Math.floor((col - iconX) * 48 / iconSizePx);
+        const gridRow = Math.floor((row - iconY) * 48 / iconSizePx);
+        if (gridCol >= 0 && gridCol < 48 && gridRow >= 0 && gridRow < 48) {
+          const byteIndex = Math.floor(gridCol / 8);
+          const bitPos = 7 - (gridCol % 8);
+          const hexByteString = iconGridHex.substring(gridRow * 12 + byteIndex * 2, gridRow * 12 + byteIndex * 2 + 2);
+          const byteVal = parseInt(hexByteString, 16);
+          iconPixelDark = (byteVal & (1 << bitPos)) !== 0;
+          inIcon = true;
         }
       }
 
-      if (channels === 4) {
-        if (isOutsideCorners) {
-          rawData[offset]     = 0;
-          rawData[offset + 1] = 0;
-          rawData[offset + 2] = 0;
-          rawData[offset + 3] = 0; // fully transparent
-        } else if (transparent && !dark) {
-          rawData[offset]     = br;
-          rawData[offset + 1] = bg2;
-          rawData[offset + 2] = bb;
-          rawData[offset + 3] = 0; // fully transparent
+      let drawR = 0, drawG = 0, drawB = 0, drawA = 255;
+      let pixelColored = false;
+
+      if (inIcon && iconPixelDark) {
+        drawR = icR;
+        drawG = icG;
+        drawB = icB;
+        drawA = 255;
+        pixelColored = true;
+      } else if (inCard) {
+        // Draw the background card under the icon
+        drawR = transparent ? 255 : cardR;
+        drawG = transparent ? 255 : cardG;
+        drawB = transparent ? 255 : cardB;
+        drawA = 255;
+        pixelColored = true;
+      }
+
+      if (!pixelColored) {
+        // Determine pixel color based on finder patterns or regular modules
+        let dark = false;
+        const fpPixel = getFinderPatternPixel(row, col, px, cellSize, margin, cornerStyle);
+        if (fpPixel !== null) {
+          dark = fpPixel;
         } else {
-          rawData[offset]     = dark ? fr : br;
-          rawData[offset + 1] = dark ? fg2 : bg2;
-          rawData[offset + 2] = dark ? fb : bb;
-          rawData[offset + 3] = 255;
+          dark = matrix[moduleRow]?.[moduleCol] ?? false;
         }
+        
+        let isOutsideCorners = false;
+        if (bgRadius > 0) {
+          if (col < bgRadius && row < bgRadius) {
+            const dx = col - bgRadius;
+            const dy = row - bgRadius;
+            if (dx * dx + dy * dy > bgRadius * bgRadius) isOutsideCorners = true;
+          } else if (col >= px - bgRadius && row < bgRadius) {
+            const dx = col - (px - bgRadius);
+            const dy = row - bgRadius;
+            if (dx * dx + dy * dy > bgRadius * bgRadius) isOutsideCorners = true;
+          } else if (col < bgRadius && row >= px - bgRadius) {
+            const dx = col - bgRadius;
+            const dy = row - (px - bgRadius);
+            if (dx * dx + dy * dy > bgRadius * bgRadius) isOutsideCorners = true;
+          } else if (col >= px - bgRadius && row >= px - bgRadius) {
+            const dx = col - (px - bgRadius);
+            const dy = row - (px - bgRadius);
+            if (dx * dx + dy * dy > bgRadius * bgRadius) isOutsideCorners = true;
+          }
+        }
+
+        if (channels === 4) {
+          if (isOutsideCorners) {
+            drawR = 0; drawG = 0; drawB = 0; drawA = 0;
+          } else if (transparent && !dark) {
+            drawR = br; drawG = bg2; drawB = bb; drawA = 0;
+          } else {
+            drawR = dark ? fr : br;
+            drawG = dark ? fg2 : bg2;
+            drawB = dark ? fb : bb;
+            drawA = 255;
+          }
+        } else {
+          drawR = dark ? fr : br;
+          drawG = dark ? fg2 : bg2;
+          drawB = dark ? fb : bb;
+        }
+      }
+
+      const offset = row * (scanline + 1) + 1 + col * channels;
+      if (channels === 4) {
+        rawData[offset]     = drawR;
+        rawData[offset + 1] = drawG;
+        rawData[offset + 2] = drawB;
+        rawData[offset + 3] = drawA;
       } else {
-        // RGB
-        rawData[offset]     = dark ? fr : br;
-        rawData[offset + 1] = dark ? fg2 : bg2;
-        rawData[offset + 2] = dark ? fb : bb;
+        rawData[offset]     = drawR;
+        rawData[offset + 1] = drawG;
+        rawData[offset + 2] = drawB;
       }
     }
   }
@@ -586,4 +863,26 @@ function uint8ToBase64(bytes) {
 
 function jsonError(message, status = 400) {
   return Response.json({ error: message }, { status, headers: CORS_HEADERS });
+}
+
+// Check if a point (x, y) relative to the card's bounding box is inside the card
+function isInsideCard(x, y, center, cardSize, shape) {
+  const half = cardSize / 2;
+  const cardX = center - half;
+  const cardY = center - half;
+  if (x < cardX || x >= cardX + cardSize || y < cardY || y >= cardY + cardSize) return false;
+  
+  if (shape === 'circle') {
+    const dx = x - center;
+    const dy = y - center;
+    return dx * dx + dy * dy <= half * half;
+  } else if (shape === 'rounded') {
+    const rad = cardSize * 0.2;
+    const relX = x - cardX;
+    const relY = y - cardY;
+    return isInsideRoundRect(relX, relY, cardSize, rad);
+  }
+  
+  // default: square
+  return true;
 }
