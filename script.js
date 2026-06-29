@@ -2483,7 +2483,7 @@ function positionIosPrompt() {
     if (!prompt) return;
 
     // Check if we are in the single-column mobile layout
-    const isSingleColumnMobile = window.innerWidth <= 899 && !window.matchMedia('(orientation: landscape) and (max-height: 500px)').matches;
+    const isSingleColumnMobile = window.innerWidth <= 799 && !window.matchMedia('(orientation: landscape) and (max-height: 500px)').matches;
     const controlsSections = document.querySelectorAll('.controls-section');
     const lastControlsSection = controlsSections[controlsSections.length - 1];
 
@@ -2589,7 +2589,7 @@ function positionDesktopPrompt() {
     const prompt = document.getElementById('desktop-pwa-prompt');
     if (!prompt) return;
 
-    const isSingleColumnMobile = window.innerWidth <= 899 && !window.matchMedia('(orientation: landscape) and (max-height: 500px)').matches;
+    const isSingleColumnMobile = window.innerWidth <= 799 && !window.matchMedia('(orientation: landscape) and (max-height: 500px)').matches;
     const lastControlsSection = document.querySelector('.controls-section:not(.seo-features-mobile)');
 
     if (isSingleColumnMobile) {
