@@ -100,8 +100,7 @@
                 <h1>Developer API Reference</h1>
                 <p class="lead">
                     Generate customized, production-ready QR codes dynamically using simple HTTP GET requests.
-                    No registration required, zero rate limits, and hosted directly on Cloudflare edge nodes for
-                    sub-millisecond response times.
+                    Hosted directly on Cloudflare edge nodes for speedy response times.
                 </p>
                 <p>
                     All API requests are optimized for edge caching, returning full
@@ -118,6 +117,20 @@
                 <div class="endpoint-block">
                     <span class="method get">GET</span>
                     <code class="endpoint-url">https://qrmaker.ryanmarch.me/api/qr</code>
+                </div>
+                <div class="download-box">
+                    <div class="download-box-text">
+                        <h3>Test in Postman or Bruno</h3>
+                        <p>Download our API request collection to test, preview, and run requests instantly. Supported by both Postman and Bruno.</p>
+                    </div>
+                    <button id="btn-download-collection" class="btn-download">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16">
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                            <polyline points="7 10 12 15 17 10"></polyline>
+                            <line x1="12" y1="15" x2="12" y2="3"></line>
+                        </svg>
+                        Download Collection
+                    </button>
                 </div>
             </article>
 
@@ -162,7 +175,8 @@
                                 <td>No</td>
                                 <td><code>1024</code></td>
                                 <td>Width and height in pixels (for <code>png</code> and <code>base64</code>). Min:
-                                    <code>64</code>, Max: <code>4096</code>.</td>
+                                    <code>64</code>, Max: <code>4096</code>.
+                                </td>
                             </tr>
                             <tr>
                                 <td><code class="param-name">fgColor</code></td>
@@ -200,7 +214,8 @@
                                 <td>No</td>
                                 <td><code>M</code></td>
                                 <td>Error Correction Level: <code>L</code> (Low), <code>M</code> (Medium),
-                                    <code>Q</code> (Quartile), <code>H</code> (High).</td>
+                                    <code>Q</code> (Quartile), <code>H</code> (High).
+                                </td>
                             </tr>
                             <tr>
                                 <td><code class="param-name">cornerRadius</code></td>
@@ -208,7 +223,8 @@
                                 <td>No</td>
                                 <td><code>0</code></td>
                                 <td>Quiet-zone background card border radius percentage. Min: <code>0</code>, Max:
-                                    <code>100</code>.</td>
+                                    <code>100</code>.
+                                </td>
                             </tr>
                             <tr>
                                 <td><code class="param-name">cornerStyle</code></td>
@@ -216,25 +232,27 @@
                                 <td>No</td>
                                 <td><code>square</code></td>
                                 <td>Rendering style of modules: <code>square</code>, <code>rounded</code>,
-                                    <code>circle</code>, <code>leaf</code>, <code>beveled</code>.</td>
+                                    <code>circle</code>, <code>leaf</code>, <code>beveled</code>.
+                                </td>
                             </tr>
                             <tr>
                                 <td><code class="param-name">icon</code></td>
                                 <td><code>String</code></td>
                                 <td>No</td>
                                 <td><code>none</code></td>
-                                <td>Predefined overlay brand icon: <code>link</code>, <code>globe</code>,
+                                <td>Overlay an icon: <code>link</code>, <code>globe</code>,
                                     <code>text</code>, <code>wifi</code>, <code>contact</code>, <code>email</code>,
                                     <code>phone</code>, <code>map-pin</code>, <code>sms</code>, <code>event</code>,
                                     <code>github</code>, <code>linkedin</code>, <code>instagram</code>,
-                                    <code>facebook</code>, <code>whatsapp</code>.</td>
+                                    <code>facebook</code>, <code>whatsapp</code>.
+                                </td>
                             </tr>
                             <tr>
                                 <td><code class="param-name">iconSize</code></td>
                                 <td><code>Number</code></td>
                                 <td>No</td>
                                 <td><code>20</code></td>
-                                <td>Percentage width of center overlay icon. Min: <code>10</code>, Max: <code>30</code>.
+                                <td>Percentage width of center icon. Min: <code>10</code>, Max: <code>30</code>.
                                 </td>
                             </tr>
                             <tr>
@@ -251,7 +269,8 @@
                                 <td>No</td>
                                 <td><code>rounded</code></td>
                                 <td>Shape of the backing card behind the icon: <code>rounded</code>,
-                                    <code>circle</code>, <code>square</code>, or <code>none</code>.</td>
+                                    <code>circle</code>, <code>square</code>, or <code>none</code>.
+                                </td>
                             </tr>
                         </tbody>
                     </table>
@@ -362,33 +381,24 @@
                         <div class="form-row">
                             <div class="form-group">
                                 <label for="play-margin">Margin</label>
-                                <input type="number" id="play-margin" value="2" min="0" max="10">
+                                <select id="play-margin">
+                                    <option value="1">Small</option>
+                                    <option value="2" selected>Medium</option>
+                                    <option value="4">Large</option>
+                                </select>
                             </div>
                             <div class="form-group">
                                 <label for="play-corner-radius">Corner Radius</label>
-                                <input type="number" id="play-corner-radius" value="0" min="0" max="100">
+                                <select id="play-corner-radius">
+                                    <option value="0" selected>None</option>
+                                    <option value="15">Small</option>
+                                    <option value="30">Medium</option>
+                                    <option value="50">Large</option>
+                                </select>
                             </div>
                         </div>
                     </div>
 
-                    <div class="playground-preview">
-                        <div class="preview-box">
-                            <div id="playground-placeholder" class="preview-placeholder">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="48"
-                                    height="48">
-                                    <rect x="3" y="3" width="7" height="7" rx="1"></rect>
-                                    <rect x="14" y="3" width="7" height="7" rx="1"></rect>
-                                    <rect x="3" y="14" width="7" height="7" rx="1"></rect>
-                                    <rect x="5" y="5" width="3" height="3" fill="currentColor" stroke="none"></rect>
-                                    <rect x="16" y="5" width="3" height="3" fill="currentColor" stroke="none"></rect>
-                                    <rect x="5" y="16" width="3" height="3" fill="currentColor" stroke="none"></rect>
-                                </svg>
-                                <span id="placeholder-text">Loading preview...</span>
-                            </div>
-                            <img id="playground-image" src="" alt="API Live QR Code Preview" class="hidden">
-                            <div id="base64-indicator" class="hidden">Base64 JSON Response</div>
-                        </div>
-                    </div>
 
                     <div class="url-output">
                         <label>Request URL</label>
