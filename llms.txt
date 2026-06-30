@@ -28,20 +28,37 @@ Authorization: Bearer YOUR_API_KEY
 
 | Parameter | Type | Required | Default | Description |
 | :--- | :--- | :--- | :--- | :--- |
-| `content` | String | Yes | - | The URL or text to encode. Must be URL-encoded. |
-| `format` | String | No | `png` | Output format: `png` (raw binary), `svg` (vector XML), or `base64` (JSON containing Data URI). |
-| `size` | Number | No | `1024` | Width & height in pixels (for `png` and `base64` outputs). Min: `64`, Max: `4096`. |
-| `fgColor` | String | No | `000000` | Hex foreground/pixel color (do not include leading `#`). |
-| `bgColor` | String | No | `ffffff` | Hex background color (do not include leading `#`). Ignored if `transparent=true`. |
-| `transparent`| Boolean| No | `false` | Set to `true` or `1` to render a transparent background. |
-| `margin` | Number | No | `2` | Border zone size in modules. Min: `0`, Max: `10`. |
-| `ecl` | String | No | `M` | Error Correction Level: `L` (Low), `M` (Medium), `Q` (Quartile), `H` (High). |
-| `cornerRadius`| Number| No | `0` | Card background border radius percentage. Min: `0`, Max: `100`. |
-| `cornerStyle` | String | No | `square` | Rendering style of modules: `square`, `rounded`, `circle`, `leaf`, `beveled`. |
-| `icon` | String | No | `none` | Center icon overlay: `link`, `globe`, `text`, `wifi`, `contact`, `email`, `phone`, `map-pin`, `sms`, `event`, `github`, `linkedin`, `instagram`, `facebook`, `whatsapp`, `youtube`, `patreon`, `discord`, `pinterest`. Or URL-encoded custom emoji (e.g., `icon=%F0%9F%9A%80` for 🚀). |
-| `iconSize` | Number | No | `20` | Width percentage of the center icon overlay. Min: `10`, Max: `30`. |
-| `iconColor` | String | No | - | Hex color code for the center icon. Defaults to `fgColor` value (do not include leading `#`). |
-| `iconBg` | String | No | `rounded` | Shape of the backing card behind the icon: `rounded`, `circle`, `square`, or `none`. |
+| `content` | String | Yes | - | The URL or text content to encode. Must be properly URL-encoded. |
+| `format` | String | No | `png` | Output format: png (raw binary file), svg (vector
+                                    graphic), or base64 (JSON wrapping Data URI). |
+| `size` | Number | No | `1024` | Width and height in pixels (for png and base64). Min:
+                                    64, Max: 4096. |
+| `fgColor` | String | No | `000000` | Hex color code for the foreground/pixels. Do not include a leading
+                                        #. |
+| `bgColor` | String | No | `ffffff` | Hex color code for background. Ignored if transparent=true. Do
+                                        not include #. |
+| `transparent` | Boolean | No | `false` | Set to true or 1 for a transparent background. |
+| `margin` | Number | No | `2` | Quiet-zone border size in modules. Min: 0, Max: 10. |
+| `ecl` | String | No | `M` | Error Correction Level: L (Low), M (Medium),
+                                    Q (Quartile), H (High). |
+| `cornerRadius` | Number | No | `0` | Quiet-zone background card border radius percentage. Min: 0, Max:
+                                    100. |
+| `cornerStyle` | String | No | `square` | Rendering style of modules: square, rounded,
+                                    circle, leaf, beveled. |
+| `icon` | String | No | `none` | Overlay an icon: link, globe,
+                                    text, wifi, contact, email,
+                                    phone, map-pin, sms, event,
+                                    github, linkedin, instagram,
+                                    facebook, whatsapp, youtube,
+                                    patreon, discord, pinterest. You can
+                                    also pass any URL-encoded custom emoji (e.g., icon=%F0%9F%9A%80 for
+                                    🚀). Emojis are fully rendered in SVG output and clear the background card space in
+                                    PNG output. |
+| `iconSize` | Number | No | `20` | Percentage width of center icon. Min: 10, Max: 30. |
+| `iconColor` | String | No | - | Hex color code for the center icon. Defaults to fgColor. Do not
+                                        include #. |
+| `iconBg` | String | No | `rounded` | Shape of the backing card behind the icon: rounded,
+                                    circle, square, or none. |
 
 ---
 

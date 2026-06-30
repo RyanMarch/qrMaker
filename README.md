@@ -160,8 +160,8 @@ Returns a JSON object wrapping a Data URL.
 QR Maker is built directly on standard web technologies to keep page load times under a second.
 
 ### 1. Browser-Side Rendering
-* **QR Engine:** The app uses an inlined version of [Nayuki's QR Code generator library](https://github.com/nayuki/QR-Code-generator) (MIT License) in `qrcode-lib.js` to compile the raw text data into a grid.
-* **HTML5 Canvas:** Custom drawing logic in `script.js` reads the grid and draws custom pixel shapes and finder patterns to render the final PNG images.
+* **QR Engine:** The app uses an inlined version of [Nayuki's QR Code generator library](https://github.com/nayuki/QR-Code-generator) (MIT License) in `js/qrcode-lib.js` to compile the raw text data into a grid.
+* **HTML5 Canvas:** Custom drawing logic in `js/script.js` reads the grid and draws custom pixel shapes and finder patterns to render the final PNG images.
 * **Vector SVG Generator:** Outputs clean, editable XML SVG strings directly.
 
 ### 2. Standalone Application

@@ -17,20 +17,161 @@
         "description": "Generate custom styled QR codes using standard rate limits without authentication.",
         "operationId": "generatePublicQr",
         "parameters": [
-          { "$ref": "#/components/parameters/content" },
-          { "$ref": "#/components/parameters/format" },
-          { "$ref": "#/components/parameters/size" },
-          { "$ref": "#/components/parameters/fgColor" },
-          { "$ref": "#/components/parameters/bgColor" },
-          { "$ref": "#/components/parameters/transparent" },
-          { "$ref": "#/components/parameters/margin" },
-          { "$ref": "#/components/parameters/ecl" },
-          { "$ref": "#/components/parameters/cornerRadius" },
-          { "$ref": "#/components/parameters/cornerStyle" },
-          { "$ref": "#/components/parameters/icon" },
-          { "$ref": "#/components/parameters/iconSize" },
-          { "$ref": "#/components/parameters/iconColor" },
-          { "$ref": "#/components/parameters/iconBg" }
+          {
+            "name": "content",
+            "in": "query",
+            "required": true,
+            "description": "The URL or text content to encode. Must be properly URL-encoded.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "format",
+            "in": "query",
+            "required": false,
+            "description": "Output format: png (raw binary file), svg (vector\n                                    graphic), or base64 (JSON wrapping Data URI).",
+            "schema": {
+              "type": "string",
+              "default": "png",
+              "enum": [
+                "png",
+                "svg",
+                "base64"
+              ]
+            }
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "required": false,
+            "description": "Width and height in pixels (for png and base64). Min:\n                                    64, Max: 4096.",
+            "schema": {
+              "type": "integer",
+              "default": 1024
+            }
+          },
+          {
+            "name": "fgColor",
+            "in": "query",
+            "required": false,
+            "description": "Hex color code for the foreground/pixels. Do not include a leading\n                                        #.",
+            "schema": {
+              "type": "string",
+              "default": "000000"
+            }
+          },
+          {
+            "name": "bgColor",
+            "in": "query",
+            "required": false,
+            "description": "Hex color code for background. Ignored if transparent=true. Do\n                                        not include #.",
+            "schema": {
+              "type": "string",
+              "default": "ffffff"
+            }
+          },
+          {
+            "name": "transparent",
+            "in": "query",
+            "required": false,
+            "description": "Set to true or 1 for a transparent background.",
+            "schema": {
+              "type": "boolean",
+              "default": false
+            }
+          },
+          {
+            "name": "margin",
+            "in": "query",
+            "required": false,
+            "description": "Quiet-zone border size in modules. Min: 0, Max: 10.",
+            "schema": {
+              "type": "integer",
+              "default": 2
+            }
+          },
+          {
+            "name": "ecl",
+            "in": "query",
+            "required": false,
+            "description": "Error Correction Level: L (Low), M (Medium),\n                                    Q (Quartile), H (High).",
+            "schema": {
+              "type": "string",
+              "default": "M",
+              "enum": [
+                "L",
+                "M",
+                "Q",
+                "H"
+              ]
+            }
+          },
+          {
+            "name": "cornerRadius",
+            "in": "query",
+            "required": false,
+            "description": "Quiet-zone background card border radius percentage. Min: 0, Max:\n                                    100.",
+            "schema": {
+              "type": "integer",
+              "default": 0
+            }
+          },
+          {
+            "name": "cornerStyle",
+            "in": "query",
+            "required": false,
+            "description": "Rendering style of modules: square, rounded,\n                                    circle, leaf, beveled.",
+            "schema": {
+              "type": "string",
+              "default": "square"
+            }
+          },
+          {
+            "name": "icon",
+            "in": "query",
+            "required": false,
+            "description": "Overlay an icon: link, globe,\n                                    text, wifi, contact, email,\n                                    phone, map-pin, sms, event,\n                                    github, linkedin, instagram,\n                                    facebook, whatsapp, youtube,\n                                    patreon, discord, pinterest. You can\n                                    also pass any URL-encoded custom emoji (e.g., icon=%F0%9F%9A%80 for\n                                    🚀). Emojis are fully rendered in SVG output and clear the background card space in\n                                    PNG output.",
+            "schema": {
+              "type": "string",
+              "default": "none"
+            }
+          },
+          {
+            "name": "iconSize",
+            "in": "query",
+            "required": false,
+            "description": "Percentage width of center icon. Min: 10, Max: 30.",
+            "schema": {
+              "type": "integer",
+              "default": 20
+            }
+          },
+          {
+            "name": "iconColor",
+            "in": "query",
+            "required": false,
+            "description": "Hex color code for the center icon. Defaults to fgColor. Do not\n                                        include #.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "iconBg",
+            "in": "query",
+            "required": false,
+            "description": "Shape of the backing card behind the icon: rounded,\n                                    circle, square, or none.",
+            "schema": {
+              "type": "string",
+              "default": "rounded",
+              "enum": [
+                "rounded",
+                "circle",
+                "square",
+                "none"
+              ]
+            }
+          }
         ],
         "responses": {
           "200": {
@@ -63,7 +204,7 @@
     "/api/plus": {
       "get": {
         "summary": "Generate a QR code (Plus / Higher Rate Limits)",
-        "description": "Generate custom styled QR codes using premium higher rate limits (requires Bearer API key).",
+        "description": "Generate custom styled QR codes using higher rate limits (requires Bearer API key).",
         "operationId": "generatePlusQr",
         "security": [
           {
@@ -71,20 +212,161 @@
           }
         ],
         "parameters": [
-          { "$ref": "#/components/parameters/content" },
-          { "$ref": "#/components/parameters/format" },
-          { "$ref": "#/components/parameters/size" },
-          { "$ref": "#/components/parameters/fgColor" },
-          { "$ref": "#/components/parameters/bgColor" },
-          { "$ref": "#/components/parameters/transparent" },
-          { "$ref": "#/components/parameters/margin" },
-          { "$ref": "#/components/parameters/ecl" },
-          { "$ref": "#/components/parameters/cornerRadius" },
-          { "$ref": "#/components/parameters/cornerStyle" },
-          { "$ref": "#/components/parameters/icon" },
-          { "$ref": "#/components/parameters/iconSize" },
-          { "$ref": "#/components/parameters/iconColor" },
-          { "$ref": "#/components/parameters/iconBg" }
+          {
+            "name": "content",
+            "in": "query",
+            "required": true,
+            "description": "The URL or text content to encode. Must be properly URL-encoded.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "format",
+            "in": "query",
+            "required": false,
+            "description": "Output format: png (raw binary file), svg (vector\n                                    graphic), or base64 (JSON wrapping Data URI).",
+            "schema": {
+              "type": "string",
+              "default": "png",
+              "enum": [
+                "png",
+                "svg",
+                "base64"
+              ]
+            }
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "required": false,
+            "description": "Width and height in pixels (for png and base64). Min:\n                                    64, Max: 4096.",
+            "schema": {
+              "type": "integer",
+              "default": 1024
+            }
+          },
+          {
+            "name": "fgColor",
+            "in": "query",
+            "required": false,
+            "description": "Hex color code for the foreground/pixels. Do not include a leading\n                                        #.",
+            "schema": {
+              "type": "string",
+              "default": "000000"
+            }
+          },
+          {
+            "name": "bgColor",
+            "in": "query",
+            "required": false,
+            "description": "Hex color code for background. Ignored if transparent=true. Do\n                                        not include #.",
+            "schema": {
+              "type": "string",
+              "default": "ffffff"
+            }
+          },
+          {
+            "name": "transparent",
+            "in": "query",
+            "required": false,
+            "description": "Set to true or 1 for a transparent background.",
+            "schema": {
+              "type": "boolean",
+              "default": false
+            }
+          },
+          {
+            "name": "margin",
+            "in": "query",
+            "required": false,
+            "description": "Quiet-zone border size in modules. Min: 0, Max: 10.",
+            "schema": {
+              "type": "integer",
+              "default": 2
+            }
+          },
+          {
+            "name": "ecl",
+            "in": "query",
+            "required": false,
+            "description": "Error Correction Level: L (Low), M (Medium),\n                                    Q (Quartile), H (High).",
+            "schema": {
+              "type": "string",
+              "default": "M",
+              "enum": [
+                "L",
+                "M",
+                "Q",
+                "H"
+              ]
+            }
+          },
+          {
+            "name": "cornerRadius",
+            "in": "query",
+            "required": false,
+            "description": "Quiet-zone background card border radius percentage. Min: 0, Max:\n                                    100.",
+            "schema": {
+              "type": "integer",
+              "default": 0
+            }
+          },
+          {
+            "name": "cornerStyle",
+            "in": "query",
+            "required": false,
+            "description": "Rendering style of modules: square, rounded,\n                                    circle, leaf, beveled.",
+            "schema": {
+              "type": "string",
+              "default": "square"
+            }
+          },
+          {
+            "name": "icon",
+            "in": "query",
+            "required": false,
+            "description": "Overlay an icon: link, globe,\n                                    text, wifi, contact, email,\n                                    phone, map-pin, sms, event,\n                                    github, linkedin, instagram,\n                                    facebook, whatsapp, youtube,\n                                    patreon, discord, pinterest. You can\n                                    also pass any URL-encoded custom emoji (e.g., icon=%F0%9F%9A%80 for\n                                    🚀). Emojis are fully rendered in SVG output and clear the background card space in\n                                    PNG output.",
+            "schema": {
+              "type": "string",
+              "default": "none"
+            }
+          },
+          {
+            "name": "iconSize",
+            "in": "query",
+            "required": false,
+            "description": "Percentage width of center icon. Min: 10, Max: 30.",
+            "schema": {
+              "type": "integer",
+              "default": 20
+            }
+          },
+          {
+            "name": "iconColor",
+            "in": "query",
+            "required": false,
+            "description": "Hex color code for the center icon. Defaults to fgColor. Do not\n                                        include #.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "iconBg",
+            "in": "query",
+            "required": false,
+            "description": "Shape of the backing card behind the icon: rounded,\n                                    circle, square, or none.",
+            "schema": {
+              "type": "string",
+              "default": "rounded",
+              "enum": [
+                "rounded",
+                "circle",
+                "square",
+                "none"
+              ]
+            }
+          }
         ],
         "responses": {
           "200": {
@@ -108,11 +390,11 @@
               }
             }
           },
-          "401": {
-            "description": "Unauthorized or missing API Key"
-          },
           "400": {
             "description": "Invalid parameter values or missing content"
+          },
+          "401": {
+            "description": "Unauthorized or missing API Key"
           }
         }
       }
@@ -134,158 +416,6 @@
             "description": "Base64 encoded Data URI of the generated QR code image.",
             "example": "data:image/png;base64,iVBORw0KGgoAAA..."
           }
-        }
-      }
-    },
-    "parameters": {
-      "content": {
-        "name": "content",
-        "in": "query",
-        "required": true,
-        "description": "The URL or text content to encode in the QR code (must be URL-encoded).",
-        "schema": {
-          "type": "string"
-        }
-      },
-      "format": {
-        "name": "format",
-        "in": "query",
-        "required": false,
-        "description": "Output format representation.",
-        "schema": {
-          "type": "string",
-          "enum": ["png", "svg", "base64"],
-          "default": "png"
-        }
-      },
-      "size": {
-        "name": "size",
-        "in": "query",
-        "required": false,
-        "description": "Width and height in pixels (for PNG and Base64 outputs).",
-        "schema": {
-          "type": "integer",
-          "minimum": 64,
-          "maximum": 4096,
-          "default": 1024
-        }
-      },
-      "fgColor": {
-        "name": "fgColor",
-        "in": "query",
-        "required": false,
-        "description": "Hex color code for the foreground pixels (exclude leading #).",
-        "schema": {
-          "type": "string",
-          "default": "000000"
-        }
-      },
-      "bgColor": {
-        "name": "bgColor",
-        "in": "query",
-        "required": false,
-        "description": "Hex color code for the background (exclude leading #). Ignored if transparent=true.",
-        "schema": {
-          "type": "string",
-          "default": "ffffff"
-        }
-      },
-      "transparent": {
-        "name": "transparent",
-        "in": "query",
-        "required": false,
-        "description": "Whether to render a transparent background.",
-        "schema": {
-          "type": "boolean",
-          "default": false
-        }
-      },
-      "margin": {
-        "name": "margin",
-        "in": "query",
-        "required": false,
-        "description": "Quiet-zone border size in modules.",
-        "schema": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 10,
-          "default": 2
-        }
-      },
-      "ecl": {
-        "name": "ecl",
-        "in": "query",
-        "required": false,
-        "description": "Error Correction Level.",
-        "schema": {
-          "type": "string",
-          "enum": ["L", "M", "Q", "H"],
-          "default": "M"
-        }
-      },
-      "cornerRadius": {
-        "name": "cornerRadius",
-        "in": "query",
-        "required": false,
-        "description": "Card background border radius percentage.",
-        "schema": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 100,
-          "default": 0
-        }
-      },
-      "cornerStyle": {
-        "name": "cornerStyle",
-        "in": "query",
-        "required": false,
-        "description": "Rendering style of the modules.",
-        "schema": {
-          "type": "string",
-          "enum": ["square", "rounded", "circle", "leaf", "beveled"],
-          "default": "square"
-        }
-      },
-      "icon": {
-        "name": "icon",
-        "in": "query",
-        "required": false,
-        "description": "Center overlay icon preset, or a URL-encoded custom emoji.",
-        "schema": {
-          "type": "string",
-          "default": "none"
-        }
-      },
-      "iconSize": {
-        "name": "iconSize",
-        "in": "query",
-        "required": false,
-        "description": "Width percentage of the center icon overlay.",
-        "schema": {
-          "type": "integer",
-          "minimum": 10,
-          "maximum": 30,
-          "default": 20
-        }
-      },
-      "iconColor": {
-        "name": "iconColor",
-        "in": "query",
-        "required": false,
-        "description": "Hex color code for the center icon overlay (exclude leading #). Defaults to fgColor.",
-        "schema": {
-          "type": "string"
-        }
-      },
-      "iconBg": {
-        "name": "iconBg",
-        "in": "query",
-        "required": false,
-        "description": "Shape of the backing card behind the center icon.",
-        "schema": {
-          "type": "string",
-          "enum": ["rounded", "circle", "square", "none"],
-          "default": "rounded"
         }
       }
     }
