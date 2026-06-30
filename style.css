@@ -2191,6 +2191,22 @@ input[type="range"]::-moz-range-thumb:hover {
     transform: scale(1.05);
 }
 
+.icon-select-btn span {
+    font-size: 1.25rem;
+    transition: transform 0.2s;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.icon-select-btn:hover span {
+    transform: scale(1.1);
+}
+
+.icon-select-btn.active span {
+    transform: scale(1.05);
+}
+
 .color-picker-wrapper {
     display: flex;
     align-items: center;

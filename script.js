@@ -144,6 +144,30 @@ const PREDEFINED_ICONS = {
         paths: [
             'M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L0 24l6.335-1.662c1.746.953 3.71 1.455 5.703 1.457h.004c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z'
         ]
+    },
+    youtube: {
+        type: 'fill',
+        paths: [
+            'M23.498 6.163a3.003 3.003 0 0 0-2.11-2.11C19.517 3.545 12 3.545 12 3.545s-7.517 0-9.388.508a3.003 3.003 0 0 0-2.11 2.11C0 8.033 0 12 0 12s0 3.967.502 5.837a3.003 3.003 0 0 0 2.11 2.11c1.871.508 9.388.508 9.388.508s7.517 0 9.388-.508a3.003 3.003 0 0 0 2.11-2.11C24 15.967 24 12 24 12s0-3.967-.502-5.837zM9.545 15.568V8.432L15.818 12l-6.273 3.568z'
+        ]
+    },
+    patreon: {
+        type: 'fill',
+        paths: [
+            'M22.957 7.21c-.004-3.064-2.391-5.576-5.191-6.482-3.478-1.125-8.064-.962-11.384.604C2.357 3.231 1.093 7.391 1.046 11.54c-.039 3.411.302 12.396 5.369 12.46 3.765.047 4.326-4.804 6.068-7.141 1.24-1.662 2.836-2.132 4.801-2.618 3.376-.836 5.678-3.501 5.673-7.031Z'
+        ]
+    },
+    discord: {
+        type: 'fill',
+        paths: [
+            'M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994.021-.041.001-.09-.041-.106a13.094 13.094 0 0 1-1.873-.894.077.077 0 0 1-.008-.128c.126-.093.252-.19.372-.287a.075.075 0 0 1 .077-.011c3.92 1.793 8.18 1.793 12.061 0a.073.073 0 0 1 .078.009c.12.099.246.195.373.289a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.894.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.156-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.156 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.156-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.156 2.418z'
+        ]
+    },
+    pinterest: {
+        type: 'fill',
+        paths: [
+            'M12 0C5.373 0 0 5.372 0 12c0 5.084 3.163 9.426 7.627 11.174-.105-.949-.2-2.405.042-3.441.218-.937 1.407-5.965 1.407-5.965s-.359-.719-.359-1.782c0-1.668.967-2.914 2.171-2.914 1.023 0 1.518.769 1.518 1.69 0 1.029-.655 2.568-.993 3.995-.283 1.194.599 2.169 1.777 2.169 2.133 0 3.772-2.249 3.772-5.495 0-2.873-2.064-4.882-5.012-4.882-3.414 0-5.418 2.561-5.418 5.207 0 1.031.397 2.138.893 2.738.098.119.112.224.083.345l-.333 1.36c-.053.22-.174.267-.402.161-1.499-.698-2.436-2.889-2.436-4.649 0-3.785 2.75-7.262 7.929-7.262 4.163 0 7.398 2.967 7.398 6.931 0 4.136-2.607 7.464-6.227 7.464-1.216 0-2.359-.631-2.75-1.378l-.748 2.853c-.271 1.043-1.002 2.35-1.492 3.146C9.57 23.812 10.763 24 12 24c6.627 0 12-5.373 12-12 0-6.628-5.373-12-12-12z'
+        ]
     }
 };
 
@@ -490,6 +514,13 @@ function drawQR(qr, canvas, targetPx) {
                     }
                 }
             }
+            ctx.restore();
+        } else if (state.icon && state.icon !== 'none') {
+            ctx.save();
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.font = `${iconSizePx * 0.82}px "Segoe UI Emoji", "Apple Color Emoji", "Noto Color Emoji", sans-serif`;
+            ctx.fillText(state.icon, center, center);
             ctx.restore();
         }
     }
@@ -859,6 +890,19 @@ function exportSVG() {
                 }
             }
             logoSvgContent += `\n  </g>`;
+        } else if (state.icon && state.icon !== 'none') {
+            const escapedEmoji = state.icon.replace(/[<>&'"]/g, (c) => {
+                switch (c) {
+                    case '<': return '&lt;';
+                    case '>': return '&gt;';
+                    case '&': return '&amp;';
+                    case '\'': return '&apos;';
+                    case '"': return '&quot;';
+                    default: return c;
+                }
+            });
+            const emojiSize = iconSizeModules * 0.82;
+            logoSvgContent += `\n  <text x="${centerModules}" y="${centerModules}" font-size="${emojiSize}" font-family="system-ui, -apple-system, sans-serif" text-anchor="middle" dominant-baseline="central">${escapedEmoji}</text>`;
         }
     }
 
@@ -2337,6 +2381,16 @@ function initIconSelector() {
         grid.appendChild(btn);
     }
 
+    // Add custom emoji button
+    const emojiBtn = document.createElement('button');
+    emojiBtn.type = 'button';
+    emojiBtn.className = 'icon-select-btn';
+    emojiBtn.id = 'icon-btn-emoji';
+    emojiBtn.title = 'CUSTOM EMOJI';
+    emojiBtn.onclick = () => selectCustomEmojiMode();
+    emojiBtn.innerHTML = '<span>😃</span>';
+    grid.appendChild(emojiBtn);
+
     // Set initial icon color hex text fields
     const hexInput = document.getElementById('icon-color-hex');
     if (hexInput) hexInput.value = state.iconColor;
@@ -2392,12 +2446,19 @@ function setOverlayMode(mode, generate = true) {
 
 function setIcon(name, generate = true) {
     state.icon = name;
+    const isPredefined = PREDEFINED_ICONS[name] || name === 'none';
 
     // Toggle active class in grid selector
     document.querySelectorAll('.icon-select-btn').forEach(btn => {
-        const active = btn.id === `icon-btn-${name}`;
+        const active = isPredefined ? btn.id === `icon-btn-${name}` : btn.id === 'icon-btn-emoji';
         btn.classList.toggle('active', active);
     });
+
+    // Toggle emoji input container visibility
+    const container = document.getElementById('emoji-input-container');
+    if (container) {
+        container.style.display = !isPredefined ? 'flex' : 'none';
+    }
 
     if (generate) {
         if (name !== 'none' && state.ecl !== 'H') {
@@ -2407,6 +2468,47 @@ function setIcon(name, generate = true) {
         scheduleGenerate();
     }
 }
+
+function selectCustomEmojiMode() {
+    console.log("selectCustomEmojiMode called");
+    const container = document.getElementById('emoji-input-container');
+    console.log("emoji-input-container found:", container);
+    if (container) container.style.display = 'flex';
+    const input = document.getElementById('custom-emoji-input');
+    console.log("custom-emoji-input found:", input);
+    if (input) {
+        input.focus();
+        const currentEmoji = (state.icon && !PREDEFINED_ICONS[state.icon] && state.icon !== 'none') ? state.icon : '😃';
+        input.value = currentEmoji;
+        setIcon(currentEmoji);
+    }
+}
+
+function handleCustomEmojiInput(val) {
+    console.log("handleCustomEmojiInput called with:", val);
+    // Array.from supports multi-byte Unicode/ZWJ emojis correctly
+    const chars = Array.from(val);
+    const emoji = chars.slice(0, 10).join('');
+    const input = document.getElementById('custom-emoji-input');
+    if (input) input.value = emoji;
+    if (emoji) {
+        setIcon(emoji);
+    }
+}
+
+function applySuggestionEmoji(emoji) {
+    console.log("applySuggestionEmoji called with:", emoji);
+    const input = document.getElementById('custom-emoji-input');
+    if (input) {
+        input.value = emoji;
+    }
+    setIcon(emoji);
+}
+
+// Explicitly expose to global scope for HTML event handlers
+window.selectCustomEmojiMode = selectCustomEmojiMode;
+window.handleCustomEmojiInput = handleCustomEmojiInput;
+window.applySuggestionEmoji = applySuggestionEmoji;
 
 function setIconCardShape(shape, generate = true) {
     state.iconCardShape = shape;
