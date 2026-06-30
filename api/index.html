@@ -37,6 +37,9 @@
 
     <link rel="stylesheet" href="/style.css">
     <link rel="stylesheet" href="style.css">
+    <!-- AI-Agent/LLM Metadata -->
+    <link rel="openapi" type="application/json" href="/api/openapi.json">
+    <link rel="alternate" type="text/markdown" href="/llms.txt" title="LLM-friendly API Documentation">
     <!-- Cloudflare Turnstile CAPTCHA (loaded with callback) -->
     <script src="https://challenges.cloudflare.com/turnstile/v0/api.js?onload=onloadTurnstileCallback" defer></script>
 </head>
@@ -56,6 +59,7 @@
             <a href="/" class="logo-link">
                 <span class="logo-text">QR Maker</span>
                 <span class="badge">API Docs</span>
+                <span title="AI Agent Ready (llms.txt & OpenAPI Spec available)"></span>
             </a>
         </div>
         <div class="header-right">
@@ -177,10 +181,13 @@
                     <span style="font-size: 11px; color: var(--text-secondary); margin-left: 20px;">Higher rate limits,
                         requires Bearer API Key</span>
                 </div>
+
+                <h3 style="margin-top: 2rem; margin-bottom: 1rem; font-size: 1.25rem;"> Resources</h3>
+
                 <div class="download-box">
                     <div class="download-box-text">
                         <h3>Test in Postman or Bruno</h3>
-                        <p>Download our API request collection to test, preview, and run requests instantly. Supported
+                        <p>Download an API request collection to test, preview, and run requests instantly. Supported
                             by both Postman and Bruno.</p>
                     </div>
                     <button id="btn-download-collection" class="btn-download">
@@ -192,6 +199,36 @@
                         </svg>
                         Download Collection
                     </button>
+                </div>
+
+                <div class="download-box">
+                    <div class="download-box-text">
+                        <h3>AI-Agent & Machine Specifications</h3>
+                        <p>Get machine-readable specifications including OpenAPI 3.0 schema and LLM-friendly
+                            documentation.</p>
+                    </div>
+                    <div class="download-box-actions">
+                        <a href="/api/openapi.json" target="_blank" class="btn-download">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16"
+                                height="16">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <line x1="12" y1="8" x2="12" y2="16"></line>
+                                <line x1="8" y1="12" x2="16" y2="12"></line>
+                            </svg>
+                            OpenAPI Schema
+                        </a>
+                        <a href="/llms.txt" target="_blank" class="btn-download btn-secondary">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16"
+                                height="16">
+                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                                <polyline points="14 2 14 8 20 8"></polyline>
+                                <line x1="16" y1="13" x2="8" y2="13"></line>
+                                <line x1="16" y1="17" x2="8" y2="17"></line>
+                                <polyline points="10 9 9 9 8 9"></polyline>
+                            </svg>
+                            llms.txt
+                        </a>
+                    </div>
                 </div>
             </article>
 
@@ -387,8 +424,12 @@
                                 <td>Overlay an icon: <code>link</code>, <code>globe</code>,
                                     <code>text</code>, <code>wifi</code>, <code>contact</code>, <code>email</code>,
                                     <code>phone</code>, <code>map-pin</code>, <code>sms</code>, <code>event</code>,
-                                    <code>github</code>, <code>linkedin</code>, <code>instagram</code>, <code>facebook</code>, <code>whatsapp</code>, <code>youtube</code>,
-                                    <code>patreon</code>, <code>discord</code>, <code>pinterest</code>. You can also pass any URL-encoded custom emoji (e.g., <code>icon=%F0%9F%9A%80</code> for 🚀). Emojis are fully rendered in SVG output and clear the background card space in PNG output.
+                                    <code>github</code>, <code>linkedin</code>, <code>instagram</code>,
+                                    <code>facebook</code>, <code>whatsapp</code>, <code>youtube</code>,
+                                    <code>patreon</code>, <code>discord</code>, <code>pinterest</code>. <br />You can
+                                    also pass any URL-encoded custom emoji (e.g., <code>icon=%F0%9F%9A%80</code> for
+                                    🚀). Emojis are fully rendered in SVG output and clear the background card space in
+                                    PNG output.
                                 </td>
                             </tr>
                             <tr>
@@ -580,7 +621,7 @@
                     <div class="tab-content active" id="tab-html">
                         <p style="margin-bottom: 12px; font-size: 14px; color: var(--text-secondary);">
                             Embed QR codes directly in your HTML pages using a standard <code>&lt;img&gt;</code> tag.
-                            Unauthenticated requests are permitted and subject to rate limits.
+                            Unauthenticated requests are subject to rate limits.
                         </p>
                         <div class="code-block-wrapper">
                             <pre><code class="language-html">&lt;img src="https://qrmaker.ryanmarch.me/api/qr?content=https%3A%2F%2Fqrmaker.ryanmarch.me&amp;size=512&amp;fgColor=327DFF" alt="QR Code" /&gt;</code></pre>

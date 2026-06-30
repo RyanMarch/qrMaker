@@ -3103,6 +3103,42 @@ input[type="range"]::-moz-range-thumb:hover {
     background-clip: text;
 }
 
+.global-header .badge {
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    font-size: 0.65rem;
+    font-weight: 600;
+    padding: 0.15rem 0.45rem;
+    border-radius: 6px;
+    background: rgba(27, 82, 86, 0.15);
+    color: var(--accent-readable);
+    border: 1px solid rgba(27, 82, 86, 0.3);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    display: inline-flex;
+    align-items: center;
+    line-height: 1;
+    margin-left: 0.25rem;
+    transition: all 0.2s ease;
+}
+
+[data-theme="light"] .global-header .badge {
+    background: rgba(27, 82, 86, 0.08);
+    color: var(--accent);
+    border-color: rgba(27, 82, 86, 0.18);
+}
+
+.global-header .badge-ai {
+    background: rgba(16, 185, 129, 0.15);
+    color: #10b981;
+    border-color: rgba(16, 185, 129, 0.3);
+}
+
+[data-theme="light"] .global-header .badge-ai {
+    background: rgba(16, 185, 129, 0.08);
+    color: #059669;
+    border-color: rgba(16, 185, 129, 0.18);
+}
+
 .global-header .header-right {
     display: flex;
     align-items: center;

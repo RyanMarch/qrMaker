@@ -2460,6 +2460,12 @@ function setIcon(name, generate = true) {
         container.style.display = !isPredefined ? 'flex' : 'none';
     }
 
+    // Hide Icon Color field when emoji is selected
+    const iconColorRow = document.getElementById('icon-color-row');
+    if (iconColorRow) {
+        iconColorRow.style.display = !isPredefined ? 'none' : '';
+    }
+
     if (generate) {
         if (name !== 'none' && state.ecl !== 'H') {
             const requiredEcl = state.iconSize > 22 ? 'H' : 'Q';
