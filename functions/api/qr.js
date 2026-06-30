@@ -12,10 +12,9 @@
  *   margin      {number}  quiet-zone modules           default: 2
  *   ecl         {string}  "L" | "M" | "Q" | "H"      default: "M"
  *
- * Auth (future-ready, currently disabled):
- *   Set AUTH_ENABLED=true in CF environment variables to enable.
+ * Auth:
  *   Set API_KEY=<your-secret> in CF environment secrets.
- *   Requests then require: Authorization: Bearer <API_KEY>
+ *   Requests require: Authorization: Bearer <API_KEY>
  */
 
 import qrcode from './qr-lib.js';
@@ -168,30 +167,22 @@ async function verifyHmacSignature(message, signature, secret) {
     false,
     ['verify']
   );
-  
+
   const base64 = signature.replace(/-/g, '+').replace(/_/g, '/');
   const binary = atob(base64);
   const bytes = new Uint8Array(binary.length);
   for (let i = 0; i < binary.length; i++) {
     bytes[i] = binary.charCodeAt(i);
   }
-  
+
   return crypto.subtle.verify('HMAC', cryptoKey, bytes, encoder.encode(message));
 }
 
 /**
- * Returns a 401 Response if auth is enabled and the request is not authorized.
+ * Returns a 401 Response if the request is not authorized.
  * Returns null if the request is allowed to proceed.
- *
- * To enable auth, set these in your Cloudflare Pages environment:
- *   AUTH_ENABLED = true
- *   API_KEY      = <your secret key> (optional static key)
- *   API_SIGNING_SECRET = <your signing secret> (required for stateless keys)
  */
 async function checkAuth(request, env) {
-  const authEnabled = env.AUTH_ENABLED === 'true' || env.AUTH_ENABLED === true;
-  if (!authEnabled) return null; // auth is off — let it through
-
   const authHeader = request.headers.get('Authorization') || '';
   const [scheme, token] = authHeader.split(' ');
 
@@ -199,9 +190,13 @@ async function checkAuth(request, env) {
     return jsonError('Unauthorized — provide a valid Bearer API Key', 401);
   }
 
-  // 1. Check static API key first
+  // 1. Check static API keys first
   const staticApiKey = env.API_KEY;
-  if (staticApiKey && token === staticApiKey) {
+  const motionPosterKey = env.MOTION_POSTER_API_KEY;
+  if (
+    (staticApiKey && token === staticApiKey) ||
+    (motionPosterKey && token === motionPosterKey)
+  ) {
     return null; // authorized with static key
   }
 
@@ -227,7 +222,7 @@ async function checkAuth(request, env) {
   const blockedKeysVar = env.BLOCKED_KEYS || '';
   if (blockedKeysVar) {
     const blockedList = blockedKeysVar.split(',').map(s => s.trim().toLowerCase());
-    
+
     // Decode email to check if the user is blocked
     let decodedEmail = '';
     try {
@@ -239,7 +234,7 @@ async function checkAuth(request, env) {
     }
 
     if (
-      blockedList.includes(token.toLowerCase()) || 
+      blockedList.includes(token.toLowerCase()) ||
       (decodedEmail && blockedList.includes(decodedEmail))
     ) {
       return jsonError('Forbidden — this API Key has been revoked', 403);
@@ -277,15 +272,15 @@ export async function onRequestGet({ request, env }) {
   const content = (params.get('content') || '').trim();
   if (!content) return jsonError('content query parameter is required', 400);
 
-  const format      = ['png', 'svg', 'base64'].includes(params.get('format')) ? params.get('format') : 'png';
-  const size        = Math.min(Math.max(Number(params.get('size')) || 512, 64), 4096);
-  const fgColor     = parseHexColor(params.get('fgColor')) ?? [0, 0, 0];
-  const bgColor     = parseHexColor(params.get('bgColor')) ?? [255, 255, 255];
+  const format = ['png', 'svg', 'base64'].includes(params.get('format')) ? params.get('format') : 'png';
+  const size = Math.min(Math.max(Number(params.get('size')) || 512, 64), 4096);
+  const fgColor = parseHexColor(params.get('fgColor')) ?? [0, 0, 0];
+  const bgColor = parseHexColor(params.get('bgColor')) ?? [255, 255, 255];
   const transparent = params.get('transparent') === 'true' || params.get('transparent') === '1';
-  const margin      = params.has('margin') && !isNaN(Number(params.get('margin'))) ? Math.min(Math.max(Number(params.get('margin')), 0), 10) : 2;
-  let ecl           = ['L', 'M', 'Q', 'H'].includes(params.get('ecl')) ? params.get('ecl') : 'M';
+  const margin = params.has('margin') && !isNaN(Number(params.get('margin'))) ? Math.min(Math.max(Number(params.get('margin')), 0), 10) : 2;
+  let ecl = ['L', 'M', 'Q', 'H'].includes(params.get('ecl')) ? params.get('ecl') : 'M';
   const cornerRadius = Math.min(Math.max(Number(params.get('cornerRadius') || params.get('bgCorners') || params.get('bgc')) || 0, 0), 100);
-  const cornerStyle  = ['square', 'rounded', 'circle', 'leaf', 'beveled'].includes(params.get('cornerStyle') || params.get('cms')) ? (params.get('cornerStyle') || params.get('cms')) : 'square';
+  const cornerStyle = ['square', 'rounded', 'circle', 'leaf', 'beveled'].includes(params.get('cornerStyle') || params.get('cms')) ? (params.get('cornerStyle') || params.get('cms')) : 'square';
 
   // Predefined Vector Icons parameters
   const icon = params.get('icon') || 'none';
@@ -397,7 +392,7 @@ function toSVG(matrix, fgColor, bgColor, transparent, cornerRadius = 0, cornerSt
   const count = size - margin * 2;
 
   const rects = [];
-  
+
   // Icon configuration
   const iconSizeModules = count * (iconSize / 100);
   const centerModules = margin + count / 2;
@@ -405,7 +400,7 @@ function toSVG(matrix, fgColor, bgColor, transparent, cornerRadius = 0, cornerSt
   const cardSizeModules = iconSizeModules + paddingModules * 2;
   const cardXModules = centerModules - cardSizeModules / 2;
   const cardYModules = centerModules - cardSizeModules / 2;
-  
+
   const cardShape = (typeof iconBg === 'string' && ['circle', 'rounded', 'square'].includes(iconBg))
     ? iconBg
     : (iconBg ? 'rounded' : 'none');
@@ -446,7 +441,7 @@ function toSVG(matrix, fgColor, bgColor, transparent, cornerRadius = 0, cornerSt
   let iconSvgContent = '';
   if (hasIcon) {
     const cardColor = transparent ? '#ffffff' : bg;
-    
+
     // Draw background card if requested
     if (cardShape !== 'none') {
       if (cardShape === 'circle') {
@@ -465,7 +460,7 @@ function toSVG(matrix, fgColor, bgColor, transparent, cornerRadius = 0, cornerSt
     const scale = iconSizeModules / 24; // assuming viewBox is 24x24
     const strokeHex = rgbToHex(iconColor);
     const iconConfig = PREDEFINED_ICONS[icon];
-    
+
     iconSvgContent += `\n  <g transform="translate(${iconXModules}, ${iconYModules}) scale(${scale})" stroke-linecap="round" stroke-linejoin="round">`;
     if (iconConfig.type === 'stroke') {
       for (const p of iconConfig.paths) {
@@ -523,7 +518,7 @@ function toPNG(matrix, outputSize, fgColor, bgColor, transparent, cornerRadius =
   const iconY = center - iconSizePx / 2;
   const padding = iconSizePx * 0.15;
   const cardSize = iconSizePx + padding * 2;
-  
+
   const cardShape = (typeof iconBg === 'string' && ['circle', 'rounded', 'square'].includes(iconBg))
     ? iconBg
     : (iconBg ? 'rounded' : 'none');
@@ -539,7 +534,7 @@ function toPNG(matrix, outputSize, fgColor, bgColor, transparent, cornerRadius =
 
     for (let col = 0; col < px; col++) {
       const moduleCol = Math.floor(col / cellSize);
-      
+
       let inCard = false;
       if (hasIcon && iconClear && cardShape !== 'none') {
         inCard = isInsideCard(col, row, center, cardSize, cardShape);
@@ -587,7 +582,7 @@ function toPNG(matrix, outputSize, fgColor, bgColor, transparent, cornerRadius =
         } else {
           dark = matrix[moduleRow]?.[moduleCol] ?? false;
         }
-        
+
         let isOutsideCorners = false;
         if (bgRadius > 0) {
           if (col < bgRadius && row < bgRadius) {
@@ -629,12 +624,12 @@ function toPNG(matrix, outputSize, fgColor, bgColor, transparent, cornerRadius =
 
       const offset = row * (scanline + 1) + 1 + col * channels;
       if (channels === 4) {
-        rawData[offset]     = drawR;
+        rawData[offset] = drawR;
         rawData[offset + 1] = drawG;
         rawData[offset + 2] = drawB;
         rawData[offset + 3] = drawA;
       } else {
-        rawData[offset]     = drawR;
+        rawData[offset] = drawR;
         rawData[offset + 1] = drawG;
         rawData[offset + 2] = drawB;
       }
@@ -660,27 +655,27 @@ function isFinderPattern(row, col, totalSize, margin) {
 
 function getCustomRectSvgPath(x, y, w, h, rtl, rtr, rbr, rbl) {
   return `M ${x + rtl} ${y} ` +
-         `h ${w - rtl - rtr} ` +
-         (rtr > 0 ? `a ${rtr} ${rtr} 0 0 1 ${rtr} ${rtr} ` : '') +
-         `v ${h - rtr - rbr} ` +
-         (rbr > 0 ? `a ${rbr} ${rbr} 0 0 1 -${rbr} ${rbr} ` : '') +
-         `h -${w - rbr - rbl} ` +
-         (rbl > 0 ? `a ${rbl} ${rbl} 0 0 1 -${rbl} -${rbl} ` : '') +
-         `v -${h - rbl - rtl} ` +
-         (rtl > 0 ? `a ${rtl} ${rtl} 0 0 1 ${rtl} -${rtl} ` : '') +
-         `z`;
+    `h ${w - rtl - rtr} ` +
+    (rtr > 0 ? `a ${rtr} ${rtr} 0 0 1 ${rtr} ${rtr} ` : '') +
+    `v ${h - rtr - rbr} ` +
+    (rbr > 0 ? `a ${rbr} ${rbr} 0 0 1 -${rbr} ${rbr} ` : '') +
+    `h -${w - rbr - rbl} ` +
+    (rbl > 0 ? `a ${rbl} ${rbl} 0 0 1 -${rbl} -${rbl} ` : '') +
+    `v -${h - rbl - rtl} ` +
+    (rtl > 0 ? `a ${rtl} ${rtl} 0 0 1 ${rtl} -${rtl} ` : '') +
+    `z`;
 }
 
 function getBeveledSvgPath(x, y, size, bevel) {
   return `M ${x + bevel} ${y} ` +
-         `L ${x + size - bevel} ${y} ` +
-         `L ${x + size} ${y + bevel} ` +
-         `L ${x + size} ${y + size - bevel} ` +
-         `L ${x + size - bevel} ${y + size} ` +
-         `L ${x + bevel} ${y + size} ` +
-         `L ${x} ${y + size - bevel} ` +
-         `L ${x} ${y + bevel} ` +
-         `z`;
+    `L ${x + size - bevel} ${y} ` +
+    `L ${x + size} ${y + bevel} ` +
+    `L ${x + size} ${y + size - bevel} ` +
+    `L ${x + size - bevel} ${y + size} ` +
+    `L ${x + bevel} ${y + size} ` +
+    `L ${x} ${y + size - bevel} ` +
+    `L ${x} ${y + bevel} ` +
+    `z`;
 }
 
 function getFinderPatternSvg(x, y, style, pos, fgColorHex) {
@@ -867,8 +862,8 @@ function writeUint32BE(val) {
 
 function makeChunk(type, data) {
   const typeBytes = new TextEncoder().encode(type);
-  const lenBytes  = writeUint32BE(data.length);
-  const crcInput  = new Uint8Array(typeBytes.length + data.length);
+  const lenBytes = writeUint32BE(data.length);
+  const crcInput = new Uint8Array(typeBytes.length + data.length);
   crcInput.set(typeBytes, 0);
   crcInput.set(data, typeBytes.length);
   const crcBytes = writeUint32BE(crc32(crcInput));
@@ -889,8 +884,8 @@ function assemblePNG(width, height, compressedData, transparent) {
   const dv = new DataView(ihdrData.buffer);
   dv.setUint32(0, width, false);
   dv.setUint32(4, height, false);
-  ihdrData[8]  = 8;         // bit depth
-  ihdrData[9]  = colorType;
+  ihdrData[8] = 8;         // bit depth
+  ihdrData[9] = colorType;
   ihdrData[10] = 0;         // compression method
   ihdrData[11] = 0;         // filter method
   ihdrData[12] = 0;         // interlace method
@@ -903,8 +898,8 @@ function assemblePNG(width, height, compressedData, transparent) {
   const out = new Uint8Array(total);
   let pos = 0;
   out.set(PNG_SIGNATURE, pos); pos += PNG_SIGNATURE.length;
-  out.set(ihdr, pos);          pos += ihdr.length;
-  out.set(idat, pos);          pos += idat.length;
+  out.set(ihdr, pos); pos += ihdr.length;
+  out.set(idat, pos); pos += idat.length;
   out.set(iend, pos);
   return out;
 }
@@ -945,7 +940,7 @@ function isInsideCard(x, y, center, cardSize, shape) {
   const cardX = center - half;
   const cardY = center - half;
   if (x < cardX || x >= cardX + cardSize || y < cardY || y >= cardY + cardSize) return false;
-  
+
   if (shape === 'circle') {
     const dx = x - center;
     const dy = y - center;
@@ -956,7 +951,7 @@ function isInsideCard(x, y, center, cardSize, shape) {
     const relY = y - cardY;
     return isInsideRoundRect(relX, relY, cardSize, rad);
   }
-  
+
   // default: square
   return true;
 }
