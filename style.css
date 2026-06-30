@@ -2661,26 +2661,6 @@ input[type="range"]::-moz-range-thumb {
 }
 
 /* SEO Features Card (Sleek Collapsible Panel) */
-.seo-features-mobile {
-    display: none !important;
-}
-
-@media (max-width: 960px) {
-    .seo-features-mobile {
-        display: flex !important;
-        flex-direction: column;
-        align-items: stretch;
-        width: 100%;
-        max-width: 600px;
-        box-sizing: border-box;
-        margin: 1.0 auto 0 auto;
-        padding: 0 1rem 1.25rem 1rem !important;
-    }
-
-    .seo-features-desktop {
-        display: none !important;
-    }
-}
 
 .seo-features-card {
     margin-top: 1.5rem;

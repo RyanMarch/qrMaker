@@ -81,14 +81,25 @@ For an interactive experience, please visit the hosted **[Developer API Document
 
 The project's serverless API is hosted on Cloudflare Pages, allowing developers to request custom QR codes programmatically using simple web requests.
 
-### Endpoint
+### Endpoints
+
+QR Maker provides two endpoints depending on your integration needs:
+
+#### 1. Public Endpoint (Rate-limited, no authentication required)
+Recommended for simple HTML `<img>` tag embeds.
 ```http
 GET https://qrmaker.ryanmarch.me/api/qr
 ```
 
+#### 2. Secure Endpoint (20 req/10s limit, requires Bearer API Key)
+Recommended for server-side proxies, custom scripts, and high-volume integrations.
+```http
+GET https://qrmaker.ryanmarch.me/api/plus
+```
+
 ### Authentication
 
-If authentication is enabled on the deployment, requests must include the API Key in the `Authorization` header using the `Bearer` scheme:
+For the secure `/api/plus` endpoint, requests must include the API Key in the `Authorization` header using the `Bearer` scheme:
 
 ```http
 Authorization: Bearer YOUR_API_KEY
@@ -120,9 +131,11 @@ Authorization: Bearer YOUR_API_KEY
 Returns a raw PNG image file.
 * **Content-Type:** `image/png`
 * **Direct embedding:**
+  You can embed the API URL directly in a standard `<img>` tag. Unauthenticated requests are allowed (subject to rate limiting):
   ```html
   <img src="https://qrmaker.ryanmarch.me/api/qr?content=Hello&size=512&fgColor=ff0000" alt="QR Code" />
   ```
+  *(To bypass rate limits in high-volume production, authenticate requests on the `/api/plus` endpoint using the `Authorization: Bearer <API_KEY>` header).*
 
 #### 2. SVG
 Returns valid SVG XML markup.

@@ -2622,7 +2622,7 @@ function positionDesktopPrompt() {
     if (!prompt) return;
 
     const isSingleColumnMobile = window.innerWidth <= 960 && !window.matchMedia('(orientation: landscape) and (max-height: 500px)').matches;
-    const lastControlsSection = document.querySelector('.controls-section:not(.seo-features-mobile)');
+    const lastControlsSection = document.querySelector('.controls-section');
 
     if (isSingleColumnMobile) {
         if (prompt.parentElement !== document.body) {
