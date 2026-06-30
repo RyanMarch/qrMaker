@@ -2,9 +2,9 @@ const CACHE_NAME = 'qrmaker-v1.0.4';
 const ASSETS = [
     '/',
     '/index.html',
-    '/style.css',
-    '/script.js',
-    '/qrcode-lib.js',
+    '/css/style.css',
+    '/js/script.js',
+    '/js/qrcode-lib.js',
     '/assets/favicon/favicon-96x96.png',
     '/assets/favicon/favicon.svg',
     '/assets/favicon/favicon.ico',

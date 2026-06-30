@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="en" translate="no">
+
+<head>
+    <meta charset="UTF-8">
+    <script>
+        // Theme initialization to prevent flicker
+        (function () {
+            const savedTheme = localStorage.getItem('qrm-theme') || 'dark';
+            if (savedTheme === 'system') {
+                const isDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+                document.documentElement.setAttribute('data-theme', isDark ? 'dark' : 'light');
+                document.documentElement.setAttribute('data-theme-mode', 'system');
+            } else {
+                document.documentElement.setAttribute('data-theme', savedTheme);
+                document.documentElement.removeAttribute('data-theme-mode');
+            }
+        })();
+    </script>
+    <meta name="google" content="notranslate">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+
+    <title>About QR Maker — High-Speed Custom QR Codes</title>
+    <meta name="description"
+        content="Learn more about QR Maker, a developer-centric and client-side design toolkit for crafting custom, high-speed QR codes.">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@500;700;800&family=Fira+Code:wght@400;500&display=swap"
+        rel="stylesheet">
+
+    <!-- Favicons -->
+    <link rel="icon" type="image/png" href="/assets/favicon/favicon-96x96.png" sizes="96x96" />
+    <link rel="icon" type="image/svg+xml" href="/assets/favicon/favicon.svg" />
+
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="style.css">
+    <!-- AI-Agent/LLM Metadata -->
+    <link rel="openapi" type="application/json" href="/api/openapi.json">
+    <link rel="alternate" type="text/markdown" href="/llms.txt" title="LLM-friendly API Documentation">
+</head>
+
+<body>
+    <!-- Header -->
+    <header class="global-header">
+        <div class="header-left">
+            <a href="/" class="logo-link">
+                <span class="logo-text">QR Maker</span>
+            </a>
+        </div>
+        <div class="header-right">
+            <nav class="header-nav" aria-label="Main Navigation">
+                <a href="/" class="nav-link">App</a>
+                <a href="/about/" class="nav-link active">About</a>
+                <a href="/api/" class="nav-link">API</a>
+            </nav>
+            <button id="theme-toggle" class="theme-toggle" aria-label="Toggle theme" title="Toggle theme">
+                <svg class="sun-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="5"></circle>
+                    <line x1="12" y1="1" x2="12" y2="3"></line>
+                    <line x1="12" y1="21" x2="12" y2="23"></line>
+                    <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                    <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                    <line x1="1" y1="12" x2="3" y2="12"></line>
+                    <line x1="21" y1="12" x2="23" y2="12"></line>
+                    <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                    <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                </svg>
+                <svg class="moon-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                </svg>
+                <svg class="system-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
+                    <line x1="8" y1="21" x2="16" y2="21"></line>
+                    <line x1="12" y1="17" x2="12" y2="21"></line>
+                </svg>
+                <span id="theme-status" class="theme-status"></span>
+            </button>
+            <button id="mobile-menu-toggle" class="mobile-menu-toggle" aria-label="Toggle navigation menu"
+                aria-expanded="false">
+                <svg class="menu-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="3" y1="12" x2="21" y2="12"></line>
+                    <line x1="3" y1="6" x2="21" y2="6"></line>
+                    <line x1="3" y1="18" x2="21" y2="18"></line>
+                </svg>
+                <svg class="close-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round" style="display: none;">
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+            </button>
+        </div>
+    </header>
+
+    <!-- Mobile Navigation Overlay -->
+    <div id="mobile-nav-menu" class="mobile-nav-menu">
+        <nav class="mobile-menu-nav">
+            <a href="/" class="mobile-menu-link">App</a>
+            <a href="/about/" class="mobile-menu-link active">About</a>
+            <a href="/api/" class="mobile-menu-link">API</a>
+        </nav>
+    </div>
+
+    <!-- Main Container -->
+    <main class="about-container">
+        <section class="hero-section">
+            <h1>Meet QR Maker</h1>
+            <p class="lead">
+                Generate beautiful, customized QR codes instantly <span>in the browser or with our developer API.</span>
+            </p>
+        </section>
+
+        <!-- Product Preview Carousel / Screenshot Grid -->
+        <section class="gallery-section">
+            <h2>Interface Showcase</h2>
+            <p class="section-desc">Get a glimpse of the application's visual controls.</p>
+            <div class="gallery-grid">
+                <div class="gallery-card">
+                    <div class="screenshot-placeholder">
+                        <picture>
+                            <source srcset="images/app-overview-light-theme.avif" type="image/avif">
+                            <img src="images/app-overview-light-theme.png"
+                                alt="QR Maker interactive app editor interface" loading="eager" fetchpriority="high">
+                        </picture>
+                    </div>
+                    <div class="gallery-card-info">
+                        <h3>Interactive Web App</h3>
+                        <p>Full-featured design canvas with live preview, pixel shape customizations, color
+                            selection, and multi-format downloads.</p>
+                    </div>
+                </div>
+
+                <div class="gallery-card">
+                    <div class="screenshot-placeholder">
+                        <picture>
+                            <source srcset="images/app-icon-emoji-alien.avif" type="image/avif">
+                            <img src="images/app-icon-emoji-alien.png" alt="QR code custom emoji centerpiece preview"
+                                loading="lazy">
+                        </picture>
+                    </div>
+                    <div class="gallery-card-info">
+                        <h3>Branded Logos, Icons & Emojis</h3>
+                        <p>Upload a custom brand logo, select from standard system icons, or input any custom emoji to
+                            place in the center of your QR code.</p>
+                    </div>
+                </div>
+
+                <div class="gallery-card">
+                    <div class="screenshot-placeholder">
+                        <picture>
+                            <source srcset="images/api-docs-interactive-playground.avif" type="image/avif">
+                            <img src="images/api-docs-interactive-playground.png"
+                                alt="Developer API documentation interactive playground" loading="lazy">
+                        </picture>
+                    </div>
+                    <div class="gallery-card-info">
+                        <h3>Lightning-Fast API</h3>
+                        <p>Generate QR codes programmatically with a flexible API, custom playground, and simple
+                            authentication.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Detailed Features Section -->
+        <section class="features-section">
+            <h2>Features</h2>
+            <div class="features-grid">
+                <div class="feature-detail-card">
+                    <div class="card-header">
+                        <div class="icon-circle">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20"
+                                height="20">
+                                <path
+                                    d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 14.7255 3.09032 17.1962 4.85857 19C5.35857 19.5 5.5 20 5.5 20.5C5.5 21.3284 6.17157 22 7 22H12Z" />
+                                <circle cx="7.5" cy="10.5" r="1.5" fill="currentColor" />
+                                <circle cx="11.5" cy="7.5" r="1.5" fill="currentColor" />
+                                <circle cx="16.5" cy="9.5" r="1.5" fill="currentColor" />
+                            </svg>
+                        </div>
+                        <h3>Custom Visual Design</h3>
+                    </div>
+                    <p>Go beyond boring black and white blocks. Personalize your QR codes by modifying pixel patterns
+                        (round, square, or dots), choosing distinct corner shapes, and setting custom colors.</p>
+                </div>
+
+                <div class="feature-detail-card">
+                    <div class="card-header">
+                        <div class="icon-circle">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20"
+                                height="20">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <polyline points="12 6 12 12 16 14"></polyline>
+                            </svg>
+                        </div>
+                        <h3>Built for Privacy</h3>
+                    </div>
+                    <p>Your QR code data stays in your browser. All designs are generated locally on your device,
+                        meaning your URLs, text inputs, and passwords are never sent to a server.</p>
+                </div>
+
+                <div class="feature-detail-card">
+                    <div class="card-header">
+                        <div class="icon-circle">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20"
+                                height="20">
+                                <path
+                                    d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z">
+                                </path>
+                                <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
+                                <line x1="12" y1="22.08" x2="12" y2="12"></line>
+                            </svg>
+                        </div>
+                        <h3>Vector & Raster Formats</h3>
+                    </div>
+                    <p>Export your finished QR codes in crisp SVG format for print and scalable design systems, or save
+                        them as high-quality PNG images for digital displays and social sharing.</p>
+                </div>
+
+                <div class="feature-detail-card">
+                    <div class="card-header">
+                        <div class="icon-circle">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20"
+                                height="20">
+                                <rect x="2" y="4" width="20" height="16" rx="2" />
+                                <path d="M10 4v16M2 10h20" />
+                            </svg>
+                        </div>
+                        <h3>Developer Integration</h3>
+                    </div>
+                    <p>Integrate QR generation directly into your workflows. Use our public endpoints to generate codes
+                        on the fly with query params, or register for an API key for higher rate limits. <a
+                            href="/api/">Explore the API Docs</a>.</p>
+                </div>
+
+                <div class="feature-detail-card">
+                    <div class="card-header">
+                        <div class="icon-circle">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20"
+                                height="20">
+                                <circle cx="18" cy="5" r="3"></circle>
+                                <circle cx="6" cy="12" r="3"></circle>
+                                <circle cx="18" cy="19" r="3"></circle>
+                                <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line>
+                                <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line>
+                            </svg>
+                        </div>
+                        <h3>Instant Sharing</h3>
+                    </div>
+                    <p>Share your designs instantly. Generate unique, shareable links that automatically load your
+                        customized styling parameters and settings when opened.</p>
+                </div>
+
+                <div class="feature-detail-card">
+                    <div class="card-header">
+                        <div class="icon-circle">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20"
+                                height="20">
+                                <rect x="5" y="2" width="14" height="20" rx="2" ry="2"></rect>
+                                <line x1="12" y1="18" x2="12.01" y2="18"></line>
+                            </svg>
+                        </div>
+                        <h3>Installable Web App</h3>
+                    </div>
+                    <p>Install QR Maker directly to your computer or mobile home screen. Design, configure, and download
+                        custom QR codes completely offline.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Use Cases Section -->
+        <section class="use-cases-section">
+            <h2>Common Use Cases</h2>
+            <p class="section-desc">Create codes optimized for the physical world and digital experiences.</p>
+            <div class="use-cases-grid">
+                <div class="use-case-card">
+                    <h3>Restaurant Menus</h3>
+                    <p>Provide contact-free menus. Design high-contrast codes that print perfectly on table tents and
+                        window decals.</p>
+                </div>
+                <div class="use-case-card">
+                    <h3>WiFi Network Access</h3>
+                    <p>Let guests connect instantly. Generate a code containing network credentials so they can scan and
+                        connect without typing passwords.</p>
+                </div>
+                <div class="use-case-card">
+                    <h3>Event Registrations</h3>
+                    <p>Streamline entry gates. Link directly to tickets, RSVP forms, or calendar events for quick
+                        check-ins.</p>
+                </div>
+                <div class="use-case-card">
+                    <h3>Digital Business Cards</h3>
+                    <p>Share details instantly. Embed vCard data or link directly to professional profiles or personal
+                        landing pages.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- FAQ Section -->
+        <section class="faq-section">
+            <h2>Frequently Asked Questions</h2>
+            <div class="faq-accordion">
+                <details class="faq-item">
+                    <summary class="faq-question">
+                        <span>Is QR Maker free?</span>
+                        <svg class="faq-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                            width="16" height="16">
+                            <polyline points="6 9 12 15 18 9"></polyline>
+                        </svg>
+                    </summary>
+                    <div class="faq-answer">
+                        <p>Yes. QR Maker is completely free to use. Both the design dashboard app and the Developer API
+                            are open and free. Standard rate limits apply to public API requests, but you can generate a
+                            free API Key on our documentation page to unlock higher usage limits.</p>
+                    </div>
+                </details>
+
+                <details class="faq-item">
+                    <summary class="faq-question">
+                        <span>What formats can I export?</span>
+                        <svg class="faq-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                            width="16" height="16">
+                            <polyline points="6 9 12 15 18 9"></polyline>
+                        </svg>
+                    </summary>
+                    <div class="faq-answer">
+                        <p>You can export designs in high-quality PNG (raster) or SVG (scalable vector). SVG is perfect
+                            for professional print materials and design software like Figma or Adobe Illustrator.</p>
+                    </div>
+                </details>
+
+                <details class="faq-item">
+                    <summary class="faq-question">
+                        <span>How does the Developer API work?</span>
+                        <svg class="faq-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                            width="16" height="16">
+                            <polyline points="6 9 12 15 18 9"></polyline>
+                        </svg>
+                    </summary>
+                    <div class="faq-answer">
+                        <p>Our developer API lets you generate custom codes on the fly using standard HTTP GET requests.
+                            For increased limits, you can request a free API Key directly from our docs page.</p>
+                    </div>
+                </details>
+            </div>
+        </section>
+
+        <!-- CTA Section -->
+        <section class="cta-section">
+            <div class="cta-banner">
+                <h2>Ready to customize your first QR code?</h2>
+                <p>Try the generator right now or integrate the API with your applications.</p>
+                <div class="cta-buttons">
+                    <a href="/" class="btn primary">Go to QR Maker</a>
+                    <a href="/api/" class="btn secondary">View Developer API</a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="about-footer-area">
+        <p>&copy; 2026 QR Maker. All rights reserved.</p>
+    </footer>
+
+    <!-- Lightbox Dialog -->
+    <dialog id="lightbox-dialog" class="lightbox-dialog" closedby="any" aria-label="Image Preview">
+        <div class="lightbox-content">
+            <button class="lightbox-close" aria-label="Close preview"
+                onclick="document.getElementById('lightbox-dialog').close()">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="20" height="20">
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+            </button>
+            <img id="lightbox-image" src="" alt="High resolution preview">
+            <div id="lightbox-caption" class="lightbox-caption"></div>
+        </div>
+    </dialog>
+
+    <!-- Scripts -->
+    <script src="/js/header.js" defer></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const lightboxDialog = document.getElementById('lightbox-dialog');
+            const lightboxImage = document.getElementById('lightbox-image');
+            const lightboxCaption = document.getElementById('lightbox-caption');
+
+            document.querySelectorAll('.gallery-card').forEach(card => {
+                card.addEventListener('click', () => {
+                    const img = card.querySelector('img');
+                    const title = card.querySelector('h3').textContent;
+
+                    lightboxImage.src = img.currentSrc || img.src;
+                    lightboxCaption.textContent = title;
+                    lightboxDialog.showModal();
+                });
+            });
+
+            // Fallback for browsers without closedby support
+            if (lightboxDialog && !('closedBy' in HTMLDialogElement.prototype)) {
+                lightboxDialog.addEventListener('click', (event) => {
+                    if (event.target !== lightboxDialog) return;
+                    const rect = lightboxDialog.getBoundingClientRect();
+                    const isDialogContent = (
+                        rect.top <= event.clientY &&
+                        event.clientY <= rect.top + rect.height &&
+                        rect.left <= event.clientX &&
+                        event.clientX <= rect.left + rect.width
+                    );
+                    if (isDialogContent) return;
+                    lightboxDialog.close();
+                });
+            }
+        });
+    </script>
+</body>
+
+</html>

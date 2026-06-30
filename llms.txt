@@ -1,0 +1,82 @@
+# QR Maker API
+
+Fully customized QR code generation endpoints. Generates dynamic QR codes with customizable colors, formatting, icons, error correction, and rounded corners on the fly.
+
+## Endpoints
+
+### 1. Public Endpoint (Standard Rate Limits)
+`GET https://qrmaker.ryanmarch.me/api/qr`
+- Public access, no authentication required.
+- Subject to standard rate limiting.
+
+### 2. Plus Endpoint (Higher Rate Limits)
+`GET https://qrmaker.ryanmarch.me/api/plus`
+- Requires bearer API Key.
+- Higher rate limit threshold (up to 20 requests per 10 seconds).
+
+---
+
+## Authentication
+Add your API key to the `Authorization` header:
+```http
+Authorization: Bearer YOUR_API_KEY
+```
+
+---
+
+## Query Parameters
+
+| Parameter | Type | Required | Default | Description |
+| :--- | :--- | :--- | :--- | :--- |
+| `content` | String | Yes | - | The URL or text content to encode. Must be properly URL-encoded. |
+| `format` | String | No | `png` | Output format: png (raw binary file), svg (vector
+                                    graphic), or base64 (JSON wrapping Data URI). |
+| `size` | Number | No | `1024` | Width and height in pixels (for png and base64). Min:
+                                    64, Max: 4096. |
+| `fgColor` | String | No | `000000` | Hex color code for the foreground/pixels. Do not include a leading
+                                        #. |
+| `bgColor` | String | No | `ffffff` | Hex color code for background. Ignored if transparent=true. Do
+                                        not include #. |
+| `transparent` | Boolean | No | `false` | Set to true or 1 for a transparent background. |
+| `margin` | Number | No | `2` | Quiet-zone border size in modules. Min: 0, Max: 10. |
+| `ecl` | String | No | `M` | Error Correction Level: L (Low), M (Medium),
+                                    Q (Quartile), H (High). |
+| `cornerRadius` | Number | No | `0` | Quiet-zone background card border radius percentage. Min: 0, Max:
+                                    100. |
+| `cornerStyle` | String | No | `square` | Rendering style of modules: square, rounded,
+                                    circle, leaf, beveled. |
+| `icon` | String | No | `none` | Overlay an icon: link, globe,
+                                    text, wifi, contact, email,
+                                    phone, map-pin, sms, event,
+                                    github, linkedin, instagram,
+                                    facebook, whatsapp, youtube,
+                                    patreon, discord, pinterest. You can
+                                    also pass any URL-encoded custom emoji (e.g., icon=%F0%9F%9A%80 for
+                                    🚀). Emojis are fully rendered in SVG output and clear the background card space in
+                                    PNG output. |
+| `iconSize` | Number | No | `20` | Percentage width of center icon. Min: 10, Max: 30. |
+| `iconColor` | String | No | - | Hex color code for the center icon. Defaults to fgColor. Do not
+                                        include #. |
+| `iconBg` | String | No | `rounded` | Shape of the backing card behind the icon: rounded,
+                                    circle, square, or none. |
+
+---
+
+## Response Formats
+
+### PNG Image (`format=png`)
+- **Content-Type**: `image/png`
+- **Response**: Raw PNG image binary data.
+
+### SVG XML (`format=svg`)
+- **Content-Type**: `image/svg+xml; charset=utf-8`
+- **Response**: Lightweight SVG vector code.
+
+### Base64 Data JSON (`format=base64`)
+- **Content-Type**: `application/json`
+- **Response**:
+  ```json
+  {
+    "data": "data:image/png;base64,iVBORw0KGgo..."
+  }
+  ```

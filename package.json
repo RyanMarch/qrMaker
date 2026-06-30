@@ -3,9 +3,9 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "dev": "wrangler pages dev . --compatibility-date=2024-01-01",
-    "build": "echo 'No build step required'",
-    "deploy": "wrangler pages deploy ."
+    "dev": "node scripts/generate-agent-docs.js && wrangler pages dev . --compatibility-date=2024-01-01",
+    "build": "node scripts/generate-agent-docs.js",
+    "deploy": "node scripts/generate-agent-docs.js && wrangler pages deploy ."
   },
   "dependencies": {
     "fflate": "^0.8.2"

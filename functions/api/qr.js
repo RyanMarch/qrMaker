@@ -361,7 +361,7 @@ export async function onRequestGet(context) {
   }
 
   // Adjust error correction level for icon overlay data loss if not explicitly set
-  const hasIcon = icon && icon !== 'none' && PREDEFINED_ICONS[icon];
+  const hasIcon = icon && icon !== 'none';
   if (hasIcon && !params.has('ecl')) {
     ecl = iconSize > 22 ? 'H' : 'Q';
   }
@@ -466,7 +466,8 @@ function toSVG(matrix, fgColor, bgColor, transparent, cornerRadius = 0, cornerSt
     ? iconBg
     : (iconBg ? 'rounded' : 'none');
 
-  const hasIcon = icon && icon !== 'none' && PREDEFINED_ICONS[icon];
+  const hasIcon = icon && icon !== 'none';
+  const isPredefined = hasIcon && PREDEFINED_ICONS[icon];
 
   for (let row = 0; row < size; row++) {
     for (let col = 0; col < size; col++) {
@@ -516,31 +517,46 @@ function toSVG(matrix, fgColor, bgColor, transparent, cornerRadius = 0, cornerSt
     }
 
     // Draw the icon itself
-    const iconXModules = centerModules - iconSizeModules / 2;
-    const iconYModules = centerModules - iconSizeModules / 2;
-    const scale = iconSizeModules / 24; // assuming viewBox is 24x24
-    const strokeHex = rgbToHex(iconColor);
-    const iconConfig = PREDEFINED_ICONS[icon];
+    if (isPredefined) {
+      const iconXModules = centerModules - iconSizeModules / 2;
+      const iconYModules = centerModules - iconSizeModules / 2;
+      const scale = iconSizeModules / 24; // assuming viewBox is 24x24
+      const strokeHex = rgbToHex(iconColor);
+      const iconConfig = PREDEFINED_ICONS[icon];
 
-    iconSvgContent += `\n  <g transform="translate(${iconXModules}, ${iconYModules}) scale(${scale})" stroke-linecap="round" stroke-linejoin="round">`;
-    if (iconConfig.type === 'stroke') {
-      for (const p of iconConfig.paths) {
-        iconSvgContent += `\n    <path d="${p}" fill="none" stroke="${strokeHex}" stroke-width="2"/>`;
-      }
-    } else if (iconConfig.type === 'fill') {
-      for (const p of iconConfig.paths) {
-        iconSvgContent += `\n    <path d="${p}" fill="${strokeHex}" stroke="none"/>`;
-      }
-    } else if (iconConfig.type === 'mixed') {
-      for (const p of iconConfig.paths) {
-        if (p.type === 'stroke') {
-          iconSvgContent += `\n    <path d="${p.d}" fill="none" stroke="${strokeHex}" stroke-width="2"/>`;
-        } else if (p.type === 'fill') {
-          iconSvgContent += `\n    <path d="${p.d}" fill="${strokeHex}" stroke="none"/>`;
+      iconSvgContent += `\n  <g transform="translate(${iconXModules}, ${iconYModules}) scale(${scale})" stroke-linecap="round" stroke-linejoin="round">`;
+      if (iconConfig.type === 'stroke') {
+        for (const p of iconConfig.paths) {
+          iconSvgContent += `\n    <path d="${p}" fill="none" stroke="${strokeHex}" stroke-width="2"/>`;
+        }
+      } else if (iconConfig.type === 'fill') {
+        for (const p of iconConfig.paths) {
+          iconSvgContent += `\n    <path d="${p}" fill="${strokeHex}" stroke="none"/>`;
+        }
+      } else if (iconConfig.type === 'mixed') {
+        for (const p of iconConfig.paths) {
+          if (p.type === 'stroke') {
+            iconSvgContent += `\n    <path d="${p.d}" fill="none" stroke="${strokeHex}" stroke-width="2"/>`;
+          } else if (p.type === 'fill') {
+            iconSvgContent += `\n    <path d="${p.d}" fill="${strokeHex}" stroke="none"/>`;
+          }
         }
       }
+      iconSvgContent += `\n  </g>`;
+    } else {
+      const escapedEmoji = icon.replace(/[<>&'"]/g, (c) => {
+        switch (c) {
+          case '<': return '&lt;';
+          case '>': return '&gt;';
+          case '&': return '&amp;';
+          case '\'': return '&apos;';
+          case '"': return '&quot;';
+          default: return c;
+        }
+      });
+      const emojiSize = iconSizeModules * 0.82;
+      iconSvgContent += `\n  <text x="${centerModules}" y="${centerModules}" font-size="${emojiSize}" font-family="system-ui, -apple-system, sans-serif" text-anchor="middle" dominant-baseline="central">${escapedEmoji}</text>`;
     }
-    iconSvgContent += `\n  </g>`;
   }
 
   return [
@@ -584,8 +600,9 @@ function toPNG(matrix, outputSize, fgColor, bgColor, transparent, cornerRadius =
     ? iconBg
     : (iconBg ? 'rounded' : 'none');
 
-  const hasIcon = icon && icon !== 'none' && PREDEFINED_ICONS[icon];
-  const iconGridHex = hasIcon ? PREDEFINED_ICONS[icon].grid : '';
+  const hasIcon = icon && icon !== 'none';
+  const isPredefined = hasIcon && PREDEFINED_ICONS[icon];
+  const iconGridHex = isPredefined ? PREDEFINED_ICONS[icon].grid : '';
   const [icR, icG, icB] = iconColor;
   const cardR = br, cardG = bg2, cardB = bb;
 
@@ -603,7 +620,7 @@ function toPNG(matrix, outputSize, fgColor, bgColor, transparent, cornerRadius =
 
       let inIcon = false;
       let iconPixelDark = false;
-      if (hasIcon && col >= iconX && col < iconX + iconSizePx && row >= iconY && row < iconY + iconSizePx) {
+      if (isPredefined && col >= iconX && col < iconX + iconSizePx && row >= iconY && row < iconY + iconSizePx) {
         const gridCol = Math.floor((col - iconX) * 48 / iconSizePx);
         const gridRow = Math.floor((row - iconY) * 48 / iconSizePx);
         if (gridCol >= 0 && gridCol < 48 && gridRow >= 0 && gridRow < 48) {

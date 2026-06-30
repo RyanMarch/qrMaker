@@ -8,9 +8,12 @@
         (function () {
             const savedTheme = localStorage.getItem('qrm-theme') || 'dark';
             if (savedTheme === 'system') {
-                document.documentElement.removeAttribute('data-theme');
+                const isDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+                document.documentElement.setAttribute('data-theme', isDark ? 'dark' : 'light');
+                document.documentElement.setAttribute('data-theme-mode', 'system');
             } else {
                 document.documentElement.setAttribute('data-theme', savedTheme);
+                document.documentElement.removeAttribute('data-theme-mode');
             }
         })();
     </script>
@@ -32,14 +35,18 @@
     <link rel="icon" type="image/png" href="/assets/favicon/favicon-96x96.png" sizes="96x96" />
     <link rel="icon" type="image/svg+xml" href="/assets/favicon/favicon.svg" />
 
+    <link rel="stylesheet" href="/css/style.css">
     <link rel="stylesheet" href="style.css">
+    <!-- AI-Agent/LLM Metadata -->
+    <link rel="openapi" type="application/json" href="/api/openapi.json">
+    <link rel="alternate" type="text/markdown" href="/llms.txt" title="LLM-friendly API Documentation">
     <!-- Cloudflare Turnstile CAPTCHA (loaded with callback) -->
     <script src="https://challenges.cloudflare.com/turnstile/v0/api.js?onload=onloadTurnstileCallback" defer></script>
 </head>
 
 <body>
     <!-- Header -->
-    <header class="api-header">
+    <header class="global-header">
         <div class="header-left">
             <button id="mobile-nav-toggle" class="mobile-nav-toggle" aria-label="Toggle navigation"
                 aria-expanded="false">
@@ -52,9 +59,15 @@
             <a href="/" class="logo-link">
                 <span class="logo-text">QR Maker</span>
                 <span class="badge">API Docs</span>
+                <span title="AI Agent Ready (llms.txt & OpenAPI Spec available)"></span>
             </a>
         </div>
         <div class="header-right">
+            <nav class="header-nav" aria-label="Main Navigation">
+                <a href="/" class="nav-link">App</a>
+                <a href="/about/" class="nav-link">About</a>
+                <a href="/api/" class="nav-link active">API</a>
+            </nav>
             <button id="theme-toggle" class="theme-toggle" aria-label="Toggle theme" title="Toggle theme">
                 <svg class="sun-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                     stroke-linecap="round" stroke-linejoin="round">
@@ -90,6 +103,12 @@
     <main class="api-container">
         <!-- Sidebar Navigation -->
         <nav class="api-sidebar" aria-label="Documentation sections">
+            <div class="sidebar-site-nav">
+                <a href="/" class="sidebar-site-link">App</a>
+                <a href="/about/" class="sidebar-site-link">About</a>
+                <a href="/api/" class="sidebar-site-link active">API</a>
+            </div>
+            <hr class="sidebar-divider">
             <ul>
                 <li><a href="#overview" class="sidebar-link active">Overview</a></li>
                 <li><a href="#authentication" class="sidebar-link">Authentication & Keys</a></li>
@@ -102,22 +121,13 @@
             <div class="sidebar-footer">
                 <div class="cta-card">
                     <div class="cta-card-icon">
-                        <svg viewBox="0 0 24 24" class="qr-svg-icon" width="20" height="20">
-                            <defs>
-                                <linearGradient id="cta-icon-grad" x1="0%" y1="0%" x2="100%" y2="100%">
-                                    <stop offset="0%" stop-color="var(--accent)" />
-                                    <stop offset="100%" stop-color="#a855f7" />
-                                </linearGradient>
-                            </defs>
-                            <path fill="url(#cta-icon-grad)"
-                                d="M3 3h6v6H3V3zm2 2v2h2V5H5zm8-2h6v6h-6V3zm2 2v2h2V5h-2zM3 13h6v6H3v-6zm2 2v2h2v-2H5zm13-2h3v2h-3v-2zm-2 2h2v2h-2v-2zm2 2h3v3h-3v-3zm-4-4h2v2h-2v-2zm2 2h-2v2h2v-2zm-2 2h2v2h-2v-2zm-2-6h2v2h-2V9zm2 2h2v2h-2v-2zm-4 2h2v2h-2v-2zm2 2h2v2h-2v-2z" />
-                        </svg>
+                        <img src="/assets/favicon/favicon.svg" alt="QR Maker Icon" width="30" height="30">
                     </div>
                     <h4 class="cta-card-title">QR Maker</h4>
                     <p class="cta-card-desc">Try the interactive web app for custom colors, logos, icons, SVG exports,
                         and more.</p>
                     <a href="/" class="btn-cta-generator">
-                        <span>Go to Generator</span>
+                        <span>Go to QR Maker</span>
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="14"
                             height="14">
                             <line x1="5" y1="12" x2="19" y2="12"></line>
@@ -125,7 +135,7 @@
                         </svg>
                     </a>
                 </div>
-                <a href="/#about" class="about-app-link">
+                <a href="/about/" class="about-app-link">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14">
                         <circle cx="12" cy="12" r="10"></circle>
                         <line x1="12" y1="16" x2="12" y2="12"></line>
@@ -171,10 +181,13 @@
                     <span style="font-size: 11px; color: var(--text-secondary); margin-left: 20px;">Higher rate limits,
                         requires Bearer API Key</span>
                 </div>
+
+                <h3 style="margin-top: 2rem; margin-bottom: 1rem; font-size: 1.25rem;"> Resources</h3>
+
                 <div class="download-box">
                     <div class="download-box-text">
                         <h3>Test in Postman or Bruno</h3>
-                        <p>Download our API request collection to test, preview, and run requests instantly. Supported
+                        <p>Download an API request collection to test, preview, and run requests instantly. Supported
                             by both Postman and Bruno.</p>
                     </div>
                     <button id="btn-download-collection" class="btn-download">
@@ -186,6 +199,36 @@
                         </svg>
                         Download Collection
                     </button>
+                </div>
+
+                <div class="download-box">
+                    <div class="download-box-text">
+                        <h3>AI-Agent & Machine Specifications</h3>
+                        <p>Get machine-readable specifications including OpenAPI 3.0 schema and LLM-friendly
+                            documentation.</p>
+                    </div>
+                    <div class="download-box-actions">
+                        <a href="/api/openapi.json" target="_blank" class="btn-download">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16"
+                                height="16">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <line x1="12" y1="8" x2="12" y2="16"></line>
+                                <line x1="8" y1="12" x2="16" y2="12"></line>
+                            </svg>
+                            OpenAPI Schema
+                        </a>
+                        <a href="/llms.txt" target="_blank" class="btn-download btn-secondary">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16"
+                                height="16">
+                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                                <polyline points="14 2 14 8 20 8"></polyline>
+                                <line x1="16" y1="13" x2="8" y2="13"></line>
+                                <line x1="16" y1="17" x2="8" y2="17"></line>
+                                <polyline points="10 9 9 9 8 9"></polyline>
+                            </svg>
+                            llms.txt
+                        </a>
+                    </div>
                 </div>
             </article>
 
@@ -382,7 +425,11 @@
                                     <code>text</code>, <code>wifi</code>, <code>contact</code>, <code>email</code>,
                                     <code>phone</code>, <code>map-pin</code>, <code>sms</code>, <code>event</code>,
                                     <code>github</code>, <code>linkedin</code>, <code>instagram</code>,
-                                    <code>facebook</code>, <code>whatsapp</code>.
+                                    <code>facebook</code>, <code>whatsapp</code>, <code>youtube</code>,
+                                    <code>patreon</code>, <code>discord</code>, <code>pinterest</code>. <br />You can
+                                    also pass any URL-encoded custom emoji (e.g., <code>icon=%F0%9F%9A%80</code> for
+                                    🚀). Emojis are fully rendered in SVG output and clear the background card space in
+                                    PNG output.
                                 </td>
                             </tr>
                             <tr>
@@ -504,6 +551,7 @@
                                     <option value="linkedin">LinkedIn</option>
                                     <option value="email">Email</option>
                                     <option value="wifi">WiFi</option>
+                                    <option value="🚀">Emoji (🚀)</option>
                                 </select>
                             </div>
                             <div class="form-group">
@@ -573,7 +621,7 @@
                     <div class="tab-content active" id="tab-html">
                         <p style="margin-bottom: 12px; font-size: 14px; color: var(--text-secondary);">
                             Embed QR codes directly in your HTML pages using a standard <code>&lt;img&gt;</code> tag.
-                            Unauthenticated requests are permitted and subject to rate limits.
+                            Unauthenticated requests are subject to rate limits.
                         </p>
                         <div class="code-block-wrapper">
                             <pre><code class="language-html">&lt;img src="https://qrmaker.ryanmarch.me/api/qr?content=https%3A%2F%2Fqrmaker.ryanmarch.me&amp;size=512&amp;fgColor=327DFF" alt="QR Code" /&gt;</code></pre>
@@ -648,6 +696,7 @@ app.get('/api/qr', async (req, res) => {
         </section>
     </main>
 
+    <script src="/js/header.js" defer></script>
     <script src="script.js"></script>
 </body>
 

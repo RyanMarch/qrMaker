@@ -47,7 +47,7 @@ And more:
 * **Colors & Gradients:** Pick colors or use pre-made swatches. Supports solid backdrops or full transparency.
 
 ### 3. Add Logos & Icons
-* **Icon Library:** Choose from pre-loaded icons (Link, Globe, Wifi, Contact, Email, Phone, GitHub, LinkedIn, Instagram, etc.).
+* **Icon Library & Custom Emojis:** Choose from pre-loaded icons (Link, Globe, Wifi, Contact, Email, Phone, GitHub, LinkedIn, Instagram, YouTube, Patreon, Discord, Pinterest) or input any custom emoji.
 * **Custom Logos:** Drag and drop your own PNG or JPG logo file directly into the center.
 * **Card Backings:** Adjust the size of the icon and place a square, rounded, or circular backing card behind it to clear out overlapping QR modules.
 
@@ -119,7 +119,7 @@ Authorization: Bearer YOUR_API_KEY
 | `ecl` | String | No | `M` | Error Correction Level: `L` (Low), `M` (Medium), `Q` (Quartile), `H` (High). |
 | `cornerRadius` | Number | No | `0` | Background corner radius percentage. Range: `0` to `100`. |
 | `cornerStyle` | String | No | `square` | Corner style: `square`, `rounded`, `circle`, `leaf`, `beveled`. |
-| `icon` | String | No | `none` | Predefined center icon: `link`, `globe`, `text`, `wifi`, `contact`, `email`, `phone`, `map-pin`, `sms`, `event`, `github`, `linkedin`, `instagram`, `facebook`, `whatsapp`. |
+| `icon` | String | No | `none` | Predefined center icon: `link`, `globe`, `text`, `wifi`, `contact`, `email`, `phone`, `map-pin`, `sms`, `event`, `github`, `linkedin`, `instagram`, `facebook`, `whatsapp`, `youtube`, `patreon`, `discord`, `pinterest`. Also supports arbitrary URL-encoded emojis (e.g. `icon=%F0%9F%9A%80` for 🚀). |
 | `iconSize` | Number | No | `20` | Percentage of the QR code area for the icon. Range: `10` to `30`. |
 | `iconColor` | String | No | — | Hex color code for the icon (defaults to `fgColor`). Do not include the `#`. |
 | `iconClear` | Boolean | No | `true` | Set to `false` (or `0`) to disable clearing the QR modules behind the icon. |
@@ -160,8 +160,8 @@ Returns a JSON object wrapping a Data URL.
 QR Maker is built directly on standard web technologies to keep page load times under a second.
 
 ### 1. Browser-Side Rendering
-* **QR Engine:** The app uses an inlined version of [Nayuki's QR Code generator library](https://github.com/nayuki/QR-Code-generator) (MIT License) in `qrcode-lib.js` to compile the raw text data into a grid.
-* **HTML5 Canvas:** Custom drawing logic in `script.js` reads the grid and draws custom pixel shapes and finder patterns to render the final PNG images.
+* **QR Engine:** The app uses an inlined version of [Nayuki's QR Code generator library](https://github.com/nayuki/QR-Code-generator) (MIT License) in `js/qrcode-lib.js` to compile the raw text data into a grid.
+* **HTML5 Canvas:** Custom drawing logic in `js/script.js` reads the grid and draws custom pixel shapes and finder patterns to render the final PNG images.
 * **Vector SVG Generator:** Outputs clean, editable XML SVG strings directly.
 
 ### 2. Standalone Application
