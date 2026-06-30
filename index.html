@@ -103,6 +103,13 @@
                         stroke-linecap="round" stroke-linejoin="round">
                         <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
                     </svg>
+                    <svg class="system-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
+                        <line x1="8" y1="21" x2="16" y2="21"></line>
+                        <line x1="12" y1="17" x2="12" y2="21"></line>
+                    </svg>
+                    <span id="theme-status" class="theme-status"></span>
                 </button>
             </div>
 
@@ -863,24 +870,113 @@
                         </summary>
                         <div class="seo-details-content">
                             <h2>QR Code Generator</h2>
-                            <p>
+                            <p class="seo-intro-text">
                                 <strong>QR Maker</strong> is a professional browser-based design toolkit built to craft
                                 beautiful, customizable QR codes entirely in your browser.
                             </p>
-                            <h3>Key Features:</h3>
-                            <ul>
-                                <li><strong>Custom Appearance:</strong> Modify foreground colors, solid or transparent
-                                    backgrounds, pixel styles, and corner marker shapes.</li>
-                                <li><strong>Logo & Icons:</strong> Center custom logos or choose from a selection of
-                                    built-in system icons with custom sizing and clipping shapes.</li>
-                                <li><strong>Rich Formats:</strong> Export high-fidelity assets as PNG or vector SVG
-                                    directly to your device.</li>
-                                <li><strong>Instant Sharing:</strong> Share configurations via dynamic URLs that load
-                                    your exact design instantly.</li>
-                                <li><strong>PWA Ready:</strong> Install to your Home Screen or Dock to design offline in
-                                    a clean, full-screen environment.</li>
-                                <li><strong>Developer API:</strong> Request custom QR codes programmatically on the fly. View our <a href="/api/">API Documentation</a>.</li>
-                            </ul>
+
+                            <div class="features-grid">
+                                <div class="feature-item">
+                                    <div class="feature-icon-wrapper">
+                                        <!-- Custom Appearance (Palette) -->
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                            stroke-linecap="round" stroke-linejoin="round" class="feature-icon">
+                                            <path
+                                                d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 14.7255 3.09032 17.1962 4.85857 19C5.35857 19.5 5.5 20 5.5 20.5C5.5 21.3284 6.17157 22 7 22H12Z" />
+                                            <circle cx="7.5" cy="10.5" r="1.5" fill="currentColor" />
+                                            <circle cx="11.5" cy="7.5" r="1.5" fill="currentColor" />
+                                            <circle cx="16.5" cy="9.5" r="1.5" fill="currentColor" />
+                                            <circle cx="15.5" cy="14.5" r="1.5" fill="currentColor" />
+                                        </svg>
+                                    </div>
+                                    <div class="feature-text">
+                                        <strong>Custom Appearance:</strong> Modify foreground colors, solid or
+                                        transparent backgrounds, pixel styles, and corner marker shapes.
+                                    </div>
+                                </div>
+                                <div class="feature-item">
+                                    <div class="feature-icon-wrapper">
+                                        <!-- Logo & Icons (Image) -->
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                            stroke-linecap="round" stroke-linejoin="round" class="feature-icon">
+                                            <rect x="3" y="3" width="18" height="18" rx="2" ry="2" />
+                                            <circle cx="8.5" cy="8.5" r="1.5" />
+                                            <polyline points="21 15 16 10 5 21" />
+                                        </svg>
+                                    </div>
+                                    <div class="feature-text">
+                                        <strong>Logo & Icons:</strong> Add custom logos or choose from a selection of
+                                        built-in system icons.
+                                    </div>
+                                </div>
+                                <div class="feature-item">
+                                    <div class="feature-icon-wrapper">
+                                        <!-- Rich Formats (Download) -->
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                            stroke-linecap="round" stroke-linejoin="round" class="feature-icon">
+                                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                                            <polyline points="7 10 12 15 17 10" />
+                                            <line x1="12" y1="15" x2="12" y2="3" />
+                                        </svg>
+                                    </div>
+                                    <div class="feature-text">
+                                        <strong>Rich Formats:</strong> Export as PNG or vector SVG
+                                        directly to your device.
+                                    </div>
+                                </div>
+                                <div class="feature-item">
+                                    <div class="feature-icon-wrapper">
+                                        <!-- Instant Sharing (Share) -->
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                            stroke-linecap="round" stroke-linejoin="round" class="feature-icon">
+                                            <circle cx="18" cy="5" r="3" />
+                                            <circle cx="6" cy="12" r="3" />
+                                            <circle cx="18" cy="19" r="3" />
+                                            <line x1="8.59" y1="13.51" x2="15.42" y2="17.49" />
+                                            <line x1="15.41" y1="6.51" x2="8.59" y2="10.49" />
+                                        </svg>
+                                    </div>
+                                    <div class="feature-text">
+                                        <strong>Instant Sharing:</strong> Share QR codes via dynamic URLs that
+                                        load your exact design instantly.
+                                    </div>
+                                </div>
+                                <div class="feature-item">
+                                    <div class="feature-icon-wrapper">
+                                        <!-- PWA Ready (Smartphone) -->
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                            stroke-linecap="round" stroke-linejoin="round" class="feature-icon">
+                                            <rect x="5" y="2" width="14" height="20" rx="2" ry="2" />
+                                            <line x1="12" y1="18" x2="12.01" y2="18" />
+                                        </svg>
+                                    </div>
+                                    <div class="feature-text">
+                                        <strong>Web App Ready:</strong> Install to your Home Screen or Dock to design
+                                        offline in a clean, full-screen environment.
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="api-cta-card">
+                                <div class="api-cta-header">
+                                    <div class="api-cta-tag">DEVELOPER API</div>
+                                    <!-- <div class="api-cta-badge">REST</div> -->
+                                </div>
+                                <h4 class="api-cta-title">Integrate programmatically</h4>
+                                <p class="api-cta-desc">Generate custom QR codes dynamically on the fly with our
+                                    lightning-fast API service.</p>
+                                <div class="api-cta-code">
+                                    <code>GET /api?text=Hello+World</code>
+                                </div>
+                                <a href="/api/" class="api-cta-btn">
+                                    <span>Explore API Documentation</span>
+                                    <svg class="api-btn-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <line x1="5" y1="12" x2="19" y2="12"></line>
+                                        <polyline points="12 5 19 12 12 19"></polyline>
+                                    </svg>
+                                </a>
+                            </div>
                         </div>
                     </details>
                 </div>
@@ -909,24 +1005,113 @@
                 </summary>
                 <div class="seo-details-content">
                     <h2>QR Code Generator</h2>
-                    <p>
+                    <p class="seo-intro-text">
                         <strong>QR Maker</strong> is a professional browser-based design toolkit built to craft
                         beautiful, customizable QR codes entirely in your browser.
                     </p>
-                    <h3>Key Features:</h3>
-                    <ul>
-                        <li><strong>Custom Appearance:</strong> Modify foreground colors, solid or transparent
-                            backgrounds, pixel styles, and corner marker shapes.</li>
-                        <li><strong>Logo & Icons:</strong> Center custom logos or choose from a selection of built-in
-                            system icons with custom sizing and clipping shapes.</li>
-                        <li><strong>Rich Formats:</strong> Export high-fidelity assets as PNG or vector SVG directly to
-                            your device.</li>
-                        <li><strong>Instant Sharing:</strong> Share configurations via dynamic URLs that load your exact
-                            design instantly.</li>
-                        <li><strong>PWA Ready:</strong> Install to your Home Screen or Dock to design offline in a
-                            clean, full-screen environment.</li>
-                        <li><strong>Developer API:</strong> Request custom QR codes programmatically on the fly. View our <a href="/api/">API Documentation</a>.</li>
-                    </ul>
+
+                    <div class="features-grid">
+                        <div class="feature-item">
+                            <div class="feature-icon-wrapper">
+                                <!-- Custom Appearance (Palette) -->
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                    stroke-linecap="round" stroke-linejoin="round" class="feature-icon">
+                                    <path
+                                        d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 14.7255 3.09032 17.1962 4.85857 19C5.35857 19.5 5.5 20 5.5 20.5C5.5 21.3284 6.17157 22 7 22H12Z" />
+                                    <circle cx="7.5" cy="10.5" r="1.5" fill="currentColor" />
+                                    <circle cx="11.5" cy="7.5" r="1.5" fill="currentColor" />
+                                    <circle cx="16.5" cy="9.5" r="1.5" fill="currentColor" />
+                                    <circle cx="15.5" cy="14.5" r="1.5" fill="currentColor" />
+                                </svg>
+                            </div>
+                            <div class="feature-text">
+                                <strong>Custom Appearance:</strong> Modify foreground colors, solid or transparent
+                                backgrounds, pixel styles, and corner marker shapes.
+                            </div>
+                        </div>
+                        <div class="feature-item">
+                            <div class="feature-icon-wrapper">
+                                <!-- Logo & Icons (Image) -->
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                    stroke-linecap="round" stroke-linejoin="round" class="feature-icon">
+                                    <rect x="3" y="3" width="18" height="18" rx="2" ry="2" />
+                                    <circle cx="8.5" cy="8.5" r="1.5" />
+                                    <polyline points="21 15 16 10 5 21" />
+                                </svg>
+                            </div>
+                            <div class="feature-text">
+                                <strong>Logo & Icons:</strong> Center custom logos or choose from a selection of
+                                built-in system icons with custom sizing and clipping shapes.
+                            </div>
+                        </div>
+                        <div class="feature-item">
+                            <div class="feature-icon-wrapper">
+                                <!-- Rich Formats (Download) -->
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                    stroke-linecap="round" stroke-linejoin="round" class="feature-icon">
+                                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                                    <polyline points="7 10 12 15 17 10" />
+                                    <line x1="12" y1="15" x2="12" y2="3" />
+                                </svg>
+                            </div>
+                            <div class="feature-text">
+                                <strong>Rich Formats:</strong> Export high-fidelity assets as PNG or vector SVG directly
+                                to your device.
+                            </div>
+                        </div>
+                        <div class="feature-item">
+                            <div class="feature-icon-wrapper">
+                                <!-- Instant Sharing (Share) -->
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                    stroke-linecap="round" stroke-linejoin="round" class="feature-icon">
+                                    <circle cx="18" cy="5" r="3" />
+                                    <circle cx="6" cy="12" r="3" />
+                                    <circle cx="18" cy="19" r="3" />
+                                    <line x1="8.59" y1="13.51" x2="15.42" y2="17.49" />
+                                    <line x1="15.41" y1="6.51" x2="8.59" y2="10.49" />
+                                </svg>
+                            </div>
+                            <div class="feature-text">
+                                <strong>Instant Sharing:</strong> Share configurations via dynamic URLs that load your
+                                exact design instantly.
+                            </div>
+                        </div>
+                        <div class="feature-item">
+                            <div class="feature-icon-wrapper">
+                                <!-- PWA Ready (Smartphone) -->
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                    stroke-linecap="round" stroke-linejoin="round" class="feature-icon">
+                                    <rect x="5" y="2" width="14" height="20" rx="2" ry="2" />
+                                    <line x1="12" y1="18" x2="12.01" y2="18" />
+                                </svg>
+                            </div>
+                            <div class="feature-text">
+                                <strong>PWA Ready:</strong> Install to your Home Screen or Dock to design offline in a
+                                clean, full-screen environment.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="api-cta-card">
+                        <div class="api-cta-header">
+                            <div class="api-cta-tag">DEVELOPER API</div>
+                            <!-- <div class="api-cta-badge">REST</div> -->
+                        </div>
+                        <h4 class="api-cta-title">Integrate programmatically</h4>
+                        <p class="api-cta-desc">Generate custom QR codes dynamically on the fly with our lightning-fast
+                            API service.</p>
+                        <div class="api-cta-code">
+                            <code>GET /api?text=Hello+World</code>
+                        </div>
+                        <a href="/api/" class="api-cta-btn">
+                            <span>Explore API Documentation</span>
+                            <svg class="api-btn-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <line x1="5" y1="12" x2="19" y2="12"></line>
+                                <polyline points="12 5 19 12 12 19"></polyline>
+                            </svg>
+                        </a>
+                    </div>
                 </div>
             </details>
         </div>
