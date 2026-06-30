@@ -8,9 +8,12 @@
         (function () {
             const savedTheme = localStorage.getItem('qrm-theme') || 'dark';
             if (savedTheme === 'system') {
-                document.documentElement.removeAttribute('data-theme');
+                const isDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+                document.documentElement.setAttribute('data-theme', isDark ? 'dark' : 'light');
+                document.documentElement.setAttribute('data-theme-mode', 'system');
             } else {
                 document.documentElement.setAttribute('data-theme', savedTheme);
+                document.documentElement.removeAttribute('data-theme-mode');
             }
         })();
     </script>
@@ -41,7 +44,7 @@
       "@type": "WebApplication",
       "name": "QR Maker",
       "url": "https://qrmaker.ryanmarch.me/",
-      "description": "Generate and customize QR codes entirely in the browser. No server, no build step, no dependencies.",
+      "description": "Generate and customize QR codes entirely in the browser.",
       "applicationCategory": "UtilitiesApplication",
       "operatingSystem": "All",
       "browserRequirements": "Requires JavaScript. Requires HTML5 Canvas.",
@@ -78,40 +81,76 @@
     <link rel="stylesheet" href="style.css">
 </head>
 
-<body id="main-body">
+<body id="main-body" class="has-global-header">
+
+    <!-- Header -->
+    <header class="global-header">
+        <div class="header-left">
+            <a href="/" class="logo-link">
+                <span class="logo-text">QR Maker</span>
+            </a>
+        </div>
+        <div class="header-right">
+            <nav class="header-nav" aria-label="Main Navigation">
+                <a href="/" class="nav-link active">App</a>
+                <a href="/about/" class="nav-link">About</a>
+                <a href="/api/" class="nav-link">API</a>
+            </nav>
+            <button id="theme-toggle" class="theme-toggle" aria-label="Toggle theme" title="Toggle theme">
+                <svg class="sun-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="5"></circle>
+                    <line x1="12" y1="1" x2="12" y2="3"></line>
+                    <line x1="12" y1="21" x2="12" y2="23"></line>
+                    <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                    <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                    <line x1="1" y1="12" x2="3" y2="12"></line>
+                    <line x1="21" y1="12" x2="23" y2="12"></line>
+                    <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                    <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                </svg>
+                <svg class="moon-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                </svg>
+                <svg class="system-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
+                    <line x1="8" y1="21" x2="16" y2="21"></line>
+                    <line x1="12" y1="17" x2="12" y2="21"></line>
+                </svg>
+                <span id="theme-status" class="theme-status"></span>
+            </button>
+            <button id="mobile-menu-toggle" class="mobile-menu-toggle" aria-label="Toggle navigation menu"
+                aria-expanded="false">
+                <svg class="menu-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="3" y1="12" x2="21" y2="12"></line>
+                    <line x1="3" y1="6" x2="21" y2="6"></line>
+                    <line x1="3" y1="18" x2="21" y2="18"></line>
+                </svg>
+                <svg class="close-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round" style="display: none;">
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+            </button>
+        </div>
+    </header>
+
+    <!-- Mobile Navigation Overlay -->
+    <div id="mobile-nav-menu" class="mobile-nav-menu">
+        <nav class="mobile-menu-nav">
+            <a href="/" class="mobile-menu-link active">App</a>
+            <a href="/about/" class="mobile-menu-link">About</a>
+            <a href="/api/" class="mobile-menu-link">API</a>
+        </nav>
+    </div>
 
     <main class="container" id="tool-container">
 
         <!-- Preview Column -->
         <section class="preview-section" aria-label="QR Code Preview">
-            <div class="preview-header">
-                <h1>QR Maker</h1>
-                <button id="theme-toggle" class="theme-toggle" aria-label="Toggle theme" title="Toggle theme">
-                    <svg class="sun-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                        stroke-linecap="round" stroke-linejoin="round">
-                        <circle cx="12" cy="12" r="5"></circle>
-                        <line x1="12" y1="1" x2="12" y2="3"></line>
-                        <line x1="12" y1="21" x2="12" y2="23"></line>
-                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
-                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
-                        <line x1="1" y1="12" x2="3" y2="12"></line>
-                        <line x1="21" y1="12" x2="23" y2="12"></line>
-                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
-                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
-                    </svg>
-                    <svg class="moon-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                        stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
-                    </svg>
-                    <svg class="system-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                        stroke-linecap="round" stroke-linejoin="round">
-                        <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
-                        <line x1="8" y1="21" x2="16" y2="21"></line>
-                        <line x1="12" y1="17" x2="12" y2="21"></line>
-                    </svg>
-                    <span id="theme-status" class="theme-status"></span>
-                </button>
-            </div>
 
             <div class="qr-canvas-wrapper" id="qr-canvas-wrapper">
                 <canvas id="qr-canvas" width="400" height="400" aria-label="QR Code Preview"></canvas>
@@ -222,11 +261,6 @@
 
         <!-- Controls Column -->
         <section class="controls-section" aria-label="QR Code Settings">
-
-            <!-- Sidebar Header (Utility Branding) -->
-            <div class="sidebar-header">
-                <h2>QR Maker</h2>
-            </div>
 
             <!-- SECTION 1: CONTENT -->
             <div class="inspector-section">
@@ -747,15 +781,6 @@
                         </div>
                     </div>
 
-                    <div class="inspector-row">
-                        <div class="property-label">Card Behind</div>
-                        <div class="property-control checkbox-group">
-                            <input type="checkbox" id="icon-clear-behind" checked
-                                onchange="state.iconClearBehind = this.checked; scheduleGenerate()">
-                            <label for="icon-clear-behind">Draw card behind icon</label>
-                        </div>
-                    </div>
-
                     <div class="inspector-row" id="icon-shape-group">
                         <div class="property-label">Card Shape</div>
                         <div class="property-control">
@@ -853,7 +878,7 @@
                     </button>
                 </div>
 
-                <div class="seo-features-card">
+                <div id="about" class="seo-features-card">
                     <details class="seo-details">
                         <summary class="seo-summary">
                             <svg class="seo-info-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
@@ -951,8 +976,8 @@
                                         </svg>
                                     </div>
                                     <div class="feature-text">
-                                        <strong>Web App Ready:</strong> Install to your Home Screen or Dock to design
-                                        offline in a clean, full-screen environment.
+                                        <strong>Web App Ready:</strong> Install to your device to design
+                                        offline in a full-screen environment.
                                     </div>
                                 </div>
                             </div>
@@ -1142,6 +1167,7 @@
     <!-- Toast notification -->
     <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
+    <script src="/header.js" defer></script>
     <script src="qrcode-lib.js"></script>
     <script src="script.js"></script>
 </body>

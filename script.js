@@ -1461,7 +1461,7 @@ function updateAppTint(baseColorHex) {
 
     let tintBg;
     if (s === 0) {
-        tintBg = isDarkTheme ? '#18181b' : '#f4f4f5';
+        tintBg = isDarkTheme ? 'rgb(32, 32, 36)' : '#f4f4f5';
     } else {
         if (isDarkTheme) {
             tintBg = `hsl(${h}, ${Math.min(s, 24)}%, 11%)`;
@@ -2021,9 +2021,12 @@ function cycleTheme() {
     }
 
     if (next === 'system') {
-        document.documentElement.removeAttribute('data-theme');
+        const isDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        document.documentElement.setAttribute('data-theme', isDark ? 'dark' : 'light');
+        document.documentElement.setAttribute('data-theme-mode', 'system');
     } else {
         document.documentElement.setAttribute('data-theme', next);
+        document.documentElement.removeAttribute('data-theme-mode');
     }
 
     localStorage.setItem('qrm-theme', next);
@@ -2032,6 +2035,14 @@ function cycleTheme() {
 }
 
 document.getElementById('theme-toggle').addEventListener('click', cycleTheme);
+
+// Handle dynamic system preference updates
+window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
+    if (localStorage.getItem('qrm-theme') === 'system') {
+        document.documentElement.setAttribute('data-theme', e.matches ? 'dark' : 'light');
+        updateAppTint(state.themeColor);
+    }
+});
 
 /* =============================================================
    SECTION 8: Toast
@@ -2293,21 +2304,6 @@ function initIconSelector() {
     if (!grid) return;
 
     grid.innerHTML = '';
-
-    // // Add "none" button
-    // const noneBtn = document.createElement('button');
-    // noneBtn.type = 'button';
-    // noneBtn.className = 'icon-select-btn active';
-    // noneBtn.id = 'icon-btn-none';
-    // noneBtn.title = 'No Icon';
-    // noneBtn.onclick = () => setIcon('none');
-    // noneBtn.innerHTML = `
-    //     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-    //         <line x1="18" y1="6" x2="6" y2="18"></line>
-    //         <line x1="6" y1="6" x2="18" y2="18"></line>
-    //     </svg>
-    // `;
-    // grid.appendChild(noneBtn);
 
     // Add predefined icons
     for (const [key, iconCfg] of Object.entries(PREDEFINED_ICONS)) {
