@@ -18,7 +18,7 @@ For developers, the project also includes a companion API hosted on Cloudflare P
 1. [Features](#features)
 2. [Offline Use](#offline-use)
 3. [Tips for Success](#tips-for-success)
-4. [Developer API Reference](#developer-api)
+4. [Developer API Reference](#developer-api-reference)
 5. [Technical Details](#technical-details)
 
 ## Features
@@ -71,13 +71,27 @@ Install QR Maker as a local application on your device:
 * **Watch the Size:** Keep logos or icons under 20% of the overall QR code size for the most reliable scanning.
 * The share link packs your text and design settings into the URL. Avoid encoding massive blocks of text or files when using share links, as browsers limit how long a URL can be.
 
-## QR Maker API Reference
+## Developer API Reference
 
-The project includes a serverless API hosted on Cloudflare Pages. This lets developers request custom QR codes programmatically using web requests.
+For an interactive experience, please visit the hosted **[Developer API Documentation](https://qrmaker.ryanmarch.me/api)**. It features:
+* An **API Playground** to test requests with live results
+* Direct downloads for **Postman & Bruno Collections**
+* Auto-generated **Code Examples** (JavaScript, Python, curl, etc.)
+* Self-service **API Key Registration**
+
+The project's serverless API is hosted on Cloudflare Pages, allowing developers to request custom QR codes programmatically using simple web requests.
 
 ### Endpoint
 ```http
 GET https://qrmaker.ryanmarch.me/api/qr
+```
+
+### Authentication
+
+If authentication is enabled on the deployment, requests must include the API Key in the `Authorization` header using the `Bearer` scheme:
+
+```http
+Authorization: Bearer YOUR_API_KEY
 ```
 
 ### Parameters

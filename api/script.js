@@ -5,6 +5,28 @@
 document.addEventListener('DOMContentLoaded', () => {
     // ---- Theme Toggle ----
     const themeToggle = document.getElementById('theme-toggle');
+    const themeStatus = document.getElementById('theme-status');
+    let themeStatusTimeout;
+
+    function triggerHaptic() {
+        if ('vibrate' in navigator) {
+            try {
+                navigator.vibrate(12);
+            } catch (e) {
+                // Silently absorb
+            }
+        }
+    }
+
+    function showThemeStatus(text) {
+        if (!themeStatus) return;
+        themeStatus.textContent = text;
+        themeStatus.classList.add('visible');
+        clearTimeout(themeStatusTimeout);
+        themeStatusTimeout = setTimeout(() => {
+            themeStatus.classList.remove('visible');
+        }, 2000);
+    }
 
     function setTheme(theme) {
         if (theme === 'system') {
@@ -16,9 +38,24 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     themeToggle.addEventListener('click', () => {
+        triggerHaptic();
         const currentTheme = localStorage.getItem('qrm-theme') || 'dark';
-        const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+        let newTheme;
+        let statusText;
+
+        if (currentTheme === 'dark') {
+            newTheme = 'light';
+            statusText = 'Light Theme';
+        } else if (currentTheme === 'light') {
+            newTheme = 'system';
+            statusText = 'System Theme';
+        } else {
+            newTheme = 'dark';
+            statusText = 'Dark Theme';
+        }
+
         setTheme(newTheme);
+        showThemeStatus(statusText);
     });
 
     // Listen for storage changes to sync themes across open tabs
@@ -270,4 +307,162 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Run initial update on load
     updatePlayground();
+
+    // ---- API Key Registration Form Handling ----
+    const formRegisterKey = document.getElementById('form-register-key');
+    const regEmailInput = document.getElementById('reg-email');
+    const btnRequestKey = document.getElementById('btn-request-key');
+    const keyOutputWrapper = document.getElementById('key-output-wrapper');
+    const generatedApiKey = document.getElementById('generated-api-key');
+    const keyExpiryDate = document.getElementById('key-expiry-date');
+    const regErrorMessage = document.getElementById('reg-error-message');
+    const btnCopyKey = document.getElementById('btn-copy-key');
+
+    if (formRegisterKey) {
+        formRegisterKey.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            // Hide previous results/errors
+            keyOutputWrapper.style.display = 'none';
+            regErrorMessage.style.display = 'none';
+
+            const email = regEmailInput.value.trim();
+
+            // Retrieve Turnstile token
+            let token = '';
+            if (window.turnstile) {
+                token = window.turnstile.getResponse();
+            } else {
+                const turnstileInput = formRegisterKey.querySelector('[name="cf-turnstile-response"]');
+                token = turnstileInput ? turnstileInput.value : '';
+            }
+
+            if (!token) {
+                regErrorMessage.textContent = 'Please solve the Turnstile security challenge first.';
+                regErrorMessage.style.display = 'block';
+                return;
+            }
+
+            btnRequestKey.disabled = true;
+            btnRequestKey.textContent = 'Generating...';
+
+            try {
+                const res = await fetch('/api/register', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email, token })
+                });
+
+                const data = await res.json();
+
+                if (res.ok && data.apiKey) {
+                    generatedApiKey.value = data.apiKey;
+
+                    const expiry = new Date(data.expiresAt);
+                    const expiryStr = expiry.toLocaleString(undefined, {
+                        year: 'numeric',
+                        month: 'long',
+                        day: 'numeric',
+                        hour: '2-digit',
+                        minute: '2-digit',
+                        timeZoneName: 'short'
+                    });
+                    keyExpiryDate.textContent = expiryStr;
+
+                    // Update mailto URL
+                    const lnkEmailKey = document.getElementById('lnk-email-key');
+                    if (lnkEmailKey) {
+                        const emailSubject = encodeURIComponent("Your QR Maker API Key");
+                        const docUrl = window.location.href;
+                        const emailBody = encodeURIComponent(`Here is your QR Maker developer API key:\n\n${data.apiKey}\n\nThis key is valid until: ${expiryStr}\n\nKeep this safe, as it cannot be recovered if lost.\n\nAPI Documentation: ${docUrl}`);
+                        lnkEmailKey.href = `mailto:${encodeURIComponent(email)}?subject=${emailSubject}&body=${emailBody}`;
+                    }
+
+                    keyOutputWrapper.style.display = 'block';
+                    regEmailInput.value = ''; // clear input
+                } else {
+                    regErrorMessage.textContent = data.error || 'An error occurred generating your key.';
+                    regErrorMessage.style.display = 'block';
+                }
+            } catch (err) {
+                regErrorMessage.textContent = 'Network error. Failed to reach the registration server.';
+                regErrorMessage.style.display = 'block';
+            } finally {
+                btnRequestKey.disabled = false;
+                btnRequestKey.textContent = 'Generate API Key';
+                if (window.turnstile) {
+                    window.turnstile.reset();
+                }
+            }
+        });
+    }
+
+    if (btnCopyKey && generatedApiKey) {
+        btnCopyKey.addEventListener('click', () => {
+            navigator.clipboard.writeText(generatedApiKey.value)
+                .then(() => {
+                    const originalText = btnCopyKey.innerHTML;
+                    btnCopyKey.innerHTML = 'Copied!';
+                    setTimeout(() => {
+                        btnCopyKey.innerHTML = originalText;
+                    }, 1500);
+                });
+        });
+    }
+
+    // ---- Mobile Navigation Toggle ----
+    const mobileNavToggle = document.getElementById('mobile-nav-toggle');
+    const apiSidebar = document.querySelector('.api-sidebar');
+    const mobileOverlay = document.getElementById('mobile-overlay');
+
+    if (mobileNavToggle && apiSidebar && mobileOverlay) {
+        function toggleMobileNav() {
+            const isOpen = apiSidebar.classList.contains('active');
+            if (isOpen) {
+                closeMobileNav();
+            } else {
+                openMobileNav();
+            }
+        }
+
+        function openMobileNav() {
+            apiSidebar.classList.add('active');
+            mobileOverlay.classList.add('active');
+            mobileNavToggle.setAttribute('aria-expanded', 'true');
+        }
+
+        function closeMobileNav() {
+            apiSidebar.classList.remove('active');
+            mobileOverlay.classList.remove('active');
+            mobileNavToggle.setAttribute('aria-expanded', 'false');
+        }
+
+        mobileNavToggle.addEventListener('click', toggleMobileNav);
+        mobileOverlay.addEventListener('click', closeMobileNav);
+
+        // Close sidebar when clicking any link inside it
+        const sidebarLinks = apiSidebar.querySelectorAll('.sidebar-link');
+        sidebarLinks.forEach(link => {
+            link.addEventListener('click', closeMobileNav);
+        });
+    }
 });
+
+// ---- Dynamic Turnstile Rendering ----
+window.onloadTurnstileCallback = function () {
+    const sitekey = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+        ? '1x00000000000000000000AA' // Local dev dummy key
+        : '0x4AAAAAADtAb2hYyQchZ15m'; // Production key
+
+    if (window.turnstile) {
+        window.turnstile.render('#registration-turnstile', {
+            sitekey: sitekey,
+            theme: 'dark'
+        });
+    }
+};
+
+// If Turnstile loaded before this script runs, manually initialize
+if (window.turnstile && typeof window.turnstile.render === 'function') {
+    window.onloadTurnstileCallback();
+}
