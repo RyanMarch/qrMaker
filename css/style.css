@@ -1870,11 +1870,11 @@ input[type="range"]::-moz-range-thumb:hover {
 
 /* ---- Responsive ---- */
 @media (max-width: 960px) {
-    body {
-        height: auto;
+    body, body#main-body {
+        height: auto !important;
         min-height: 100vh;
         min-height: 100dvh;
-        overflow-y: auto;
+        overflow: visible !important;
         padding: 0;
         background-attachment: scroll;
     }
@@ -1885,7 +1885,7 @@ input[type="range"]::-moz-range-thumb:hover {
         padding: 0;
         max-width: 100%;
         width: 100%;
-        height: auto;
+        height: auto !important;
         overflow: visible;
         border-radius: 0;
         margin: 0;
@@ -1895,14 +1895,18 @@ input[type="range"]::-moz-range-thumb:hover {
         backdrop-filter: none;
     }
 
+    body.has-global-header .container {
+        height: auto !important;
+    }
+
     .preview-section {
         grid-column: auto;
         border-left: none;
         zoom: 1 !important;
         height: auto;
-        padding: calc(0.75rem + env(safe-area-inset-top)) 1.25rem 0.75rem;
+        padding: 0.75rem 1.25rem;
         position: sticky;
-        top: 0;
+        top: calc(60px + env(safe-area-inset-top, 0px));
         gap: unset;
         z-index: 10;
         border-radius: 0;
@@ -1976,7 +1980,7 @@ input[type="range"]::-moz-range-thumb:hover {
 
     /* Scrolled state on mobile */
     body.scrolled .preview-section {
-        padding: calc(0.5rem + env(safe-area-inset-top)) 1.25rem 0.5rem;
+        padding: 0.5rem 1.25rem;
     }
 
     body.scrolled .preview-header {
@@ -1990,7 +1994,8 @@ input[type="range"]::-moz-range-thumb:hover {
     }
 
     body.scrolled .qr-canvas-wrapper {
-        margin: 0.25rem auto;
+        max-width: 130px !important;
+        margin: 0.15rem auto;
     }
 
     body.scrolled .preview-actions-container {
@@ -3063,13 +3068,16 @@ input[type="range"]::-moz-range-thumb:hover {
    Global Header & Mobile Navigation styles
    ============================================================ */
 .global-header {
-    height: 60px;
+    height: calc(60px + env(safe-area-inset-top, 0px));
+    padding-top: env(safe-area-inset-top, 0px);
+    box-sizing: border-box;
     background-color: var(--panel-bg);
     border-bottom: 1px solid var(--border-color);
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 0 1.5rem;
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
     position: fixed;
     top: 0;
     left: 0;
@@ -3196,7 +3204,7 @@ input[type="range"]::-moz-range-thumb:hover {
 /* Mobile Dropdown Navigation Menu */
 .mobile-nav-menu {
     position: fixed;
-    top: 60px;
+    top: calc(60px + env(safe-area-inset-top, 0px));
     left: 0;
     right: 0;
     background-color: var(--panel-bg);
@@ -3257,9 +3265,11 @@ input[type="range"]::-moz-range-thumb:hover {
 
 /* Header layout helper for fixed header pages */
 body.has-global-header {
-    padding-top: 60px !important;
+    padding-top: calc(60px + env(safe-area-inset-top, 0px)) !important;
 }
 
-body.has-global-header .container {
-    height: calc(100vh - 60px) !important;
+@media (min-width: 961px) {
+    body.has-global-header .container {
+        height: calc(100vh - (60px + env(safe-area-inset-top, 0px))) !important;
+    }
 }
