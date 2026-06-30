@@ -184,6 +184,10 @@ async function verifyHmacSignature(message, signature, secret) {
  */
 async function checkAuth(request, env) {
   const authHeader = request.headers.get('Authorization') || '';
+  if (!authHeader) {
+    return null; // Allow unauthenticated requests
+  }
+
   const [scheme, token] = authHeader.split(' ');
 
   if (scheme !== 'Bearer' || !token) {
@@ -254,16 +258,73 @@ async function checkAuth(request, env) {
   return null; // authorized
 }
 
+// Rate limiting helper using Cloudflare Cache API
+async function checkRateLimit(request, authHeader) {
+  const cache = caches.default;
+  const period = 10; // 10-second window
+  const timestamp = Math.floor(Date.now() / (period * 1000));
+
+  // Use the token to identify rate-limit state (safely hashed or sliced)
+  const token = authHeader.split(' ')[1] || 'anonymous';
+  const rateLimitKey = `token-${token.slice(-16)}`;
+
+  const limit = 20; // 20 requests per 10 seconds
+
+  const cacheKey = new Request(`https://rate-limit.internal/${rateLimitKey}/${timestamp}`);
+
+  const cachedResponse = await cache.match(cacheKey);
+  let count = 0;
+  if (cachedResponse) {
+    count = parseInt(await cachedResponse.text(), 10) || 0;
+  }
+
+  if (count >= limit) {
+    return new Response(JSON.stringify({ error: 'Too Many Requests — Rate limit exceeded for this API Key' }), {
+      status: 429,
+      headers: {
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*'
+      }
+    });
+  }
+
+  // Increment count and write back to cache
+  const newResponse = new Response((count + 1).toString(), {
+    headers: { 'Cache-Control': `public, max-age=${period}` }
+  });
+
+  await cache.put(cacheKey, newResponse);
+
+  return null; // Under the limit
+}
+
 // ─── Entry points ─────────────────────────────────────────────────────────────
 
 export async function onRequestOptions() {
   return new Response(null, { status: 204, headers: CORS_HEADERS });
 }
 
-export async function onRequestGet({ request, env }) {
+export async function onRequestGet(context) {
+  const { request, env, data } = context;
+  const isSecureRoute = data?.isSecureRoute || false;
+
   // Auth gate
-  const authError = await checkAuth(request, env);
-  if (authError) return authError;
+  const authHeader = request.headers.get('Authorization') || '';
+
+  if (isSecureRoute && !authHeader) {
+    return jsonError('Unauthorized — API Key required on secure route', 401);
+  }
+
+  if (authHeader) {
+    const authError = await checkAuth(request, env);
+    if (authError) return authError;
+  }
+
+  // Enforce secure rate limit in code (only runs for verified keys on /plus)
+  if (isSecureRoute) {
+    const rateLimitError = await checkRateLimit(request, authHeader);
+    if (rateLimitError) return rateLimitError;
+  }
 
   // Extract parameters from URL search parameters
   const url = new URL(request.url);
