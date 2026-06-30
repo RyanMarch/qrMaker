@@ -33,12 +33,21 @@
     <link rel="icon" type="image/svg+xml" href="/assets/favicon/favicon.svg" />
 
     <link rel="stylesheet" href="style.css">
+    <!-- Cloudflare Turnstile CAPTCHA (loaded with callback) -->
+    <script src="https://challenges.cloudflare.com/turnstile/v0/api.js?onload=onloadTurnstileCallback" defer></script>
 </head>
 
 <body>
     <!-- Header -->
     <header class="api-header">
         <div class="header-left">
+            <button id="mobile-nav-toggle" class="mobile-nav-toggle" aria-label="Toggle navigation" aria-expanded="false">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20">
+                    <line x1="3" y1="12" x2="21" y2="12"></line>
+                    <line x1="3" y1="6" x2="21" y2="6"></line>
+                    <line x1="3" y1="18" x2="21" y2="18"></line>
+                </svg>
+            </button>
             <a href="/" class="logo-link">
                 <span class="logo-text">QR Maker</span>
                 <span class="badge">API Docs</span>
@@ -48,7 +57,7 @@
             <a href="/" class="nav-link">Back to Generator</a>
             <button id="theme-toggle" class="theme-toggle" aria-label="Toggle theme" title="Toggle theme">
                 <svg class="sun-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                    stroke-linecap="round" stroke-linejoin="round">
+                     stroke-linecap="round" stroke-linejoin="round">
                     <circle cx="12" cy="12" r="5"></circle>
                     <line x1="12" y1="1" x2="12" y2="3"></line>
                     <line x1="12" y1="21" x2="12" y2="23"></line>
@@ -60,12 +69,22 @@
                     <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
                 </svg>
                 <svg class="moon-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                    stroke-linecap="round" stroke-linejoin="round">
+                     stroke-linecap="round" stroke-linejoin="round">
                     <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
                 </svg>
+                <svg class="system-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                     stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
+                    <line x1="8" y1="21" x2="16" y2="21"></line>
+                    <line x1="12" y1="17" x2="12" y2="21"></line>
+                </svg>
+                <span id="theme-status" class="theme-status"></span>
             </button>
         </div>
     </header>
+
+    <!-- Mobile Navigation Overlay -->
+    <div id="mobile-overlay" class="mobile-overlay"></div>
 
     <!-- Main Container -->
     <main class="api-container">
@@ -74,10 +93,12 @@
             <ul>
                 <li><a href="#overview" class="sidebar-link active">Overview</a></li>
                 <li><a href="#endpoint" class="sidebar-link">Endpoint</a></li>
+                <li><a href="#authentication" class="sidebar-link">Authentication</a></li>
                 <li><a href="#parameters" class="sidebar-link">Query Parameters</a></li>
                 <li><a href="#responses" class="sidebar-link">Response Formats</a></li>
                 <li><a href="#playground" class="sidebar-link">API Playground</a></li>
                 <li><a href="#code-examples" class="sidebar-link">Code Examples</a></li>
+                <li><a href="#api-key-registration" class="sidebar-link">API Key Request</a></li>
             </ul>
             <div class="sidebar-footer">
                 <p>Need custom designs? Try the main web UI.</p>
@@ -121,16 +142,32 @@
                 <div class="download-box">
                     <div class="download-box-text">
                         <h3>Test in Postman or Bruno</h3>
-                        <p>Download our API request collection to test, preview, and run requests instantly. Supported by both Postman and Bruno.</p>
+                        <p>Download our API request collection to test, preview, and run requests instantly. Supported
+                            by both Postman and Bruno.</p>
                     </div>
                     <button id="btn-download-collection" class="btn-download">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16"
+                            height="16">
                             <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
                             <polyline points="7 10 12 15 17 10"></polyline>
                             <line x1="12" y1="15" x2="12" y2="3"></line>
                         </svg>
                         Download Collection
                     </button>
+                </div>
+            </article>
+
+            <hr class="section-divider">
+
+            <!-- Authentication -->
+            <article id="authentication" class="doc-section">
+                <h2>Authentication</h2>
+                <p>
+                    Authenticate your API requests by passing your personal API Key in the HTTP
+                    <code>Authorization</code> header using the <code>Bearer</code> scheme.
+                </p>
+                <div class="code-block-wrapper">
+                    <pre><code class="language-http">Authorization: Bearer YOUR_API_KEY</code></pre>
                 </div>
             </article>
 
@@ -433,22 +470,26 @@
                     </div>
                     <div class="tab-content active" id="tab-html">
                         <div class="code-block-wrapper">
-                            <pre><code class="language-html">&lt;!-- Embed custom PNG directly in your page --&gt;
+                            <pre><code class="language-html">&lt;!-- Embed custom PNG directly in your page (Requires authentication if enabled on the deployment) --&gt;
 &lt;img src="https://qrmaker.ryanmarch.me/api/qr?content=https%3A%2F%2Fqrmaker.ryanmarch.me&amp;size=512&amp;fgColor=327DFF" alt="QR Code" /&gt;</code></pre>
                             <button class="btn-copy-code" data-target="html">Copy</button>
                         </div>
                     </div>
                     <div class="tab-content" id="tab-curl">
                         <div class="code-block-wrapper">
-                            <pre><code class="language-bash"># Download a high-res custom SVG QR code 
-curl -o qr.svg "https://qrmaker.ryanmarch.me/api/qr?content=https%3A%2F%2Fqrmaker.ryanmarch.me&amp;format=svg&amp;fgColor=327DFF"</code></pre>
+                            <pre><code class="language-bash"># Download a high-res custom SVG QR code using your API Key
+curl -H "Authorization: Bearer YOUR_API_KEY" -o qr.svg "https://qrmaker.ryanmarch.me/api/qr?content=https%3A%2F%2Fqrmaker.ryanmarch.me&amp;format=svg&amp;fgColor=327DFF"</code></pre>
                             <button class="btn-copy-code" data-target="curl">Copy</button>
                         </div>
                     </div>
                     <div class="tab-content" id="tab-js">
                         <div class="code-block-wrapper">
-                            <pre><code class="language-javascript">// Fetch Base64 data from the API
-fetch("https://qrmaker.ryanmarch.me/api/qr?content=https%3A%2F%2Fqrmaker.ryanmarch.me&amp;format=base64")
+                            <pre><code class="language-javascript">// Fetch Base64 data from the API using your API Key
+fetch("https://qrmaker.ryanmarch.me/api/qr?content=https%3A%2F%2Fqrmaker.ryanmarch.me&amp;format=base64", {
+  headers: {
+    "Authorization": "Bearer YOUR_API_KEY"
+  }
+})
   .then(res => res.json())
   .then(json => {
     console.log("Base64 Data URI:", json.data);
@@ -457,6 +498,79 @@ fetch("https://qrmaker.ryanmarch.me/api/qr?content=https%3A%2F%2Fqrmaker.ryanmar
                             <button class="btn-copy-code" data-target="js">Copy</button>
                         </div>
                     </div>
+                </div>
+            </article>
+
+            <hr class="section-divider">
+
+            <!-- Get API Key -->
+            <article id="api-key-registration" class="doc-section">
+                <h2>Request an API Key</h2>
+                <p>
+                    Generate a free API Key to authenticate your requests and access the QR Maker API. Keys are
+                    generated instantly and are valid for a limited duration.
+                </p>
+                <p>
+                    To request your key, enter your email address and complete the security verification below. Once
+                    generated, be sure to copy the key immediately or email it to yourself for your records.
+                </p>
+
+                <div class="playground-wrapper">
+                    <form id="form-register-key" class="playground-controls" style="width: 100%;">
+                        <div class="form-group">
+                            <label for="reg-email">Email Address</label>
+                            <input type="email" id="reg-email" placeholder="developer@example.com"
+                                style="width: 100%; max-width: 400px; padding: 0.75rem; background-color: var(--input-bg); border: 1px solid var(--border-color); border-radius: var(--radius-sm); color: var(--text-color);"
+                                required>
+                            <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 0.5rem;">Your email
+                                address is not stored anywhere and is only used for key generation.</p>
+                        </div>
+
+                        <div class="form-group" style="margin-top: 1rem;">
+                            <label style="margin-bottom: 0.5rem;">Security Verification</label>
+                            <!-- Cloudflare Turnstile Widget -->
+                            <div id="registration-turnstile"></div>
+                        </div>
+
+                        <button type="submit" id="btn-request-key" class="btn-copy"
+                            style="margin-top: 1rem; align-self: flex-start; padding: 0.75rem 1.5rem; font-weight: 600; cursor: pointer;">Generate
+                            API Key</button>
+                    </form>
+
+                    <div id="key-output-wrapper" class="url-output"
+                        style="display: none; margin-top: 1.5rem; width: 100%;">
+                        <label>Your API Key</label>
+                        <div class="url-field">
+                            <input type="text" id="generated-api-key" readonly>
+                            <button class="btn-copy" id="btn-copy-key" title="Copy Key">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16"
+                                    height="16">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                </svg>
+                                Copy
+                            </button>
+                        </div>
+                        <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 0.5rem;">Save this key. It
+                            will not be shown again.</p>
+                        <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 0.5rem;">Expires on: <span
+                                id="key-expiry-date" style="font-weight: 600;"></span></p>
+                        <div style="margin-top: 1rem;">
+                            <a id="lnk-email-key" href="#" class="btn-copy"
+                                style="text-decoration: none; padding: 0.5rem 1rem; font-size: 0.85rem; display: inline-flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14"
+                                    height="14">
+                                    <path
+                                        d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z">
+                                    </path>
+                                    <polyline points="22,6 12,13 2,6"></polyline>
+                                </svg>
+                                Email Key to Myself
+                            </a>
+                        </div>
+                    </div>
+                    <div id="reg-error-message"
+                        style="display: none; color: #ff5252; margin-top: 1rem; font-size: 0.9rem;"></div>
                 </div>
             </article>
 

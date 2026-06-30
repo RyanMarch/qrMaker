@@ -15,7 +15,7 @@
  * Auth (future-ready, currently disabled):
  *   Set AUTH_ENABLED=true in CF environment variables to enable.
  *   Set API_KEY=<your-secret> in CF environment secrets.
- *   Requests then require: Authorization: Bearer <your-secret>
+ *   Requests then require: Authorization: Bearer <API_KEY>
  */
 
 import qrcode from './qr-lib.js';
@@ -158,29 +158,102 @@ const CORS_HEADERS = {
 
 // ─── Auth middleware ──────────────────────────────────────────────────────────
 
+async function verifyHmacSignature(message, signature, secret) {
+  const encoder = new TextEncoder();
+  const keyData = encoder.encode(secret);
+  const cryptoKey = await crypto.subtle.importKey(
+    'raw',
+    keyData,
+    { name: 'HMAC', hash: 'SHA-256' },
+    false,
+    ['verify']
+  );
+  
+  const base64 = signature.replace(/-/g, '+').replace(/_/g, '/');
+  const binary = atob(base64);
+  const bytes = new Uint8Array(binary.length);
+  for (let i = 0; i < binary.length; i++) {
+    bytes[i] = binary.charCodeAt(i);
+  }
+  
+  return crypto.subtle.verify('HMAC', cryptoKey, bytes, encoder.encode(message));
+}
+
 /**
  * Returns a 401 Response if auth is enabled and the request is not authorized.
  * Returns null if the request is allowed to proceed.
  *
  * To enable auth, set these in your Cloudflare Pages environment:
  *   AUTH_ENABLED = true
- *   API_KEY      = <your secret key>
+ *   API_KEY      = <your secret key> (optional static key)
+ *   API_SIGNING_SECRET = <your signing secret> (required for stateless keys)
  */
-function checkAuth(request, env) {
+async function checkAuth(request, env) {
   const authEnabled = env.AUTH_ENABLED === 'true' || env.AUTH_ENABLED === true;
   if (!authEnabled) return null; // auth is off — let it through
-
-  const apiKey = env.API_KEY;
-  if (!apiKey) {
-    // Auth is enabled but no key is configured — fail safe
-    return jsonError('API auth is misconfigured on the server', 500);
-  }
 
   const authHeader = request.headers.get('Authorization') || '';
   const [scheme, token] = authHeader.split(' ');
 
-  if (scheme !== 'Bearer' || token !== apiKey) {
-    return jsonError('Unauthorized — provide a valid Bearer token', 401);
+  if (scheme !== 'Bearer' || !token) {
+    return jsonError('Unauthorized — provide a valid Bearer API Key', 401);
+  }
+
+  // 1. Check static API key first
+  const staticApiKey = env.API_KEY;
+  if (staticApiKey && token === staticApiKey) {
+    return null; // authorized with static key
+  }
+
+  // 2. Check stateless signed API key
+  const signingSecret = env.API_SIGNING_SECRET;
+  if (!signingSecret) {
+    return jsonError('API auth is misconfigured on the server', 500);
+  }
+
+  const parts = token.split(':');
+  if (parts.length !== 3) {
+    return jsonError('Unauthorized — invalid API Key format', 401);
+  }
+
+  const [encodedEmail, expirationStr, signature] = parts;
+  const expiration = parseInt(expirationStr, 10);
+
+  if (isNaN(expiration) || expiration < Date.now()) {
+    return jsonError('Unauthorized — API Key has expired', 401);
+  }
+
+  // Check blocklist if configured
+  const blockedKeysVar = env.BLOCKED_KEYS || '';
+  if (blockedKeysVar) {
+    const blockedList = blockedKeysVar.split(',').map(s => s.trim().toLowerCase());
+    
+    // Decode email to check if the user is blocked
+    let decodedEmail = '';
+    try {
+      // Decode base64url or base64 email safely
+      const normalizedBase64 = encodedEmail.replace(/-/g, '+').replace(/_/g, '/');
+      decodedEmail = atob(normalizedBase64).toLowerCase();
+    } catch (e) {
+      // Fallback if base64 decoding fails
+    }
+
+    if (
+      blockedList.includes(token.toLowerCase()) || 
+      (decodedEmail && blockedList.includes(decodedEmail))
+    ) {
+      return jsonError('Forbidden — this API Key has been revoked', 403);
+    }
+  }
+
+  const rawKeyData = `${encodedEmail}:${expirationStr}`;
+  try {
+    const isValid = await verifyHmacSignature(rawKeyData, signature, signingSecret);
+    if (!isValid) {
+      return jsonError('Unauthorized — invalid API Key signature', 401);
+    }
+  } catch (err) {
+    return jsonError('Unauthorized — API Key signature verification error', 401);
   }
 
   return null; // authorized
@@ -194,7 +267,7 @@ export async function onRequestOptions() {
 
 export async function onRequestGet({ request, env }) {
   // Auth gate
-  const authError = checkAuth(request, env);
+  const authError = await checkAuth(request, env);
   if (authError) return authError;
 
   // Extract parameters from URL search parameters

@@ -1990,13 +1990,45 @@ function getFilenameFromUrl(url) {
    SECTION 7: Theme
    ============================================================= */
 
+let themeStatusTimeout;
+const themeStatus = document.getElementById('theme-status');
+
+function showThemeStatus(text) {
+    if (!themeStatus) return;
+    themeStatus.textContent = text;
+    themeStatus.classList.add('visible');
+    clearTimeout(themeStatusTimeout);
+    themeStatusTimeout = setTimeout(() => {
+        themeStatus.classList.remove('visible');
+    }, 2000);
+}
+
 function cycleTheme() {
-    const current = document.documentElement.getAttribute('data-theme') ||
-        (window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
-    const next = current === 'dark' ? 'light' : 'dark';
-    document.documentElement.setAttribute('data-theme', next);
+    triggerHaptic();
+    const current = localStorage.getItem('qrm-theme') || 'dark';
+    let next;
+    let statusText;
+
+    if (current === 'dark') {
+        next = 'light';
+        statusText = 'Light Theme';
+    } else if (current === 'light') {
+        next = 'system';
+        statusText = 'System Theme';
+    } else {
+        next = 'dark';
+        statusText = 'Dark Theme';
+    }
+
+    if (next === 'system') {
+        document.documentElement.removeAttribute('data-theme');
+    } else {
+        document.documentElement.setAttribute('data-theme', next);
+    }
+
     localStorage.setItem('qrm-theme', next);
     updateAppTint(state.themeColor);
+    showThemeStatus(statusText);
 }
 
 document.getElementById('theme-toggle').addEventListener('click', cycleTheme);
