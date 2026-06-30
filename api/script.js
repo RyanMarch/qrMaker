@@ -263,21 +263,44 @@ document.addEventListener('DOMContentLoaded', () => {
                 info: {
                     _postman_id: "7b0b263b-3bf1-4d37-8898-0c6778f5f6bb",
                     name: "QR Maker API",
-                    description: `QR Maker API sample request. Downloaded on ${formattedDate}.\n\nDocumentation: https://qrmaker.ryanmarch.me/api/`,
+                    description: `QR Maker API sample requests. Downloaded on ${formattedDate}.\n\nDocumentation: https://qrmaker.ryanmarch.me/api/`,
                     schema: "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
                 },
                 item: [
                     {
-                        name: "Generate QR Code",
+                        name: "Generate QR Code (Public)",
                         request: {
                             method: "GET",
                             header: [],
-                            description: "Generate customized QR codes dynamically on the fly. Returns raw binary data for PNG/SVG, or JSON for base64 format.",
+                            description: "Generate customized QR codes dynamically on the fly using the public rate-limited endpoint. No authentication required.",
                             url: {
                                 raw: "",
                                 protocol: "https",
                                 host: ["qrmaker", "ryanmarch", "me"],
                                 path: ["api", "qr"],
+                                query: queryParams
+                            }
+                        },
+                        response: []
+                    },
+                    {
+                        name: "Generate QR Code (Secure)",
+                        request: {
+                            method: "GET",
+                            header: [
+                                {
+                                    key: "Authorization",
+                                    value: "Bearer YOUR_API_KEY",
+                                    type: "text",
+                                    description: "Replace YOUR_API_KEY with your generated API key"
+                                }
+                            ],
+                            description: "Generate customized QR codes dynamically on the fly using the authenticated endpoint. Requires your personal Bearer API Key.",
+                            url: {
+                                raw: "",
+                                protocol: "https",
+                                host: ["qrmaker", "ryanmarch", "me"],
+                                path: ["api", "plus"],
                                 query: queryParams
                             }
                         },
@@ -291,6 +314,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 .map(p => `${p.key}=${encodeURIComponent(p.value)}`)
                 .join('&');
             collection.item[0].request.url.raw = `https://qrmaker.ryanmarch.me/api/qr?${rawUrlParams}`;
+            collection.item[1].request.url.raw = `https://qrmaker.ryanmarch.me/api/plus?${rawUrlParams}`;
 
             // Trigger file download
             const blob = new Blob([JSON.stringify(collection, null, 2)], { type: 'application/json' });
@@ -446,6 +470,92 @@ document.addEventListener('DOMContentLoaded', () => {
             link.addEventListener('click', closeMobileNav);
         });
     }
+
+    // ---- Heading Anchor Links ----
+    function getHeadingId(heading) {
+        if (heading.id) return heading.id;
+
+        // Check if this is the first heading in a section/article with an ID
+        const parentSection = heading.closest('[id]');
+        if (parentSection) {
+            const firstHeading = parentSection.querySelector('h1, h2, h3, h4, h5, h6');
+            if (firstHeading === heading) {
+                return parentSection.id;
+            }
+        }
+
+        // Generate slug
+        const slug = heading.textContent
+            .toLowerCase()
+            .trim()
+            .replace(/[^\w\s-]/g, '')
+            .replace(/[\s_]+/g, '-')
+            .replace(/^-+|-+$/g, '');
+
+        let uniqueSlug = slug;
+        let count = 1;
+        while (document.getElementById(uniqueSlug)) {
+            uniqueSlug = `${slug}-${count}`;
+            count++;
+        }
+
+        heading.id = uniqueSlug;
+        return uniqueSlug;
+    }
+
+    const headings = document.querySelectorAll('.api-content h1, .api-content h2, .api-content h3');
+    headings.forEach(heading => {
+        const id = getHeadingId(heading);
+        if (!id) return;
+
+        const anchor = document.createElement('a');
+        anchor.className = 'heading-anchor';
+        anchor.href = `#${id}`;
+        anchor.setAttribute('aria-label', 'Copy link to this section');
+
+        const linkIconSvg = `
+            <svg class="anchor-svg-link" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path>
+                <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
+            </svg>
+        `;
+
+        const checkIconSvg = `
+            <svg class="anchor-svg-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display: none;">
+                <polyline points="20 6 9 17 4 12"></polyline>
+            </svg>
+        `;
+
+        anchor.innerHTML = linkIconSvg + checkIconSvg;
+        heading.insertBefore(anchor, heading.firstChild);
+
+        anchor.addEventListener('click', (e) => {
+            e.preventDefault();
+            const url = `${window.location.origin}${window.location.pathname}#${id}`;
+
+            navigator.clipboard.writeText(url).then(() => {
+                history.pushState(null, null, `#${id}`);
+                
+                // Scroll to the heading smoothly
+                heading.scrollIntoView({ behavior: 'smooth' });
+
+                const linkIcon = anchor.querySelector('.anchor-svg-link');
+                const checkIcon = anchor.querySelector('.anchor-svg-check');
+
+                if (linkIcon && checkIcon) {
+                    linkIcon.style.display = 'none';
+                    checkIcon.style.display = 'inline-block';
+                    anchor.classList.add('copied');
+
+                    setTimeout(() => {
+                        linkIcon.style.display = 'inline-block';
+                        checkIcon.style.display = 'none';
+                        anchor.classList.remove('copied');
+                    }, 1500);
+                }
+            });
+        });
+    });
 });
 
 // ---- Dynamic Turnstile Rendering ----

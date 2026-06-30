@@ -41,7 +41,8 @@
     <!-- Header -->
     <header class="api-header">
         <div class="header-left">
-            <button id="mobile-nav-toggle" class="mobile-nav-toggle" aria-label="Toggle navigation" aria-expanded="false">
+            <button id="mobile-nav-toggle" class="mobile-nav-toggle" aria-label="Toggle navigation"
+                aria-expanded="false">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20">
                     <line x1="3" y1="12" x2="21" y2="12"></line>
                     <line x1="3" y1="6" x2="21" y2="6"></line>
@@ -54,10 +55,9 @@
             </a>
         </div>
         <div class="header-right">
-            <a href="/" class="nav-link">Back to Generator</a>
             <button id="theme-toggle" class="theme-toggle" aria-label="Toggle theme" title="Toggle theme">
                 <svg class="sun-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                     stroke-linecap="round" stroke-linejoin="round">
+                    stroke-linecap="round" stroke-linejoin="round">
                     <circle cx="12" cy="12" r="5"></circle>
                     <line x1="12" y1="1" x2="12" y2="3"></line>
                     <line x1="12" y1="21" x2="12" y2="23"></line>
@@ -69,11 +69,11 @@
                     <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
                 </svg>
                 <svg class="moon-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                     stroke-linecap="round" stroke-linejoin="round">
+                    stroke-linecap="round" stroke-linejoin="round">
                     <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
                 </svg>
                 <svg class="system-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                     stroke-linecap="round" stroke-linejoin="round">
+                    stroke-linecap="round" stroke-linejoin="round">
                     <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
                     <line x1="8" y1="21" x2="16" y2="21"></line>
                     <line x1="12" y1="17" x2="12" y2="21"></line>
@@ -92,16 +92,39 @@
         <nav class="api-sidebar" aria-label="Documentation sections">
             <ul>
                 <li><a href="#overview" class="sidebar-link active">Overview</a></li>
-                <li><a href="#endpoint" class="sidebar-link">Endpoint</a></li>
-                <li><a href="#authentication" class="sidebar-link">Authentication</a></li>
+                <li><a href="#authentication" class="sidebar-link">Authentication & Keys</a></li>
+                <li><a href="#endpoint" class="sidebar-link">Endpoints</a></li>
                 <li><a href="#parameters" class="sidebar-link">Query Parameters</a></li>
                 <li><a href="#responses" class="sidebar-link">Response Formats</a></li>
                 <li><a href="#playground" class="sidebar-link">API Playground</a></li>
                 <li><a href="#code-examples" class="sidebar-link">Code Examples</a></li>
-                <li><a href="#api-key-registration" class="sidebar-link">API Key Request</a></li>
             </ul>
             <div class="sidebar-footer">
-                <p>Need custom designs? Try the main web UI.</p>
+                <div class="cta-card">
+                    <div class="cta-card-icon">
+                        <svg viewBox="0 0 24 24" class="qr-svg-icon" width="20" height="20">
+                            <defs>
+                                <linearGradient id="cta-icon-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+                                    <stop offset="0%" stop-color="var(--accent)" />
+                                    <stop offset="100%" stop-color="#a855f7" />
+                                </linearGradient>
+                            </defs>
+                            <path fill="url(#cta-icon-grad)"
+                                d="M3 3h6v6H3V3zm2 2v2h2V5H5zm8-2h6v6h-6V3zm2 2v2h2V5h-2zM3 13h6v6H3v-6zm2 2v2h2v-2H5zm13-2h3v2h-3v-2zm-2 2h2v2h-2v-2zm2 2h3v3h-3v-3zm-4-4h2v2h-2v-2zm2 2h-2v2h2v-2zm-2 2h2v2h-2v-2zm-2-6h2v2h-2V9zm2 2h2v2h-2v-2zm-4 2h2v2h-2v-2zm2 2h2v2h-2v-2z" />
+                        </svg>
+                    </div>
+                    <h4 class="cta-card-title">QR Maker</h4>
+                    <p class="cta-card-desc">Try the interactive web app for custom colors, logos, icons, SVG exports,
+                        and more.</p>
+                    <a href="/" class="btn-cta-generator">
+                        <span>Go to Generator</span>
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="14"
+                            height="14">
+                            <line x1="5" y1="12" x2="19" y2="12"></line>
+                            <polyline points="12 5 19 12 12 19"></polyline>
+                        </svg>
+                    </a>
+                </div>
                 <a href="/#about" class="about-app-link">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14">
                         <circle cx="12" cy="12" r="10"></circle>
@@ -134,10 +157,19 @@
 
             <!-- Endpoint -->
             <article id="endpoint" class="doc-section">
-                <h2>Base Endpoint</h2>
-                <div class="endpoint-block">
+                <h2>Endpoints</h2>
+                <p>QR Maker provides two endpoints to choose from depending on your integration needs:</p>
+                <div class="endpoint-block" style="margin-bottom: 12px;">
                     <span class="method get">GET</span>
                     <code class="endpoint-url">https://qrmaker.ryanmarch.me/api/qr</code>
+                    <span style="font-size: 11px; color: var(--text-secondary); margin-left: 20px;">Standard rate
+                        limits, no auth required</span>
+                </div>
+                <div class="endpoint-block">
+                    <span class="method get" style="background: #10b981; color: white;">GET</span>
+                    <code class="endpoint-url">https://qrmaker.ryanmarch.me/api/plus</code>
+                    <span style="font-size: 11px; color: var(--text-secondary); margin-left: 20px;">Higher rate limits,
+                        requires Bearer API Key</span>
                 </div>
                 <div class="download-box">
                     <div class="download-box-text">
@@ -159,15 +191,84 @@
 
             <hr class="section-divider">
 
-            <!-- Authentication -->
+            <!-- Authentication & API Keys -->
             <article id="authentication" class="doc-section">
-                <h2>Authentication</h2>
+                <h2>Authentication & API Keys</h2>
                 <p>
-                    Authenticate your API requests by passing your personal API Key in the HTTP
-                    <code>Authorization</code> header using the <code>Bearer</code> scheme.
+                    For higher rate limits, authenticate your API requests by passing your API Key in the HTTP
+                    <code>Authorization</code> header using the <code>Bearer</code> scheme. Authenticated requests
+                    bypass the public rate limits, allowing up to 20 requests per 10 seconds.
                 </p>
-                <div class="code-block-wrapper">
+                <div class="code-block-wrapper" style="margin-bottom: 2.5rem;">
                     <pre><code class="language-http">Authorization: Bearer YOUR_API_KEY</code></pre>
+                </div>
+
+                <h3 style="margin-top: 2rem; margin-bottom: 1rem; font-size: 1.25rem;">Request an API Key</h3>
+                <p>
+                    Generate a free API Key to authenticate your requests and access the high-limit secure endpoints of
+                    the QR Maker API. Keys are generated instantly and are valid for a limited duration.
+                </p>
+                <p>
+                    To request your key, enter your email address and complete the security verification below. Once
+                    generated, be sure to copy the key immediately or email it to yourself for your records.
+                </p>
+
+                <div class="playground-wrapper">
+                    <form id="form-register-key" class="playground-controls" style="width: 100%;">
+                        <div class="form-group">
+                            <label for="reg-email">Email Address</label>
+                            <input type="email" id="reg-email" placeholder="developer@example.com"
+                                style="width: 100%; max-width: 400px; padding: 0.75rem; background-color: var(--input-bg); border: 1px solid var(--border-color); border-radius: var(--radius-sm); color: var(--text-color);"
+                                required>
+                            <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 0.5rem;">Your email
+                                address is not stored anywhere and is only used for key generation.</p>
+                        </div>
+
+                        <div class="form-group" style="margin-top: 1rem;">
+                            <label style="margin-bottom: 0.5rem;">Security Verification</label>
+                            <!-- Cloudflare Turnstile Widget -->
+                            <div id="registration-turnstile"></div>
+                        </div>
+
+                        <button type="submit" id="btn-request-key" class="btn-copy"
+                            style="margin-top: 1rem; align-self: flex-start; padding: 0.75rem 1.5rem; font-weight: 600; cursor: pointer;">Generate
+                            API Key</button>
+                    </form>
+
+                    <div id="key-output-wrapper" class="url-output"
+                        style="display: none; margin-top: 1.5rem; width: 100%;">
+                        <label>Your API Key</label>
+                        <div class="url-field">
+                            <input type="text" id="generated-api-key" readonly>
+                            <button class="btn-copy" id="btn-copy-key" title="Copy Key">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16"
+                                    height="16">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                </svg>
+                                Copy
+                            </button>
+                        </div>
+                        <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 0.5rem;">Save this key. It
+                            will not be shown again.</p>
+                        <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 0.5rem;">Expires on: <span
+                                id="key-expiry-date" style="font-weight: 600;"></span></p>
+                        <div style="margin-top: 1rem;">
+                            <a id="lnk-email-key" href="#" class="btn-copy"
+                                style="text-decoration: none; padding: 0.5rem 1rem; font-size: 0.85rem; display: inline-flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14"
+                                    height="14">
+                                    <path
+                                        d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z">
+                                    </path>
+                                    <polyline points="22,6 12,13 2,6"></polyline>
+                                </svg>
+                                Email Key to Myself
+                            </a>
+                        </div>
+                    </div>
+                    <div id="reg-error-message"
+                        style="display: none; color: #ff5252; margin-top: 1rem; font-size: 0.9rem;"></div>
                 </div>
             </article>
 
@@ -467,25 +568,34 @@
                         <button class="tab-btn active" data-tab="html">HTML</button>
                         <button class="tab-btn" data-tab="curl">cURL</button>
                         <button class="tab-btn" data-tab="js">JavaScript</button>
+                        <button class="tab-btn" data-tab="proxy">Proxy Example</button>
                     </div>
                     <div class="tab-content active" id="tab-html">
+                        <p style="margin-bottom: 12px; font-size: 14px; color: var(--text-secondary);">
+                            Embed QR codes directly in your HTML pages using a standard <code>&lt;img&gt;</code> tag.
+                            Unauthenticated requests are permitted and subject to rate limits.
+                        </p>
                         <div class="code-block-wrapper">
-                            <pre><code class="language-html">&lt;!-- Embed custom PNG directly in your page (Requires authentication if enabled on the deployment) --&gt;
-&lt;img src="https://qrmaker.ryanmarch.me/api/qr?content=https%3A%2F%2Fqrmaker.ryanmarch.me&amp;size=512&amp;fgColor=327DFF" alt="QR Code" /&gt;</code></pre>
+                            <pre><code class="language-html">&lt;img src="https://qrmaker.ryanmarch.me/api/qr?content=https%3A%2F%2Fqrmaker.ryanmarch.me&amp;size=512&amp;fgColor=327DFF" alt="QR Code" /&gt;</code></pre>
                             <button class="btn-copy-code" data-target="html">Copy</button>
                         </div>
+                        <p style="margin-top: 12px; font-size: 13px; color: var(--text-secondary);">
+                            <strong>Rate Limits:</strong> To bypass public rate limits in production workflows,
+                            authenticate your requests using the <strong>JavaScript</strong> or <strong>Proxy
+                                Example</strong> options.
+                        </p>
                     </div>
                     <div class="tab-content" id="tab-curl">
                         <div class="code-block-wrapper">
                             <pre><code class="language-bash"># Download a high-res custom SVG QR code using your API Key
-curl -H "Authorization: Bearer YOUR_API_KEY" -o qr.svg "https://qrmaker.ryanmarch.me/api/qr?content=https%3A%2F%2Fqrmaker.ryanmarch.me&amp;format=svg&amp;fgColor=327DFF"</code></pre>
+curl -H "Authorization: Bearer YOUR_API_KEY" -o qr.svg "https://qrmaker.ryanmarch.me/api/plus?content=https%3A%2F%2Fqrmaker.ryanmarch.me&amp;format=svg&amp;fgColor=327DFF"</code></pre>
                             <button class="btn-copy-code" data-target="curl">Copy</button>
                         </div>
                     </div>
                     <div class="tab-content" id="tab-js">
                         <div class="code-block-wrapper">
                             <pre><code class="language-javascript">// Fetch Base64 data from the API using your API Key
-fetch("https://qrmaker.ryanmarch.me/api/qr?content=https%3A%2F%2Fqrmaker.ryanmarch.me&amp;format=base64", {
+fetch("https://qrmaker.ryanmarch.me/api/plus?content=https%3A%2F%2Fqrmaker.ryanmarch.me&amp;format=base64", {
   headers: {
     "Authorization": "Bearer YOUR_API_KEY"
   }
@@ -498,81 +608,42 @@ fetch("https://qrmaker.ryanmarch.me/api/qr?content=https%3A%2F%2Fqrmaker.ryanmar
                             <button class="btn-copy-code" data-target="js">Copy</button>
                         </div>
                     </div>
-                </div>
-            </article>
+                    <div class="tab-content" id="tab-proxy">
+                        <p style="margin-bottom: 12px; font-size: 14px; color: var(--text-secondary);">
+                            Set up a secure server-side endpoint on your own server (e.g. Node/Express) to keep your API
+                            key private while allowing direct inline images on the frontend.
+                        </p>
+                        <div class="code-block-wrapper">
+                            <pre><code class="language-javascript">// Example Node.js/Express proxy endpoint (/api/qr)
+const express = require('express');
+const fetch = require('node-fetch'); // or global fetch in Node 18+
+const app = express();
 
-            <hr class="section-divider">
+app.get('/api/qr', async (req, res) => {
+  // Construct the target URL with query parameters from the frontend
+  const query = new URLSearchParams(req.query).toString();
+  const targetUrl = `https://qrmaker.ryanmarch.me/api/plus?${query}`;
 
-            <!-- Get API Key -->
-            <article id="api-key-registration" class="doc-section">
-                <h2>Request an API Key</h2>
-                <p>
-                    Generate a free API Key to authenticate your requests and access the QR Maker API. Keys are
-                    generated instantly and are valid for a limited duration.
-                </p>
-                <p>
-                    To request your key, enter your email address and complete the security verification below. Once
-                    generated, be sure to copy the key immediately or email it to yourself for your records.
-                </p>
+  try {
+    const apiResponse = await fetch(targetUrl, {
+      headers: {
+        'Authorization': 'Bearer YOUR_API_KEY' // Stored securely on the server
+      }
+    });
 
-                <div class="playground-wrapper">
-                    <form id="form-register-key" class="playground-controls" style="width: 100%;">
-                        <div class="form-group">
-                            <label for="reg-email">Email Address</label>
-                            <input type="email" id="reg-email" placeholder="developer@example.com"
-                                style="width: 100%; max-width: 400px; padding: 0.75rem; background-color: var(--input-bg); border: 1px solid var(--border-color); border-radius: var(--radius-sm); color: var(--text-color);"
-                                required>
-                            <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 0.5rem;">Your email
-                                address is not stored anywhere and is only used for key generation.</p>
-                        </div>
-
-                        <div class="form-group" style="margin-top: 1rem;">
-                            <label style="margin-bottom: 0.5rem;">Security Verification</label>
-                            <!-- Cloudflare Turnstile Widget -->
-                            <div id="registration-turnstile"></div>
-                        </div>
-
-                        <button type="submit" id="btn-request-key" class="btn-copy"
-                            style="margin-top: 1rem; align-self: flex-start; padding: 0.75rem 1.5rem; font-weight: 600; cursor: pointer;">Generate
-                            API Key</button>
-                    </form>
-
-                    <div id="key-output-wrapper" class="url-output"
-                        style="display: none; margin-top: 1.5rem; width: 100%;">
-                        <label>Your API Key</label>
-                        <div class="url-field">
-                            <input type="text" id="generated-api-key" readonly>
-                            <button class="btn-copy" id="btn-copy-key" title="Copy Key">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16"
-                                    height="16">
-                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
-                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
-                                </svg>
-                                Copy
-                            </button>
-                        </div>
-                        <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 0.5rem;">Save this key. It
-                            will not be shown again.</p>
-                        <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 0.5rem;">Expires on: <span
-                                id="key-expiry-date" style="font-weight: 600;"></span></p>
-                        <div style="margin-top: 1rem;">
-                            <a id="lnk-email-key" href="#" class="btn-copy"
-                                style="text-decoration: none; padding: 0.5rem 1rem; font-size: 0.85rem; display: inline-flex; align-items: center; gap: 0.5rem; cursor: pointer;">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14"
-                                    height="14">
-                                    <path
-                                        d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z">
-                                    </path>
-                                    <polyline points="22,6 12,13 2,6"></polyline>
-                                </svg>
-                                Email Key to Myself
-                            </a>
+    res.setHeader('Content-Type', apiResponse.headers.get('Content-Type'));
+    apiResponse.body.pipe(res);
+  } catch (err) {
+    res.status(500).json({ error: 'Failed to proxy request to QR Maker' });
+  }
+});</code></pre>
+                            <button class="btn-copy-code" data-target="proxy">Copy</button>
                         </div>
                     </div>
-                    <div id="reg-error-message"
-                        style="display: none; color: #ff5252; margin-top: 1rem; font-size: 0.9rem;"></div>
                 </div>
             </article>
+
+
 
         </section>
     </main>
