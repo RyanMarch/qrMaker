@@ -3,67 +3,7 @@
 // ============================================================
 
 document.addEventListener('DOMContentLoaded', () => {
-    // ---- Theme Toggle ----
-    const themeToggle = document.getElementById('theme-toggle');
-    const themeStatus = document.getElementById('theme-status');
-    let themeStatusTimeout;
 
-    function triggerHaptic() {
-        if ('vibrate' in navigator) {
-            try {
-                navigator.vibrate(12);
-            } catch (e) {
-                // Silently absorb
-            }
-        }
-    }
-
-    function showThemeStatus(text) {
-        if (!themeStatus) return;
-        themeStatus.textContent = text;
-        themeStatus.classList.add('visible');
-        clearTimeout(themeStatusTimeout);
-        themeStatusTimeout = setTimeout(() => {
-            themeStatus.classList.remove('visible');
-        }, 2000);
-    }
-
-    function setTheme(theme) {
-        if (theme === 'system') {
-            document.documentElement.removeAttribute('data-theme');
-        } else {
-            document.documentElement.setAttribute('data-theme', theme);
-        }
-        localStorage.setItem('qrm-theme', theme);
-    }
-
-    themeToggle.addEventListener('click', () => {
-        triggerHaptic();
-        const currentTheme = localStorage.getItem('qrm-theme') || 'dark';
-        let newTheme;
-        let statusText;
-
-        if (currentTheme === 'dark') {
-            newTheme = 'light';
-            statusText = 'Light Theme';
-        } else if (currentTheme === 'light') {
-            newTheme = 'system';
-            statusText = 'System Theme';
-        } else {
-            newTheme = 'dark';
-            statusText = 'Dark Theme';
-        }
-
-        setTheme(newTheme);
-        showThemeStatus(statusText);
-    });
-
-    // Listen for storage changes to sync themes across open tabs
-    window.addEventListener('storage', (e) => {
-        if (e.key === 'qrm-theme') {
-            setTheme(e.newValue);
-        }
-    });
 
     // ---- Sidebar Active State on Scroll ----
     const sidebarLinks = document.querySelectorAll('.sidebar-link');

@@ -1,0 +1,423 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "QR Maker API",
+    "description": "Developer API to generate customized QR codes on the fly using standard HTTP requests.",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "https://qrmaker.ryanmarch.me"
+    }
+  ],
+  "paths": {
+    "/api/qr": {
+      "get": {
+        "summary": "Generate a QR code (Public / Standard Rate Limits)",
+        "description": "Generate custom styled QR codes using standard rate limits without authentication.",
+        "operationId": "generatePublicQr",
+        "parameters": [
+          {
+            "name": "content",
+            "in": "query",
+            "required": true,
+            "description": "The URL or text content to encode. Must be properly URL-encoded.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "format",
+            "in": "query",
+            "required": false,
+            "description": "Output format: png (raw binary file), svg (vector\n                                    graphic), or base64 (JSON wrapping Data URI).",
+            "schema": {
+              "type": "string",
+              "default": "png",
+              "enum": [
+                "png",
+                "svg",
+                "base64"
+              ]
+            }
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "required": false,
+            "description": "Width and height in pixels (for png and base64). Min:\n                                    64, Max: 4096.",
+            "schema": {
+              "type": "integer",
+              "default": 1024
+            }
+          },
+          {
+            "name": "fgColor",
+            "in": "query",
+            "required": false,
+            "description": "Hex color code for the foreground/pixels. Do not include a leading\n                                        #.",
+            "schema": {
+              "type": "string",
+              "default": "000000"
+            }
+          },
+          {
+            "name": "bgColor",
+            "in": "query",
+            "required": false,
+            "description": "Hex color code for background. Ignored if transparent=true. Do\n                                        not include #.",
+            "schema": {
+              "type": "string",
+              "default": "ffffff"
+            }
+          },
+          {
+            "name": "transparent",
+            "in": "query",
+            "required": false,
+            "description": "Set to true or 1 for a transparent background.",
+            "schema": {
+              "type": "boolean",
+              "default": false
+            }
+          },
+          {
+            "name": "margin",
+            "in": "query",
+            "required": false,
+            "description": "Quiet-zone border size in modules. Min: 0, Max: 10.",
+            "schema": {
+              "type": "integer",
+              "default": 2
+            }
+          },
+          {
+            "name": "ecl",
+            "in": "query",
+            "required": false,
+            "description": "Error Correction Level: L (Low), M (Medium),\n                                    Q (Quartile), H (High).",
+            "schema": {
+              "type": "string",
+              "default": "M",
+              "enum": [
+                "L",
+                "M",
+                "Q",
+                "H"
+              ]
+            }
+          },
+          {
+            "name": "cornerRadius",
+            "in": "query",
+            "required": false,
+            "description": "Quiet-zone background card border radius percentage. Min: 0, Max:\n                                    100.",
+            "schema": {
+              "type": "integer",
+              "default": 0
+            }
+          },
+          {
+            "name": "cornerStyle",
+            "in": "query",
+            "required": false,
+            "description": "Rendering style of modules: square, rounded,\n                                    circle, leaf, beveled.",
+            "schema": {
+              "type": "string",
+              "default": "square"
+            }
+          },
+          {
+            "name": "icon",
+            "in": "query",
+            "required": false,
+            "description": "Overlay an icon: link, globe,\n                                    text, wifi, contact, email,\n                                    phone, map-pin, sms, event,\n                                    github, linkedin, instagram,\n                                    facebook, whatsapp, youtube,\n                                    patreon, discord, pinterest. You can\n                                    also pass any URL-encoded custom emoji (e.g., icon=%F0%9F%9A%80 for\n                                    🚀). Emojis are fully rendered in SVG output and clear the background card space in\n                                    PNG output.",
+            "schema": {
+              "type": "string",
+              "default": "none"
+            }
+          },
+          {
+            "name": "iconSize",
+            "in": "query",
+            "required": false,
+            "description": "Percentage width of center icon. Min: 10, Max: 30.",
+            "schema": {
+              "type": "integer",
+              "default": 20
+            }
+          },
+          {
+            "name": "iconColor",
+            "in": "query",
+            "required": false,
+            "description": "Hex color code for the center icon. Defaults to fgColor. Do not\n                                        include #.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "iconBg",
+            "in": "query",
+            "required": false,
+            "description": "Shape of the backing card behind the icon: rounded,\n                                    circle, square, or none.",
+            "schema": {
+              "type": "string",
+              "default": "rounded",
+              "enum": [
+                "rounded",
+                "circle",
+                "square",
+                "none"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful QR Code generation",
+            "content": {
+              "image/png": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              },
+              "image/svg+xml": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Base64Response"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid parameter values or missing content"
+          }
+        }
+      }
+    },
+    "/api/plus": {
+      "get": {
+        "summary": "Generate a QR code (Plus / Higher Rate Limits)",
+        "description": "Generate custom styled QR codes using higher rate limits (requires Bearer API key).",
+        "operationId": "generatePlusQr",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "content",
+            "in": "query",
+            "required": true,
+            "description": "The URL or text content to encode. Must be properly URL-encoded.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "format",
+            "in": "query",
+            "required": false,
+            "description": "Output format: png (raw binary file), svg (vector\n                                    graphic), or base64 (JSON wrapping Data URI).",
+            "schema": {
+              "type": "string",
+              "default": "png",
+              "enum": [
+                "png",
+                "svg",
+                "base64"
+              ]
+            }
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "required": false,
+            "description": "Width and height in pixels (for png and base64). Min:\n                                    64, Max: 4096.",
+            "schema": {
+              "type": "integer",
+              "default": 1024
+            }
+          },
+          {
+            "name": "fgColor",
+            "in": "query",
+            "required": false,
+            "description": "Hex color code for the foreground/pixels. Do not include a leading\n                                        #.",
+            "schema": {
+              "type": "string",
+              "default": "000000"
+            }
+          },
+          {
+            "name": "bgColor",
+            "in": "query",
+            "required": false,
+            "description": "Hex color code for background. Ignored if transparent=true. Do\n                                        not include #.",
+            "schema": {
+              "type": "string",
+              "default": "ffffff"
+            }
+          },
+          {
+            "name": "transparent",
+            "in": "query",
+            "required": false,
+            "description": "Set to true or 1 for a transparent background.",
+            "schema": {
+              "type": "boolean",
+              "default": false
+            }
+          },
+          {
+            "name": "margin",
+            "in": "query",
+            "required": false,
+            "description": "Quiet-zone border size in modules. Min: 0, Max: 10.",
+            "schema": {
+              "type": "integer",
+              "default": 2
+            }
+          },
+          {
+            "name": "ecl",
+            "in": "query",
+            "required": false,
+            "description": "Error Correction Level: L (Low), M (Medium),\n                                    Q (Quartile), H (High).",
+            "schema": {
+              "type": "string",
+              "default": "M",
+              "enum": [
+                "L",
+                "M",
+                "Q",
+                "H"
+              ]
+            }
+          },
+          {
+            "name": "cornerRadius",
+            "in": "query",
+            "required": false,
+            "description": "Quiet-zone background card border radius percentage. Min: 0, Max:\n                                    100.",
+            "schema": {
+              "type": "integer",
+              "default": 0
+            }
+          },
+          {
+            "name": "cornerStyle",
+            "in": "query",
+            "required": false,
+            "description": "Rendering style of modules: square, rounded,\n                                    circle, leaf, beveled.",
+            "schema": {
+              "type": "string",
+              "default": "square"
+            }
+          },
+          {
+            "name": "icon",
+            "in": "query",
+            "required": false,
+            "description": "Overlay an icon: link, globe,\n                                    text, wifi, contact, email,\n                                    phone, map-pin, sms, event,\n                                    github, linkedin, instagram,\n                                    facebook, whatsapp, youtube,\n                                    patreon, discord, pinterest. You can\n                                    also pass any URL-encoded custom emoji (e.g., icon=%F0%9F%9A%80 for\n                                    🚀). Emojis are fully rendered in SVG output and clear the background card space in\n                                    PNG output.",
+            "schema": {
+              "type": "string",
+              "default": "none"
+            }
+          },
+          {
+            "name": "iconSize",
+            "in": "query",
+            "required": false,
+            "description": "Percentage width of center icon. Min: 10, Max: 30.",
+            "schema": {
+              "type": "integer",
+              "default": 20
+            }
+          },
+          {
+            "name": "iconColor",
+            "in": "query",
+            "required": false,
+            "description": "Hex color code for the center icon. Defaults to fgColor. Do not\n                                        include #.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "iconBg",
+            "in": "query",
+            "required": false,
+            "description": "Shape of the backing card behind the icon: rounded,\n                                    circle, square, or none.",
+            "schema": {
+              "type": "string",
+              "default": "rounded",
+              "enum": [
+                "rounded",
+                "circle",
+                "square",
+                "none"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful QR Code generation",
+            "content": {
+              "image/png": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              },
+              "image/svg+xml": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Base64Response"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid parameter values or missing content"
+          },
+          "401": {
+            "description": "Unauthorized or missing API Key"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "BearerAuth": {
+        "type": "http",
+        "scheme": "bearer"
+      }
+    },
+    "schemas": {
+      "Base64Response": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "string",
+            "description": "Base64 encoded Data URI of the generated QR code image.",
+            "example": "data:image/png;base64,iVBORw0KGgoAAA..."
+          }
+        }
+      }
+    }
+  }
+}
