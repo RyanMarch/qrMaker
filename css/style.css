@@ -1870,11 +1870,11 @@ input[type="range"]::-moz-range-thumb:hover {
 
 /* ---- Responsive ---- */
 @media (max-width: 960px) {
-    body {
-        height: auto;
+    body, body#main-body {
+        height: auto !important;
         min-height: 100vh;
         min-height: 100dvh;
-        overflow-y: auto;
+        overflow: visible !important;
         padding: 0;
         background-attachment: scroll;
     }
@@ -1885,7 +1885,7 @@ input[type="range"]::-moz-range-thumb:hover {
         padding: 0;
         max-width: 100%;
         width: 100%;
-        height: auto;
+        height: auto !important;
         overflow: visible;
         border-radius: 0;
         margin: 0;
@@ -1895,51 +1895,80 @@ input[type="range"]::-moz-range-thumb:hover {
         backdrop-filter: none;
     }
 
+    body.has-global-header .container {
+        height: auto !important;
+    }
+
+    @supports ((animation-timeline: scroll()) and (animation-range: 0% 100%)) {
+        @keyframes update-scroll-progress {
+            to {
+                --scroll-progress: 1;
+            }
+        }
+        :root {
+            animation: update-scroll-progress auto linear both;
+            animation-timeline: scroll(block root);
+            animation-range: 0px 80px;
+        }
+    }
+
     .preview-section {
         grid-column: auto;
         border-left: none;
         zoom: 1 !important;
         height: auto;
-        padding: calc(0.75rem + env(safe-area-inset-top)) 1.25rem 0.75rem;
+        padding: calc(0.75rem - 0.25rem * var(--scroll-progress, 0)) 1.25rem;
         position: sticky;
-        top: 0;
+        top: calc(60px + env(safe-area-inset-top, 0px));
         gap: unset;
         z-index: 10;
         border-radius: 0;
         border-bottom: 1px solid var(--border-color);
         /* Keep the tinted background opaque so content doesn't bleed through */
         background-color: var(--theme-tint-bg, var(--preview-bg)) !important;
-        transition: padding 0.2s ease-in-out, background-color 0.2s ease-in-out;
+        transition: background-color 0.2s ease-in-out;
     }
 
     .preview-header {
         border-bottom: none;
-        transition: max-height 0.25s ease-in-out, opacity 0.2s ease-in-out, padding 0.25s ease-in-out, margin 0.25s ease-in-out;
-        max-height: 80px;
-        opacity: 1;
+        max-height: calc(80px * (1 - var(--scroll-progress, 0)));
+        opacity: calc(1 - var(--scroll-progress, 0));
+        padding-top: calc(1rem * (1 - var(--scroll-progress, 0)));
+        padding-bottom: calc(1rem * (1 - var(--scroll-progress, 0)));
+        margin-top: 0;
+        margin-bottom: 0;
         overflow: hidden;
+        transition: none;
     }
 
     .preview-header h1 {
-        font-size: 2rem;
-        transition: font-size 0.25s ease-in-out;
+        font-size: calc(2rem - 0.5rem * var(--scroll-progress, 0));
+        transition: none;
     }
 
     .export-split-size {
-        transition: max-width 0.25s ease-in-out, opacity 0.2s ease-in-out, padding 0.25s ease-in-out, border-left-width 0.25s ease-in-out;
-        max-width: 120px;
+        max-width: calc(120px * (1 - var(--scroll-progress, 0))) !important;
+        opacity: calc(1 - var(--scroll-progress, 0)) !important;
+        padding-top: calc(0.5rem * (1 - var(--scroll-progress, 0))) !important;
+        padding-bottom: calc(0.5rem * (1 - var(--scroll-progress, 0))) !important;
+        padding-left: calc(0.5rem * (1 - var(--scroll-progress, 0))) !important;
+        padding-right: calc(0.625rem * (1 - var(--scroll-progress, 0))) !important;
+        border-left-width: calc(1px * (1 - var(--scroll-progress, 0))) !important;
         overflow: hidden;
+        transition: none;
     }
 
     .preview-actions-container {
         border-top: none;
-        transition: padding 0.2s ease-in-out;
+        padding-top: calc(0.75rem - 0.25rem * var(--scroll-progress, 0));
+        padding-bottom: calc(0.75rem - 0.25rem * var(--scroll-progress, 0));
+        transition: none;
     }
 
     .qr-canvas-wrapper {
-        max-width: min(100%, 220px);
-        margin: 0.375rem auto;
-        transition: max-width 0.2s ease-in-out, margin 0.2s ease-in-out;
+        max-width: calc(220px - 90px * var(--scroll-progress, 0)) !important;
+        margin: calc(0.375rem - 0.225rem * var(--scroll-progress, 0)) auto;
+        transition: none;
     }
 
     #export-svg-btn {
@@ -1965,9 +1994,23 @@ input[type="range"]::-moz-range-thumb:hover {
 
     .preview-actions {
         display: flex;
-        flex-wrap: wrap;
-        gap: 0.75rem;
-        transition: gap 0.2s ease-in-out;
+        flex-wrap: nowrap;
+        gap: calc(0.75rem - 0.25rem * var(--scroll-progress, 0));
+        transition: none;
+    }
+
+    .preview-actions .share-wrapper {
+        flex-grow: var(--scroll-progress, 0);
+        flex-shrink: 1;
+        flex-basis: calc(100px * (1 - var(--scroll-progress, 0)));
+        min-width: 0;
+    }
+
+    .preview-actions .export-split-btn {
+        flex-grow: 1;
+        flex-shrink: 1;
+        flex-basis: calc(100px * (1 - var(--scroll-progress, 0)));
+        min-width: 0;
     }
 
     .sidebar-header {
@@ -1975,49 +2018,11 @@ input[type="range"]::-moz-range-thumb:hover {
     }
 
     /* Scrolled state on mobile */
-    body.scrolled .preview-section {
-        padding: calc(0.5rem + env(safe-area-inset-top)) 1.25rem 0.5rem;
-    }
-
     body.scrolled .preview-header {
-        max-height: 0 !important;
-        opacity: 0 !important;
-        padding-top: 0 !important;
-        padding-bottom: 0 !important;
-        margin-top: 0 !important;
-        margin-bottom: 0 !important;
         pointer-events: none;
     }
 
-    body.scrolled .qr-canvas-wrapper {
-        margin: 0.25rem auto;
-    }
-
-    body.scrolled .preview-actions-container {
-        padding: 0.5rem 1.5rem;
-    }
-
-    body.scrolled .preview-actions {
-        flex-wrap: nowrap !important;
-        gap: 0.5rem;
-    }
-
-    body.scrolled .preview-actions .share-wrapper {
-        flex: 1 1 50% !important;
-        width: 50% !important;
-    }
-
-    body.scrolled .preview-actions .export-split-btn {
-        flex: 1 1 50% !important;
-        width: 50% !important;
-    }
-
     body.scrolled .export-split-size {
-        max-width: 0 !important;
-        opacity: 0 !important;
-        padding-left: 0 !important;
-        padding-right: 0 !important;
-        border-left-width: 0 !important;
         pointer-events: none;
     }
 }
@@ -3063,13 +3068,16 @@ input[type="range"]::-moz-range-thumb:hover {
    Global Header & Mobile Navigation styles
    ============================================================ */
 .global-header {
-    height: 60px;
+    height: calc(60px + env(safe-area-inset-top, 0px));
+    padding-top: env(safe-area-inset-top, 0px);
+    box-sizing: border-box;
     background-color: var(--panel-bg);
     border-bottom: 1px solid var(--border-color);
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 0 1.5rem;
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
     position: fixed;
     top: 0;
     left: 0;
@@ -3196,7 +3204,7 @@ input[type="range"]::-moz-range-thumb:hover {
 /* Mobile Dropdown Navigation Menu */
 .mobile-nav-menu {
     position: fixed;
-    top: 60px;
+    top: calc(60px + env(safe-area-inset-top, 0px));
     left: 0;
     right: 0;
     background-color: var(--panel-bg);
@@ -3257,9 +3265,11 @@ input[type="range"]::-moz-range-thumb:hover {
 
 /* Header layout helper for fixed header pages */
 body.has-global-header {
-    padding-top: 60px !important;
+    padding-top: calc(60px + env(safe-area-inset-top, 0px)) !important;
 }
 
-body.has-global-header .container {
-    height: calc(100vh - 60px) !important;
+@media (min-width: 961px) {
+    body.has-global-header .container {
+        height: calc(100vh - (60px + env(safe-area-inset-top, 0px))) !important;
+    }
 }
