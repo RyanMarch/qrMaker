@@ -1,4 +1,6 @@
 <div align="center">
+  <img src="assets/favicon/web-app-manifest-512x512.png" alt="QR Maker Logo" width="128" height="128" />
+
   <h1>QR Maker</h1>
   <p><i>A simple, browser-based tool to create and style beautiful QR codes.</i></p>
 
@@ -12,6 +14,11 @@
 It runs entirely in your web browser. There are no databases, accounts, or trackers. 
 
 For developers, the project also includes a companion API hosted on Cloudflare Pages to generate QR codes on the fly.
+
+<p align="center">
+  <!-- <img src="about/images/app-overview.png" alt="QR Maker Interface (Dark)" width="48%" /> -->
+  <img src="about/images/app-overview-light-theme.png" alt="QR Maker Interface (Light)" width="85%" />
+</p>
 
 ## Table of Contents
 
@@ -51,6 +58,10 @@ And more:
 * **Custom Logos:** Drag and drop your own PNG or JPG logo file directly into the center.
 * **Card Backings:** Adjust the size of the icon and place a square, rounded, or circular backing card behind it to clear out overlapping QR modules.
 
+<p align="center">
+  <img src="about/images/app-icon-emoji-alien.png" alt="Custom Emoji and Styling" width="70%" />
+</p>
+
 ### 4. High-Quality Outputs & Sharing
 * **File Formats:** Download your QR code as a vector-based SVG (ideal for print layouts) or as a PNG (available in 512px, 1024px, and 2048px widths).
 * **One-Click Share Links:** Create a shareable URL that saves your design settings so others can open and edit it instantly.
@@ -80,6 +91,10 @@ For an interactive experience, please visit the hosted **[Developer API Document
 * Self-service **API Key Registration**
 
 The project's serverless API is hosted on Cloudflare Pages, allowing developers to request custom QR codes programmatically using simple web requests.
+
+<p align="center">
+  <img src="about/images/api-docs-interactive-playground.png" alt="Interactive API Documentation Playground" width="90%" />
+</p>
 
 ### Endpoints
 
@@ -160,13 +175,18 @@ Returns a JSON object wrapping a Data URL.
 QR Maker is built directly on standard web technologies to keep page load times under a second.
 
 ### 1. Browser-Side Rendering
-* **QR Engine:** The app uses an inlined version of [Nayuki's QR Code generator library](https://github.com/nayuki/QR-Code-generator) (MIT License) in `js/qrcode-lib.js` to compile the raw text data into a grid.
+* **QR Engine:** The app uses an inlined version of [Kazuhiko Arase's QR Code generator library](https://github.com/kazuhikoarase/qrcode-generator) (MIT License) to compile the raw text data into a grid.
 * **HTML5 Canvas:** Custom drawing logic in `js/script.js` reads the grid and draws custom pixel shapes and finder patterns to render the final PNG images.
 * **Vector SVG Generator:** Outputs clean, editable XML SVG strings directly.
 
+
 ### 2. Standalone Application
-* **Zero Flicker:** A small script block inside `index.html` retrieves your theme choice from `localStorage` immediately, preventing bright white flashes when opening the app in dark mode.
 * **Offline Service Worker:** Using `sw.js`, the app caches its code, styles, and web fonts to launch and operate offline.
+
+### 3. Cloud Storage & Logo Sharing
+* **Cloudinary Upload:** To support one-click share links that preserve custom designs, uploaded custom logos are stored in a Cloudinary image folder. The generated URL is then included in the shareable link. Uploaded images are subject to deletion at any time, so make sure to download any QR codes with images you want to keep. 
+
+* Local QR generation works fully offline without uploading.
 
 ## License
 

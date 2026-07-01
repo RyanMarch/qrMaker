@@ -31,8 +31,8 @@
         rel="stylesheet">
 
     <!-- Favicons -->
-    <link rel="icon" type="image/png" href="/assets/favicon/favicon-96x96.png" sizes="96x96" />
-    <link rel="icon" type="image/svg+xml" href="/assets/favicon/favicon.svg" />
+    <link rel="icon" type="image/png" href="/assets/favicon/favicon-96x96.png?v=2" sizes="96x96" />
+    <link rel="icon" type="image/svg+xml" href="/assets/favicon/favicon.svg?v=2" />
 
     <!-- Root Styles -->
     <link rel="stylesheet" href="/css/style.css">
@@ -147,15 +147,18 @@
             .header-nav {
                 display: none;
             }
+
             .error-card {
                 padding: 2rem 1.5rem;
                 border: none;
                 background: transparent;
                 box-shadow: none;
             }
+
             .error-code {
                 font-size: 5rem;
             }
+
             .error-actions {
                 flex-direction: column;
                 gap: 0.75rem;
@@ -165,67 +168,7 @@
 </head>
 
 <body>
-    <!-- Header -->
-    <header class="global-header">
-        <div class="header-left">
-            <a href="/" class="logo-link">
-                <span class="logo-text">QR Maker</span>
-                <span class="badge">404</span>
-            </a>
-        </div>
-        <div class="header-right">
-            <nav class="header-nav" aria-label="Main Navigation">
-                <a href="/" class="nav-link">App</a>
-                <a href="/about/" class="nav-link">About</a>
-                <a href="/api/" class="nav-link">API</a>
-            </nav>
-            <button id="theme-toggle" class="theme-toggle" aria-label="Toggle theme" title="Toggle theme">
-                <svg class="sun-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                    stroke-linecap="round" stroke-linejoin="round">
-                    <circle cx="12" cy="12" r="5"></circle>
-                    <line x1="12" y1="1" x2="12" y2="3"></line>
-                    <line x1="12" y1="21" x2="12" y2="23"></line>
-                    <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
-                    <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
-                    <line x1="1" y1="12" x2="3" y2="12"></line>
-                    <line x1="21" y1="12" x2="23" y2="12"></line>
-                    <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
-                    <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
-                </svg>
-                <svg class="moon-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                    stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
-                </svg>
-                <svg class="system-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                    stroke-linecap="round" stroke-linejoin="round">
-                    <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
-                    <line x1="8" y1="21" x2="16" y2="21"></line>
-                    <line x1="12" y1="17" x2="12" y2="21"></line>
-                </svg>
-                <span id="theme-status" class="theme-status"></span>
-            </button>
-            <button id="mobile-menu-toggle" class="mobile-menu-toggle" aria-label="Toggle navigation menu" aria-expanded="false">
-                <svg class="menu-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <line x1="3" y1="12" x2="21" y2="12"></line>
-                    <line x1="3" y1="6" x2="21" y2="6"></line>
-                    <line x1="3" y1="18" x2="21" y2="18"></line>
-                </svg>
-                <svg class="close-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display: none;">
-                    <line x1="18" y1="6" x2="6" y2="18"></line>
-                    <line x1="6" y1="6" x2="18" y2="18"></line>
-                </svg>
-            </button>
-        </div>
-    </header>
-
-    <!-- Mobile Navigation Overlay -->
-    <div id="mobile-nav-menu" class="mobile-nav-menu">
-        <nav class="mobile-menu-nav">
-            <a href="/" class="mobile-menu-link">App</a>
-            <a href="/about/" class="mobile-menu-link">About</a>
-            <a href="/api/" class="mobile-menu-link">API</a>
-        </nav>
-    </div>
+    <global-header show-badge="404"></global-header>
 
     <!-- Error Container -->
     <main class="error-container">
@@ -243,7 +186,7 @@
     </main>
 
     <!-- Scripts -->
-    <script src="/js/header.js" defer></script>
+    <script src="/js/header.js"></script>
 </body>
 
 </html>

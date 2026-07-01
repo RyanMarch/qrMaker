@@ -45,56 +45,7 @@
 </head>
 
 <body>
-    <!-- Header -->
-    <header class="global-header">
-        <div class="header-left">
-            <button id="mobile-nav-toggle" class="mobile-nav-toggle" aria-label="Toggle navigation"
-                aria-expanded="false">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20">
-                    <line x1="3" y1="12" x2="21" y2="12"></line>
-                    <line x1="3" y1="6" x2="21" y2="6"></line>
-                    <line x1="3" y1="18" x2="21" y2="18"></line>
-                </svg>
-            </button>
-            <a href="/" class="logo-link">
-                <span class="logo-text">QR Maker</span>
-                <span class="badge">API Docs</span>
-                <span title="AI Agent Ready (llms.txt & OpenAPI Spec available)"></span>
-            </a>
-        </div>
-        <div class="header-right">
-            <nav class="header-nav" aria-label="Main Navigation">
-                <a href="/" class="nav-link">App</a>
-                <a href="/about/" class="nav-link">About</a>
-                <a href="/api/" class="nav-link active">API</a>
-            </nav>
-            <button id="theme-toggle" class="theme-toggle" aria-label="Toggle theme" title="Toggle theme">
-                <svg class="sun-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                    stroke-linecap="round" stroke-linejoin="round">
-                    <circle cx="12" cy="12" r="5"></circle>
-                    <line x1="12" y1="1" x2="12" y2="3"></line>
-                    <line x1="12" y1="21" x2="12" y2="23"></line>
-                    <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
-                    <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
-                    <line x1="1" y1="12" x2="3" y2="12"></line>
-                    <line x1="21" y1="12" x2="23" y2="12"></line>
-                    <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
-                    <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
-                </svg>
-                <svg class="moon-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                    stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
-                </svg>
-                <svg class="system-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                    stroke-linecap="round" stroke-linejoin="round">
-                    <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
-                    <line x1="8" y1="21" x2="16" y2="21"></line>
-                    <line x1="12" y1="17" x2="12" y2="21"></line>
-                </svg>
-                <span id="theme-status" class="theme-status"></span>
-            </button>
-        </div>
-    </header>
+    <global-header active-page="api" show-badge="API Docs" sidebar-toggle></global-header>
 
     <!-- Mobile Navigation Overlay -->
     <div id="mobile-overlay" class="mobile-overlay"></div>
@@ -168,19 +119,22 @@
             <!-- Endpoint -->
             <article id="endpoint" class="doc-section">
                 <h2>Endpoints</h2>
-                <p>QR Maker provides two endpoints to choose from depending on your integration needs:</p>
+                <p>QR Maker provides two endpoints to choose from depending on your integration needs.</p>
+                <h3 style="margin-top: 1rem; font-size: 1rem;">Free Endpoint</h3>
+                <p>Standard rate limits, no auth required.</p>
                 <div class="endpoint-block" style="margin-bottom: 12px;">
                     <span class="method get">GET</span>
                     <code class="endpoint-url">https://qrmaker.ryanmarch.me/api/qr</code>
-                    <span style="font-size: 11px; color: var(--text-secondary); margin-left: 20px;">Standard rate
-                        limits, no auth required</span>
                 </div>
+
+                <h3 style="margin-top: 2rem; font-size: 1rem;">Plus Endpoint</h3>
+                <p>Higher rate limits, requires Bearer API Key.</p>
                 <div class="endpoint-block">
                     <span class="method get" style="background: #10b981; color: white;">GET</span>
                     <code class="endpoint-url">https://qrmaker.ryanmarch.me/api/plus</code>
-                    <span style="font-size: 11px; color: var(--text-secondary); margin-left: 20px;">Higher rate limits,
-                        requires Bearer API Key</span>
                 </div>
+
+                <hr class="section-divider">
 
                 <h3 style="margin-top: 2rem; margin-bottom: 1rem; font-size: 1.25rem;"> Resources</h3>
 
@@ -693,10 +647,15 @@ app.get('/api/qr', async (req, res) => {
 
 
 
+            <!-- Footer -->
+            <footer class="api-footer">
+                <p>&copy; 2026 QR Maker. All rights reserved.</p>
+            </footer>
+
         </section>
     </main>
 
-    <script src="/js/header.js" defer></script>
+    <script src="/js/header.js"></script>
     <script src="script.js"></script>
 </body>
 
