@@ -46,7 +46,8 @@
     --ios-prompt-icon-span-bg: #27272a;
     --ios-prompt-icon-span-border: #3f3f46;
     --seo-bg-open: #222226;
-    --logo-gradient: linear-gradient(113deg, #1b5256, #3d7c3a);
+    /* --logo-gradient: linear-gradient(113deg, #1b5256, #3d7c3a); */
+    --logo-gradient: linear-gradient(147deg, #146e5f 44.96%, #1f9619)
 }
 
 [data-theme="light"] {
@@ -1122,7 +1123,7 @@ body#main-body {
 
 .control-row {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr;
     gap: 0.75rem;
 }
 
@@ -1162,6 +1163,7 @@ label {
     font-size: 16px;
     padding: 0.5rem 0.75rem;
     width: 100%;
+    min-width: 0;
     transition: border-color 0.15s, box-shadow 0.15s, background-color 0.15s;
     outline: none;
     -webkit-appearance: none;
@@ -1186,6 +1188,22 @@ label {
     min-height: 96px;
     line-height: 1.5;
 }
+
+/* Hide number spinner/steppers on latitude and longitude inputs */
+#input-geo-lat::-webkit-outer-spin-button,
+#input-geo-lat::-webkit-inner-spin-button,
+#input-geo-lng::-webkit-outer-spin-button,
+#input-geo-lng::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+#input-geo-lat[type="number"],
+#input-geo-lng[type="number"] {
+    -moz-appearance: textfield;
+    appearance: textfield;
+}
+
 
 /* ---- Password input ---- */
 .password-wrapper {
@@ -1870,7 +1888,9 @@ input[type="range"]::-moz-range-thumb:hover {
 
 /* ---- Responsive ---- */
 @media (max-width: 960px) {
-    body, body#main-body {
+
+    body,
+    body#main-body {
         height: auto !important;
         min-height: 100vh;
         min-height: 100dvh;
@@ -1905,6 +1925,7 @@ input[type="range"]::-moz-range-thumb:hover {
                 --scroll-progress: 1;
             }
         }
+
         :root {
             animation: update-scroll-progress auto linear both;
             animation-timeline: scroll(block root);
@@ -3098,6 +3119,8 @@ input[type="range"]::-moz-range-thumb:hover {
     gap: 0.5rem;
     text-decoration: none;
     color: var(--text-main);
+    /* background: radial-gradient(circle, rgba(255, 255, 255, 0.08) 0%, rgba(0, 0, 0, 0) 70%); */
+    /* padding: 10px 20px; */
 }
 
 .global-header .logo-text {
@@ -3109,6 +3132,8 @@ input[type="range"]::-moz-range-thumb:hover {
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
+    /* filter: drop-shadow(0px 0px 25px rgba(250, 250, 250, 0.28)); */
+    filter: drop-shadow(0 0 20px rgba(214, 214, 214, 0.076));
 }
 
 .global-header .badge {

@@ -1,6 +1,6 @@
 {
   "name": "QR Maker",
-  "short_name": "QR Maker",
+  "short_name": "QRMaker",
   "icons": [
     {
       "src": "/assets/favicon/web-app-manifest-192x192.png",

@@ -1152,7 +1152,7 @@ function switchTab(name, generate = true) {
         if (isDropdownItem) {
             moreBtn.classList.add('active');
             moreBtn.setAttribute('aria-selected', 'true');
-            const prettyName = name.charAt(0).toUpperCase() + name.slice(1);
+            const prettyName = name === 'sms' ? 'SMS' : (name.charAt(0).toUpperCase() + name.slice(1));
             moreLabel.textContent = prettyName;
 
             const activeItem = document.querySelector(`.dropdown-item.active svg`);
