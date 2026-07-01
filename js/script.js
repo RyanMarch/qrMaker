@@ -2916,7 +2916,12 @@ initDesktopPwaPrompt();
 // Mobile scroll handler to collapse preview header
 function handleMobileScroll() {
     if (window.innerWidth <= 960) {
-        if (window.scrollY > 10) {
+        const scrollY = window.scrollY;
+        const maxScroll = 80;
+        const scrollProgress = Math.min(1, Math.max(0, scrollY / maxScroll));
+        document.documentElement.style.setProperty('--scroll-progress', scrollProgress);
+
+        if (scrollY > 40) {
             if (!document.body.classList.contains('scrolled')) {
                 document.body.classList.add('scrolled');
                 if (typeof closeSizePopover === 'function') {
@@ -2928,6 +2933,7 @@ function handleMobileScroll() {
         }
     } else {
         document.body.classList.remove('scrolled');
+        document.documentElement.style.setProperty('--scroll-progress', 0);
     }
 }
 window.addEventListener('scroll', handleMobileScroll, { passive: true });
