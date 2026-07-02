@@ -629,7 +629,7 @@ function toSVG(matrix, fgColor, bgColor, transparent, cornerRadius = 0, cornerSt
 
 // ─── PNG renderer ────────────────────────────────────────────────────────────
 
-function toPNG(matrix, outputSize, fgColor, bgColor, transparent, cornerRadius = 0, cornerStyle = 'square', margin = 2, icon = 'none', iconSize = 20, iconColor = fgColor, iconClear = true, iconBg = 'rounded') {
+async function toPNG(matrix, outputSize, fgColor, bgColor, transparent, cornerRadius = 0, cornerStyle = 'square', margin = 2, icon = 'none', iconSize = 20, iconColor = fgColor, iconClear = true, iconBg = 'rounded') {
   const modules = matrix.length;
   // Scale: each module becomes cellSize × cellSize pixels
   const cellSize = Math.max(1, Math.floor(outputSize / modules));

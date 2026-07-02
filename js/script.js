@@ -519,7 +519,7 @@ function drawQR(qr, canvas, targetPx) {
             ctx.save();
             ctx.textAlign = 'center';
             ctx.textBaseline = 'middle';
-            ctx.font = `${iconSizePx * 0.82}px "Segoe UI Emoji", "Apple Color Emoji", "Noto Color Emoji", sans-serif`;
+            ctx.font = `${iconSizePx * 0.75}px system-ui, -apple-system, "Apple Color Emoji", "Segoe UI Emoji", "Noto Color Emoji", sans-serif`;
             ctx.fillText(state.icon, center, center);
             ctx.restore();
         }
