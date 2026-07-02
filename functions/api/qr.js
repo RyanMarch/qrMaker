@@ -19,6 +19,36 @@
 
 import qrcode from './qr-lib.js';
 import { zlibSync } from 'fflate';
+import { initWasm, Resvg } from '@resvg/resvg-wasm';
+import resvgWasm from '@resvg/resvg-wasm/index_bg.wasm';
+let wasmInitialized = false;
+async function ensureWasmInitialized() {
+  if (!wasmInitialized) {
+    try {
+      await initWasm(resvgWasm);
+    } catch (err) {
+      // In local dev/hot reload, initWasm may throw if already initialized.
+      // We can safely ignore this; if it was a fatal compile error,
+      // the Resvg rendering call below will fail.
+    }
+    wasmInitialized = true;
+  }
+}
+
+let fontBuffer = null;
+async function getEmojiFont(context) {
+  if (fontBuffer) return fontBuffer;
+  const fontUrl = new URL('/assets/MaterialIcons-Regular.ttf', context.request.url);
+  const fontResponse = await context.env.ASSETS.fetch(fontUrl);
+  
+  if (!fontResponse.ok) {
+    throw new Error(`Font asset loading failed: ${fontResponse.status}`);
+  }
+  
+  fontBuffer = await fontResponse.arrayBuffer();
+  return fontBuffer;
+}
+
 
 // ─── Predefined Vector Icons ──────────────────────────────────────────────────
 const PREDEFINED_ICONS = {
@@ -344,7 +374,8 @@ export async function onRequestGet(context) {
   const cornerStyle = ['square', 'rounded', 'circle', 'leaf', 'beveled'].includes(params.get('cornerStyle') || params.get('cms')) ? (params.get('cornerStyle') || params.get('cms')) : 'square';
 
   // Predefined Vector Icons parameters
-  const icon = params.get('icon') || 'none';
+  const iconParam = params.get('icon');
+  const icon = iconParam ? decodeURIComponent(iconParam) : 'none';
   const iconSize = Math.min(Math.max(Number(params.get('iconSize') || params.get('iconsz')) || 20, 10), 30);
   const iconColorParam = params.get('iconColor') || params.get('iconcol');
   const iconColor = iconColorParam ? (parseHexColor(iconColorParam) ?? fgColor) : fgColor;
@@ -387,7 +418,33 @@ export async function onRequestGet(context) {
   }
 
   // PNG or base64
-  const pngBytes = toPNG(matrix, size, fgColor, bgColor, transparent, cornerRadius, cornerStyle, margin, icon, iconSize, iconColor, iconClear, iconBg);
+  const isPredefined = hasIcon && PREDEFINED_ICONS[icon];
+  const isEmoji = hasIcon && !isPredefined;
+
+  let pngBytes;
+  try {
+    // Generate SVG first
+    const svg = toSVG(matrix, fgColor, bgColor, transparent, cornerRadius, cornerStyle, margin, icon, iconSize, iconColor, iconClear, iconBg);
+    await ensureWasmInitialized();
+
+    const fontData = new Uint8Array(await getEmojiFont(context));
+
+    const resvgOpts = {
+      fitTo: { mode: 'width', value: size },
+      font: {
+        loadSystemFonts: false,
+        fontBuffers: [fontData],
+        defaultFontFamily: 'Material Icons'
+      }
+    };
+
+    const resvg = new Resvg(svg, resvgOpts);
+    const pngData = resvg.render();
+    pngBytes = pngData.asPng();
+  } catch (err) {
+    console.error('Failed to render PNG via Resvg, falling back to pure-JS encoder:', err);
+    pngBytes = toPNG(matrix, size, fgColor, bgColor, transparent, cornerRadius, cornerStyle, margin, icon, iconSize, iconColor, iconClear, iconBg);
+  }
 
   if (format === 'base64') {
     const b64 = uint8ToBase64(pngBytes);
@@ -555,7 +612,7 @@ function toSVG(matrix, fgColor, bgColor, transparent, cornerRadius = 0, cornerSt
         }
       });
       const emojiSize = iconSizeModules * 0.82;
-      iconSvgContent += `\n  <text x="${centerModules}" y="${centerModules}" font-size="${emojiSize}" font-family="system-ui, -apple-system, sans-serif" text-anchor="middle" dominant-baseline="central">${escapedEmoji}</text>`;
+      iconSvgContent += `\n  <text x="${centerModules}" y="${centerModules}" font-size="${emojiSize}" font-family="'Material Icons', system-ui, -apple-system, sans-serif" text-anchor="middle" dominant-baseline="central">${escapedEmoji}</text>`;
     }
   }
 
