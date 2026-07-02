@@ -13,7 +13,7 @@
 
 It runs entirely in your web browser. There are no databases, accounts, or trackers. 
 
-For developers, the project also includes a companion API hosted on Cloudflare Pages to generate QR codes on the fly.
+For developers, the project includes a companion API hosted on Cloudflare Pages to generate QR codes on the fly. For desktop and mobile integration, it features a native Apple Shortcut to capture data straight from your system sharing utilities.
 
 <p align="center">
   <!-- <img src="about/images/app-overview.png" alt="QR Maker Interface (Dark)" width="48%" /> -->
@@ -23,7 +23,7 @@ For developers, the project also includes a companion API hosted on Cloudflare P
 ## Table of Contents
 
 1. [Features](#features)
-2. [Offline Use](#offline-use)
+2. [Ecosystem Integration](#ecosystem-integration)
 3. [Tips for Success](#tips-for-success)
 4. [Developer API Reference](#developer-api-reference)
 5. [Technical Details](#technical-details)
@@ -66,15 +66,20 @@ And more:
 * **File Formats:** Download your QR code as a vector-based SVG (ideal for print layouts) or as a PNG (available in 512px, 1024px, and 2048px widths).
 * **One-Click Share Links:** Create a shareable URL that saves your design settings so others can open and edit it instantly.
 
-## Offline Use
+## Ecosystem Integration
 
-Install QR Maker as a local application on your device:
+QR Maker integrates deeply with your desktop or mobile environments for faster workflows:
 
+### Native Apple Shortcut
+Skip copying and pasting entirely. Use this Apple Shortcut to instantly turn any highlighted text, link, or phone number into a customized QR code directly from your Mac's right-click Quick Actions menu or your iPhone/iPad's native Share Sheet.
+* **Download link:** [Get the Apple Shortcut](https://www.icloud.com/shortcuts/a308b98b830943278700d20e5ff07bc6)
+
+### Offline App
+Install QR Maker directly to your system hard drive to design, configure, and download custom QR codes completely offline:
 * **macOS (Safari):** Open the website, click **File** in the top menu bar, and choose **Add to Dock...**.
-* **iOS (Safari):** Tap the **Share** button and select **Add to Home Screen**.
-* **Chrome/Edge:** Click the installation indicator icon in the address bar to add the app to your desktop or device drawer.
+* **iOS / iPadOS (Safari):** Tap the standard **Share** button and select **Add to Home Screen**.
+* **Chrome / Edge / Firefox:** Click the installation indicator icon in the address URL bar to add the app directly to your desktop workspace or device app drawer.
 
----
 
 ## Tips for Success
 
@@ -107,10 +112,13 @@ GET https://qrmaker.ryanmarch.me/api/qr
 ```
 
 #### 2. Secure Endpoint (20 req/10s limit, requires Bearer API Key)
+
 Recommended for server-side proxies, custom scripts, and high-volume integrations.
+
 ```http
 GET https://qrmaker.ryanmarch.me/api/plus
 ```
+
 
 ### Authentication
 
@@ -120,16 +128,19 @@ For the secure `/api/plus` endpoint, requests must include the API Key in the `A
 Authorization: Bearer YOUR_API_KEY
 ```
 
+You may obtain a free API key by visiting the [Developer API Documentation](https://qrmaker.ryanmarch.me/api/#request-an-api-key) page and clicking the "Generate API Key" button.
+
+
 ### Parameters
 
 | Parameter | Type | Required | Default | Description |
-| :--- | :--- | :--- | :--- | :--- |
+| --- | --- | --- | --- | --- |
 | `content` | String | **Yes** | — | The text or URL to encode in the QR code (must be URL-encoded). |
 | `format` | String | No | `png` | The response format: `png` (binary file), `svg` (markup text), or `base64` (JSON object). |
 | `size` | Number | No | `1024` | Width and height in pixels (for `png` and `base64`). Range: `64` to `4096`. |
 | `fgColor` | String | No | `000000` | Hex color code for the pixels (e.g. `ff0000`). Do not include the `#`. |
 | `bgColor` | String | No | `ffffff` | Hex color code for the background (ignored if `transparent=true`). Do not include the `#`. |
-| `transparent`| Boolean | No | `false` | Set to `true` (or `1`) to make the background transparent. |
+| `transparent` | Boolean | No | `false` | Set to `true` (or `1`) to make the background transparent. |
 | `margin` | Number | No | `2` | Number of quiet-zone border modules around the QR code. Range: `0` to `10`. |
 | `ecl` | String | No | `M` | Error Correction Level: `L` (Low), `M` (Medium), `Q` (Quartile), `H` (High). |
 | `cornerRadius` | Number | No | `0` | Background corner radius percentage. Range: `0` to `100`. |
@@ -143,28 +154,34 @@ Authorization: Bearer YOUR_API_KEY
 ### Response Formats
 
 #### 1. PNG (default)
+
 Returns a raw PNG image file.
+
 * **Content-Type:** `image/png`
 * **Direct embedding:**
-  You can embed the API URL directly in a standard `<img>` tag. Unauthenticated requests are allowed (subject to rate limiting):
-  ```html
-  <img src="https://qrmaker.ryanmarch.me/api/qr?content=Hello&size=512&fgColor=ff0000" alt="QR Code" />
-  ```
-  *(To bypass rate limits in high-volume production, authenticate requests on the `/api/plus` endpoint using the `Authorization: Bearer <API_KEY>` header).*
+You can embed the API URL directly in a standard `<img>` tag. Unauthenticated requests are allowed (subject to rate limiting):
+```html
+<img src="https://qrmaker.ryanmarch.me/api/qr?content=Hello&size=512&fgColor=ff0000" alt="QR Code" />
+```
 
 #### 2. SVG
+
 Returns valid SVG XML markup.
+
 * **Content-Type:** `image/svg+xml; charset=utf-8`
 
 #### 3. Base64
+
 Returns a JSON object wrapping a Data URL.
+
 * **Content-Type:** `application/json`
 * **Payload:**
-  ```json
-  {
-    "data": "data:image/png;base64,iVBORw0KGgoAAA..."
-  }
-  ```
+```json
+{
+  "data": "data:image/png;base64,iVBORw0KGgoAAA..."
+}
+```
+
 
 
 > [!NOTE]
@@ -175,17 +192,18 @@ Returns a JSON object wrapping a Data URL.
 QR Maker is built directly on standard web technologies to keep page load times under a second.
 
 ### 1. Browser-Side Rendering
+
 * **QR Engine:** The app uses an inlined version of [Kazuhiko Arase's QR Code generator library](https://github.com/kazuhikoarase/qrcode-generator) (MIT License) to compile the raw text data into a grid.
 * **HTML5 Canvas:** Custom drawing logic in `js/script.js` reads the grid and draws custom pixel shapes and finder patterns to render the final PNG images.
 * **Vector SVG Generator:** Outputs clean, editable XML SVG strings directly.
 
-
 ### 2. Standalone Application
+
 * **Offline Service Worker:** Using `sw.js`, the app caches its code, styles, and web fonts to launch and operate offline.
 
 ### 3. Cloud Storage & Logo Sharing
-* **Cloudinary Upload:** To support one-click share links that preserve custom designs, uploaded custom logos are stored in a Cloudinary image folder. The generated URL is then included in the shareable link. Uploaded images are subject to deletion at any time, so make sure to download any QR codes with images you want to keep. 
 
+* **Cloudinary Upload:** To support one-click share links that preserve custom designs, uploaded custom logos are stored in a Cloudinary image folder. The generated URL is then included in the shareable link. Uploaded images are subject to deletion at any time, so make sure to download any QR codes with images you want to keep.
 * Local QR generation works fully offline without uploading.
 
 ## License
