@@ -618,7 +618,7 @@ function toSVG(matrix, fgColor, bgColor, transparent, cornerRadius = 0, cornerSt
 
   return [
     `<?xml version="1.0" encoding="UTF-8"?>`,
-    `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${size} ${size}" shape-rendering="crispEdges">`,
+    `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${size} ${size}" width="100%" height="100%" shape-rendering="crispEdges">`,
     bgRect,
     ...rects,
     ...finderPatterns,
