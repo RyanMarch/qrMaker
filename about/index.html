@@ -275,7 +275,7 @@
                         <picture>
                             <source srcset="images/app-overview-light-theme.avif" type="image/avif">
                             <img src="images/app-overview-light-theme.png"
-                                alt="QR Maker interactive app editor interface" loading="eager" fetchpriority="high">
+                                alt="QR Maker interactive app editor interface" loading="lazy">
                         </picture>
                     </div>
                     <div class="gallery-card-info">
@@ -437,22 +437,13 @@
             if (!canvas1 || !canvas2) return;
             const styleBadge = document.getElementById('style-badge');
 
-            // Generate QR matrix using kazuhikoarase library
-            const ECL = 'H'; // Higher ECL so center can hold icons safely
-            const qrText = 'https://qrmaker.ryanmarch.me';
-            const qrObj = qrcode(0, ECL);
-            qrObj.addData(qrText, 'Byte');
-            qrObj.make();
-
-            const moduleCount = qrObj.getModuleCount();
             const margin = 2;
-            const totalModules = moduleCount + margin * 2;
             const px = 400;
-            const moduleSize = px / totalModules;
 
             const configs = [
                 {
                     name: 'Classic Square',
+                    url: 'https://qrmaker.ryanmarch.me',
                     pixelStyle: 'square',
                     cornerStyle: 'square',
                     fgColor: '#000',
@@ -460,23 +451,8 @@
                     icon: null
                 },
                 {
-                    name: 'Leaf with Icon',
-                    pixelStyle: 'dot',
-                    cornerStyle: 'leaf',
-                    fgColor: '#ffffff',
-                    bgColor: '#22C55E',
-                    icon: '👽'
-                },
-                {
-                    name: 'Pink Rounded',
-                    pixelStyle: 'rounded',
-                    cornerStyle: 'rounded',
-                    fgColor: '#ffffff',
-                    bgColor: '#c200ae',
-                    icon: null
-                },
-                {
                     name: 'Clean Dots',
+                    url: 'qrmaker.ryanmarch.me/dots',
                     pixelStyle: 'dot',
                     cornerStyle: 'circle',
                     fgColor: '#047857',
@@ -485,6 +461,7 @@
                 },
                 {
                     name: 'Rounded Squares',
+                    url: 'Example',
                     pixelStyle: 'pills',
                     cornerStyle: 'rounded',
                     fgColor: '#0b1e5e',
@@ -492,15 +469,26 @@
                     icon: null
                 },
                 {
-                    name: 'Capsules',
-                    pixelStyle: 'pill-v',
+                    name: 'Leaf with Icon',
+                    url: 'Greetings Earthling',
+                    pixelStyle: 'dot',
+                    cornerStyle: 'leaf',
+                    fgColor: '#ffffff',
+                    bgColor: '#22C55E',
+                    icon: '👽'
+                },
+                {
+                    name: 'Pink Rounded',
+                    url: 'qrmaker.ryanmarch.me',
+                    pixelStyle: 'rounded',
                     cornerStyle: 'rounded',
-                    fgColor: '#9f2a30',
-                    bgColor: '#ffd9d9',
-                    icon: '❤️'
+                    fgColor: '#ffffff',
+                    bgColor: '#c200ae',
+                    icon: null
                 },
                 {
                     name: 'Funky Yellow',
+                    url: 'qrmaker.ryanmarch.me/about',
                     pixelStyle: 'square',
                     cornerStyle: 'square',
                     fgColor: '#1e293b',
@@ -508,7 +496,17 @@
                     icon: null
                 },
                 {
+                    name: 'Capsules',
+                    url: 'https://ryanmarch.me',
+                    pixelStyle: 'pill-v',
+                    cornerStyle: 'rounded',
+                    fgColor: '#9f2a30',
+                    bgColor: '#ffd9d9',
+                    icon: '❤️'
+                },
+                {
                     name: 'Connected Web',
+                    url: 'qrmaker.ryanmarch.me/api',
                     pixelStyle: 'connected',
                     cornerStyle: 'rounded',
                     fgColor: '#333dee',
@@ -519,13 +517,6 @@
 
             let currentIndex = 0;
             let activeCanvas = canvas1;
-
-            function isDark(r, c) {
-                if (r < 0 || r >= moduleCount || c < 0 || c >= moduleCount) return false;
-                if (isFinderPattern(r, c)) return false;
-                if (configs[currentIndex].icon && isCenterArea(r, c)) return false;
-                return qrObj.isDark(r, c);
-            }
 
             // Draw rounded rectangular paths
             function drawCustomRect(ctx, x, y, w, h, rtl, rtr, rbr, rbl) {
@@ -541,20 +532,6 @@
                 ctx.quadraticCurveTo(x, y, x + rtl, y);
                 ctx.closePath();
                 ctx.fill();
-            }
-
-            function isFinderPattern(row, col) {
-                if (row < 7 && col < 7) return true;
-                if (row < 7 && col >= moduleCount - 7) return true;
-                if (row >= moduleCount - 7 && col < 7) return true;
-                return false;
-            }
-
-            function isCenterArea(row, col) {
-                const size = 5;
-                const start = Math.floor((moduleCount - size) / 2);
-                const end = start + size;
-                return row >= start && row < end && col >= start && col < end;
             }
 
             function drawFinderPattern(ctx, x, y, s, style, color, bgColor, pos) {
@@ -635,6 +612,37 @@
                 const ctx = canvas.getContext('2d');
                 ctx.clearRect(0, 0, px, px);
 
+                // Generate QR matrix inside draw loop for dynamic URLs
+                const ECL = 'H';
+                const qrObj = qrcode(0, ECL);
+                qrObj.addData(config.url || 'https://qrmaker.ryanmarch.me', 'Byte');
+                qrObj.make();
+
+                const moduleCount = qrObj.getModuleCount();
+                const totalModules = moduleCount + margin * 2;
+                const moduleSize = px / totalModules;
+
+                function isDark(r, c) {
+                    if (r < 0 || r >= moduleCount || c < 0 || c >= moduleCount) return false;
+                    if (isFinderPattern(r, c)) return false;
+                    if (config.icon && isCenterArea(r, c)) return false;
+                    return qrObj.isDark(r, c);
+                }
+
+                function isFinderPattern(row, col) {
+                    if (row < 7 && col < 7) return true;
+                    if (row < 7 && col >= moduleCount - 7) return true;
+                    if (row >= moduleCount - 7 && col < 7) return true;
+                    return false;
+                }
+
+                function isCenterArea(row, col) {
+                    const size = 5;
+                    const start = Math.floor((moduleCount - size) / 2);
+                    const end = start + size;
+                    return row >= start && row < end && col >= start && col < end;
+                }
+
                 // Draw background color if configured
                 if (config.bgColor && config.bgColor !== 'transparent') {
                     ctx.save();
@@ -646,7 +654,6 @@
                 }
 
                 ctx.fillStyle = config.fgColor;
-
                 const ps = config.pixelStyle;
 
                 for (let row = 0; row < moduleCount; row++) {
@@ -706,7 +713,6 @@
                 drawFinderPattern(ctx, margin * moduleSize, (moduleCount - 7 + margin) * moduleSize, moduleSize, cs, config.fgColor, config.bgColor, 'BL');
 
                 // Draw Center Icon
-                // Draw Center Icon
                 if (config.icon) {
                     const center = px / 2;
                     const logoSizePx = px * 0.2;
@@ -729,12 +735,10 @@
 
                     ctx.save();
                     try {
-                        // 1. Map string code points to clean unified hex tracks (e.g., 🚀 -> 1F680)
                         const points = Array.from(config.icon).map(ch => ch.codePointAt(0).toString(16).toUpperCase());
                         const emojiHex = points.join('-');
                         const appleEmojiUrl = `https://img.emojiall.com/pic/apple/512/${emojiHex}.png`;
 
-                        // 2. Use Cloudflare's native global fetch to get the binary image stream over the wire
                         const response = await fetch(appleEmojiUrl, {
                             headers: { 'User-Agent': 'QR-Maker-API/1.0' }
                         });
@@ -742,15 +746,12 @@
 
                         const arrayBuffer = await response.arrayBuffer();
                         const imageBuffer = new Uint8Array(arrayBuffer);
-
-                        // 3. Pass the raw binary buffer directly into the server canvas image engine
                         const emojiImg = await loadImage(imageBuffer);
 
                         const iconX = center - logoSizePx / 2;
                         const iconY = center - logoSizePx / 2;
                         ctx.drawImage(emojiImg, iconX, iconY, logoSizePx, logoSizePx);
                     } catch (err) {
-                        // Resilient fallback text track if network fails or emoji asset isn't found
                         ctx.font = `${logoSizePx * 0.65}px sans-serif`;
                         ctx.textAlign = 'center';
                         ctx.textBaseline = 'middle';

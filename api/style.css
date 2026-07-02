@@ -107,11 +107,18 @@ body {
     cursor: pointer;
     color: var(--text-main);
     padding: 0.5rem;
-    margin-right: 0.25rem;
+    margin-left: 0.25rem;
     border-radius: var(--radius-sm);
     align-items: center;
     justify-content: center;
     transition: background-color 0.2s;
+}
+
+.mobile-nav-toggle svg {
+    display: block;
+    width: 20px;
+    height: 20px;
+    color: var(--text-main);
 }
 
 .mobile-nav-toggle:hover {
@@ -808,7 +815,7 @@ body {
 
 .tab-btn.active {
     background-color: var(--accent);
-    color: var(--text-main);
+    color: white;
     border-bottom: 1px solid transparent;
 }
 
@@ -826,6 +833,7 @@ body {
 .code-block-wrapper pre {
     overflow-x: auto;
     margin-bottom: 0;
+    padding: 12px 4px;
 }
 
 .code-block-wrapper code {
@@ -1007,6 +1015,7 @@ body {
 }
 
 @media (max-width: 1024px) {
+
     .mobile-nav-toggle {
         display: inline-flex;
     }
@@ -1037,6 +1046,11 @@ body {
 @media (max-width: 640px) {
     .global-header {
         padding: 0 1rem;
+    }
+
+    .mobile-menu-toggle,
+    .mobile-nav-toggle {
+        display: inline-flex !important;
     }
 
     .header-right {

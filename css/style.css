@@ -3470,19 +3470,21 @@ input[type="range"]::-moz-range-thumb:hover {
     border-bottom: 1px solid var(--border-color);
     padding: 1.5rem;
     z-index: 99;
-    display: none;
+    visibility: hidden;
+    display: flex;
     flex-direction: column;
     gap: 1rem;
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
     transform: translateY(-10px);
     opacity: 0;
-    transition: transform 0.2s ease, opacity 0.2s ease, background-color 0.2s, border-color 0.2s;
+    transition: transform 0.2s ease, opacity 0.2s ease, background-color 0.2s, border-color 0.2s, visibility 0.2s ease;
 }
 
 .mobile-nav-menu.active {
-    display: flex;
+
     transform: translateY(0);
     opacity: 1;
+    visibility: visible;
 }
 
 .mobile-menu-nav {

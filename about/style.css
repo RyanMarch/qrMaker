@@ -573,13 +573,14 @@ body {
 }
 
 .feature-detail-card a {
-    color: var(--accent);
+    color: var(--accent-hover);
     text-decoration: none;
-    font-weight: 500;
+    font-weight: 800;
 }
 
 .feature-detail-card a:hover {
     text-decoration: underline;
+    color: var(--accent-readable);
 }
 
 /* CTA Area */
