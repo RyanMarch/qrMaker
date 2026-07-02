@@ -107,11 +107,18 @@ body {
     cursor: pointer;
     color: var(--text-main);
     padding: 0.5rem;
-    margin-right: 0.25rem;
+    margin-left: 0.25rem;
     border-radius: var(--radius-sm);
     align-items: center;
     justify-content: center;
     transition: background-color 0.2s;
+}
+
+.mobile-nav-toggle svg {
+    display: block;
+    width: 20px;
+    height: 20px;
+    color: var(--text-main);
 }
 
 .mobile-nav-toggle:hover {
@@ -808,7 +815,7 @@ body {
 
 .tab-btn.active {
     background-color: var(--accent);
-    color: var(--text-main);
+    color: white;
     border-bottom: 1px solid transparent;
 }
 
@@ -826,6 +833,7 @@ body {
 .code-block-wrapper pre {
     overflow-x: auto;
     margin-bottom: 0;
+    padding: 12px 4px;
 }
 
 .code-block-wrapper code {
@@ -915,7 +923,99 @@ body {
     border-color: var(--border-color);
 }
 
+/* Shortcuts Button Styling */
+.shortcuts-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.6rem;
+    padding: 0.85rem 1.5rem;
+    background-color: var(--glass-bg);
+    border: 1px solid var(--border-color-strong);
+    border-radius: 1rem;
+    color: var(--text-main);
+    text-decoration: none;
+    font-size: 0.95rem;
+    font-weight: 600;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    margin-top: 1.5rem;
+    cursor: pointer;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+}
+
+.shortcuts-icon {
+    width: 1.2rem;
+    height: 1.2rem;
+    stroke: var(--text-main);
+    stroke-width: 2px;
+}
+
+.shortcuts-btn span {
+    position: relative;
+    top: 1px;
+}
+
+.shortcuts-btn:hover {
+    background-color: var(--control-bg-hover);
+    border-color: var(--border-color);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+}
+
+.shortcuts-btn:active {
+    transform: translateY(0);
+}
+
+/* Mobile */
+@media (max-width: 640px) {
+    .shortcuts-btn {
+        width: 100%;
+    }
+}
+
+.shortcuts-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    background-color: #111111;
+    color: #ffffff;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    text-decoration: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    transition: background-color 0.2s ease, transform 0.1s ease;
+    cursor: pointer;
+}
+
+.shortcuts-btn:hover {
+    background-color: #222222;
+}
+
+.shortcuts-btn:active {
+    transform: scale(0.98);
+}
+
+.shortcuts-icon {
+    width: 18px;
+    height: 18px;
+    flex-shrink: 0;
+}
+
+.download-btn-green .shortcuts-icon {
+    width: 16px;
+    height: 16px;
+    margin-right: 8px;
+    display: inline-block;
+    vertical-align: text-top;
+    flex-shrink: 0;
+}
+
 @media (max-width: 1024px) {
+
     .mobile-nav-toggle {
         display: inline-flex;
     }
@@ -946,6 +1046,11 @@ body {
 @media (max-width: 640px) {
     .global-header {
         padding: 0 1rem;
+    }
+
+    .mobile-menu-toggle,
+    .mobile-nav-toggle {
+        display: inline-flex !important;
     }
 
     .header-right {

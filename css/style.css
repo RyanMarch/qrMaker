@@ -2325,7 +2325,7 @@ input[type="range"]::-moz-range-thumb:hover {
     display: block !important;
     width: calc(100% - 1rem) !important;
     max-width: 100%;
-    margin: 1.5rem auto;
+    margin: 1.5rem auto 5rem auto;
     padding: 0;
     box-sizing: border-box;
 }
@@ -2888,17 +2888,6 @@ input[type="range"]::-moz-range-thumb:hover {
     transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.feature-item:hover .feature-icon-wrapper {
-    background: var(--accent);
-    color: #ffffff;
-    border-color: var(--accent);
-    transform: scale(1.05);
-}
-
-[data-theme="light"] .feature-item:hover .feature-icon-wrapper {
-    color: #ffffff;
-}
-
 .feature-icon {
     width: 14px;
     height: 14px;
@@ -2915,6 +2904,40 @@ input[type="range"]::-moz-range-thumb:hover {
     color: var(--text-main);
     display: inline-block;
     margin-right: 0.25rem;
+}
+
+.about-link-wrapper {
+    margin: 1.5rem 0 1rem 0;
+    text-align: left;
+}
+
+.about-link-wrapper {
+    margin: 1.5rem 0 1rem 0;
+    text-align: left;
+}
+
+.about-page-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    color: var(--accent-readable, #2ecc71) !important;
+    text-decoration: none;
+    font-size: 0.9rem;
+    font-weight: 600;
+    font-family: 'Outfit', sans-serif;
+    transition: color 0.2s ease;
+}
+
+.about-page-link svg {
+    transition: transform 0.2s ease;
+}
+
+.about-page-link:hover {
+    color: #27ae60;
+}
+
+.about-page-link:hover svg {
+    transform: translateX(3px);
 }
 
 /* API CTA Card */
@@ -2948,7 +2971,6 @@ input[type="range"]::-moz-range-thumb:hover {
 }
 
 .api-cta-card:hover {
-    transform: translateY(-2px);
     border-color: rgba(39, 132, 51, 0.4);
 }
 
@@ -3057,6 +3079,218 @@ input[type="range"]::-moz-range-thumb:hover {
 
 .api-cta-btn:hover .api-btn-arrow {
     transform: translateX(4px);
+}
+
+/* Card Container Blueprint mapped identically from your .api-cta-card tokens */
+.shortcut-cta-card {
+    background: linear-gradient(135deg, rgba(39, 174, 96, 0.15) 0%, rgba(2, 6, 23, 0.4) 100%);
+    border: 1px solid rgba(39, 174, 96, 0.5);
+    border-radius: 1rem;
+    padding: 1.25rem;
+    margin-top: 1rem;
+    margin-bottom: 0;
+    text-align: left;
+}
+
+.shortcut-cta-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 0.5rem;
+}
+
+.shortcut-cta-tag {
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.65rem;
+    font-weight: 800;
+    letter-spacing: 0.05em;
+    color: #2ecc71;
+    background: rgba(46, 204, 113, 0.1);
+    padding: 0.25rem 0.5rem;
+    border-radius: 0.375rem;
+}
+
+.shortcut-cta-title {
+    font-family: 'Outfit', sans-serif;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #ffffff;
+    margin: 0 0 0.375rem 0;
+}
+
+.shortcut-cta-desc {
+    font-size: 0.85rem;
+    line-height: 1.4;
+    color: rgba(255, 255, 255, 0.6);
+    margin: 0 0 1rem 0;
+}
+
+/* Replaces split utility columns with a clean vertical track layout */
+.shortcut-card-stacked {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    text-align: flex-start;
+}
+
+.shortcut-card-stacked .shortcut-cta-header {
+    justify-content: flex-start;
+}
+
+.shortcut-card-stacked .shortcut-cta-desc {
+    margin-bottom: 1.5rem;
+}
+
+/* Centered Layout Tracks for Interactive Artifacts */
+.shortcut-card-widget-centered {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    margin-bottom: 1.5rem;
+}
+
+.shortcut-badge-centered-wrapper {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+
+/* Maintain identical core scaling properties from the prior step */
+.sidebar-native-shortcuts-card {
+    width: 125px;
+    height: 90px;
+    background: linear-gradient(135deg, #2ecc71 0%, #27ae60 100%);
+    border-radius: 16px;
+    padding: 12px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    box-shadow: 0 6px 16px rgba(39, 174, 96, 0.15);
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.sidebar-native-shortcuts-card:hover {
+    transform: translateY(-2px) scale(1.02);
+    box-shadow: 0 8px 20px rgba(39, 174, 96, 0.25);
+}
+
+/* Premium Matte App Store Button Badge Setup */
+.sidebar-apple-shortcuts-badge {
+    display: inline-flex;
+    align-items: center;
+    background: #000000;
+    color: #ffffff;
+    text-decoration: none !important;
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    transition: background-color 0.2s ease, border-color 0.2s ease, transform 0.1s ease;
+}
+
+.sidebar-apple-shortcuts-badge:hover {
+    background: #0a0a0a;
+    border-color: rgba(255, 255, 255, 0.35);
+}
+
+.sidebar-apple-shortcuts-badge:active {
+    transform: scale(0.97);
+}
+
+.sidebar-apple-shortcuts-badge .apple-shortcuts-logo {
+    margin-right: 10px;
+    flex-shrink: 0;
+    border-radius: 4px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.sidebar-apple-shortcuts-badge .badge-text-wrapper {
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+}
+
+.sidebar-apple-shortcuts-badge .badge-label {
+    font-size: 8px;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    font-weight: 700;
+    line-height: 10px;
+    opacity: 0.85;
+}
+
+.sidebar-apple-shortcuts-badge .badge-title {
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: -0.2px;
+    line-height: 14px;
+    margin-top: 1px;
+}
+
+.sidebar-native-shortcuts-card {
+    width: 125px;
+    height: 90px;
+    background: linear-gradient(135deg, #2ecc71 0%, #27ae60 100%);
+    border-radius: 16px;
+    padding: 12px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    box-shadow: 0 6px 16px rgba(39, 174, 96, 0.15);
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.sidebar-native-shortcuts-card:hover {
+    transform: translateY(-2px) scale(1.02);
+    box-shadow: 0 8px 20px rgba(39, 174, 96, 0.25);
+}
+
+.sidebar-native-shortcuts-card .card-top-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    width: 100%;
+}
+
+.sidebar-native-shortcuts-card .widget-qr-icon {
+    width: 20px;
+    height: 20px;
+    opacity: 0.95;
+}
+
+.sidebar-native-shortcuts-card .widget-play-orb {
+    width: 22px;
+    height: 22px;
+    background: rgba(255, 255, 255, 0.22);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.sidebar-native-shortcuts-card .widget-play-orb svg {
+    width: 8px;
+    height: 8px;
+    margin-left: 1px;
+}
+
+.sidebar-native-shortcuts-card .widget-app-title {
+    color: #ffffff !important;
+    font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: -0.2px;
+    text-decoration: none !important;
+}
+
+/* Remove any recursive underlines from anchoring blocks inside the sidebar */
+.shortcut-card-widget-side a,
+.shortcut-card-widget-side a:hover,
+.shortcut-cta-card a,
+.shortcut-cta-card a:hover {
+    text-decoration: none !important;
 }
 
 /* ============================================================
@@ -3236,19 +3470,21 @@ input[type="range"]::-moz-range-thumb:hover {
     border-bottom: 1px solid var(--border-color);
     padding: 1.5rem;
     z-index: 99;
-    display: none;
+    visibility: hidden;
+    display: flex;
     flex-direction: column;
     gap: 1rem;
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
     transform: translateY(-10px);
     opacity: 0;
-    transition: transform 0.2s ease, opacity 0.2s ease, background-color 0.2s, border-color 0.2s;
+    transition: transform 0.2s ease, opacity 0.2s ease, background-color 0.2s, border-color 0.2s, visibility 0.2s ease;
 }
 
 .mobile-nav-menu.active {
-    display: flex;
+
     transform: translateY(0);
     opacity: 1;
+    visibility: visible;
 }
 
 .mobile-menu-nav {
