@@ -40,11 +40,11 @@ async function getEmojiFont(context) {
   if (fontBuffer) return fontBuffer;
   const fontUrl = new URL('/assets/MaterialIcons-Regular.ttf', context.request.url);
   const fontResponse = await context.env.ASSETS.fetch(fontUrl);
-  
+
   if (!fontResponse.ok) {
     throw new Error(`Font asset loading failed: ${fontResponse.status}`);
   }
-  
+
   fontBuffer = await fontResponse.arrayBuffer();
   return fontBuffer;
 }
@@ -612,7 +612,7 @@ function toSVG(matrix, fgColor, bgColor, transparent, cornerRadius = 0, cornerSt
         }
       });
       const emojiSize = iconSizeModules * 0.82;
-      iconSvgContent += `\n  <text x="${centerModules}" y="${centerModules}" font-size="${emojiSize}" font-family="'Material Icons', system-ui, -apple-system, sans-serif" text-anchor="middle" dominant-baseline="central">${escapedEmoji}</text>`;
+      iconSvgContent += `\n  <text x="${centerModules}" y="${centerModules}" font-size="${emojiSize}" font-family="'Apple Color Emoji', 'Material Icons', system-ui, -apple-system, sans-serif" text-anchor="middle" dominant-baseline="central">${escapedEmoji}</text>`;
     }
   }
 
