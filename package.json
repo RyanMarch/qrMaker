@@ -8,6 +8,7 @@
     "deploy": "node scripts/generate-agent-docs.js && wrangler pages deploy ."
   },
   "dependencies": {
+    "@resvg/resvg-wasm": "^2.6.2",
     "fflate": "^0.8.2"
   },
   "devDependencies": {
