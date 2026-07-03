@@ -49,7 +49,7 @@ body {
 .about-container {
     flex: 1;
     max-width: 1200px;
-    margin: 80px auto 0 auto;
+    margin: 60px auto 0 auto;
     padding: 2.5rem 1.5rem;
     box-sizing: border-box;
 }
@@ -648,21 +648,6 @@ body {
 
 .btn.secondary:hover {
     background-color: var(--control-bg-hover);
-}
-
-/* Footer area */
-.about-footer-area {
-    margin-top: auto;
-    border-top: 1px solid var(--border-color);
-    padding: 2rem 1.5rem;
-    text-align: center;
-    background-color: var(--panel-bg);
-}
-
-.about-footer-area p {
-    margin: 0;
-    font-size: 0.85rem;
-    color: var(--text-subtle);
 }
 
 /* Use Cases Section */

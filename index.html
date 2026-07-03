@@ -1062,162 +1062,166 @@
 
             </div>
 
+            <!-- iOS Add to Home Screen Prompt Container (Sits below the end of the main app UI panel) -->
+            <div id="ios-pwa-prompt" class="ios-prompt-container collapsed">
+                <div class="ios-prompt-card">
+                    <!-- Close Button (visible when expanded) -->
+                    <button class="ios-prompt-close" aria-label="Close" onclick="collapseIosPrompt(event)">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="18" y1="6" x2="6" y2="18"></line>
+                            <line x1="6" y1="6" x2="18" y2="18"></line>
+                        </svg>
+                    </button>
+
+                    <!-- Collapsed State: Icon, Title, Install Button -->
+                    <div class="ios-prompt-collapsed-content">
+                        <div class="ios-prompt-header-compact">
+                            <div class="ios-prompt-app-icon">
+                                <img src="/assets/favicon/apple-touch-icon.png" alt="QR Maker Icon" width="180"
+                                    height="180" loading="lazy">
+                            </div>
+                            <div class="ios-prompt-app-info">
+                                <h3>QR Maker</h3>
+                                <p>qrmaker.ryanmarch.me</p>
+                            </div>
+                        </div>
+                        <button class="ios-prompt-install-btn" onclick="expandIosPrompt(event)">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                                stroke-linecap="round" stroke-linejoin="round" class="btn-icon-svg">
+                                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                                <polyline points="7 10 12 15 17 10"></polyline>
+                                <line x1="12" y1="15" x2="12" y2="3"></line>
+                            </svg>
+                            Install
+                        </button>
+                    </div>
+
+                    <!-- Expanded State: Step-by-Step Instructions -->
+                    <div class="ios-prompt-expanded-content">
+                        <div class="ios-prompt-header">
+                            <div class="ios-prompt-app-icon">
+                                <img src="/assets/favicon/apple-touch-icon.png" alt="QR Maker Icon" width="180"
+                                    height="180" loading="lazy">
+                            </div>
+                            <div class="ios-prompt-app-info">
+                                <h3>QR Maker</h3>
+                                <p>qrmaker.ryanmarch.me</p>
+                            </div>
+                        </div>
+                        <div class="ios-prompt-body">
+                            <p>Install this web app on your device to generate QR codes in full screen, use
+                                high-fidelity
+                                exports, and work offline.</p>
+                            <div class="ios-prompt-steps">
+                                <div class="ios-prompt-step">
+                                    <div class="ios-prompt-step-num">1</div>
+                                    <div class="ios-prompt-step-text">
+                                        Tap the share button <span class="ios-icon-span"><svg viewBox="0 0 24 24"
+                                                fill="none" stroke="currentColor" stroke-width="2.5"
+                                                stroke-linecap="round" stroke-linejoin="round" class="ios-action-icon">
+                                                <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"></path>
+                                                <polyline points="16 6 12 2 8 6"></polyline>
+                                                <line x1="12" y1="2" x2="12" y2="15"></line>
+                                            </svg></span> in Safari's toolbar.
+                                    </div>
+                                </div>
+                                <div class="ios-prompt-step">
+                                    <div class="ios-prompt-step-num">2</div>
+                                    <div class="ios-prompt-step-text">
+                                        Scroll down and select <span class="ios-action-text"><span
+                                                class="ios-icon-span-plus"><svg viewBox="0 0 24 24" fill="none"
+                                                    stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
+                                                    stroke-linejoin="round" class="ios-action-icon">
+                                                    <circle cx="12" cy="12" r="10"></circle>
+                                                    <line x1="12" y1="8" x2="12" y2="16"></line>
+                                                    <line x1="8" y1="12" x2="16" y2="12"></line>
+                                                </svg></span> Add to Home Screen</span>.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Desktop PWA Install Prompt Container (Sits below the iOS prompt, positioned dynamically) -->
+            <div id="desktop-pwa-prompt" class="desktop-prompt-container collapsed">
+                <div class="desktop-prompt-card">
+                    <!-- Close Button -->
+                    <button class="desktop-prompt-close" aria-label="Close" onclick="collapseDesktopPrompt(event)">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="18" y1="6" x2="6" y2="18"></line>
+                            <line x1="6" y1="6" x2="18" y2="18"></line>
+                        </svg>
+                    </button>
+
+                    <!-- Collapsed State -->
+                    <div class="desktop-prompt-collapsed-content">
+                        <div class="desktop-prompt-header-compact">
+                            <div class="desktop-prompt-app-icon">
+                                <img src="/assets/favicon/apple-touch-icon.png" alt="QR Maker Icon" width="180"
+                                    height="180" loading="lazy">
+                            </div>
+                            <div class="desktop-prompt-app-info">
+                                <h3>QR Maker Web App</h3>
+                                <p id="desktop-prompt-subtitle">Install Desktop App</p>
+                            </div>
+                        </div>
+                        <button id="desktop-prompt-action-btn" class="desktop-prompt-install-btn"
+                            onclick="handleDesktopInstallAction(event)">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                                stroke-linecap="round" stroke-linejoin="round" class="btn-icon-svg">
+                                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                                <polyline points="7 10 12 15 17 10"></polyline>
+                                <line x1="12" y1="15" x2="12" y2="3"></line>
+                            </svg>
+                            Install
+                        </button>
+                    </div>
+
+                    <!-- Expanded State -->
+                    <div class="desktop-prompt-expanded-content">
+                        <div class="desktop-prompt-header">
+                            <div class="desktop-prompt-app-icon">
+                                <img src="/assets/favicon/apple-touch-icon.png" alt="QR Maker Icon" width="180"
+                                    height="180" loading="lazy">
+                            </div>
+                            <div class="desktop-prompt-app-info">
+                                <h3>QR Maker</h3>
+                                <p>qrmaker.ryanmarch.me</p>
+                            </div>
+                        </div>
+                        <div class="desktop-prompt-body">
+                            <p id="desktop-prompt-instructions-text">Install this web app on your device to generate QR
+                                codes in
+                                full screen, use high-fidelity exports, and work offline.</p>
+                            <div class="desktop-prompt-steps" id="desktop-prompt-steps-container">
+                                <div class="desktop-prompt-step">
+                                    <div class="desktop-prompt-step-num">1</div>
+                                    <div class="desktop-prompt-step-text">
+                                        Open the <strong>File</strong> menu in Safari's top menu bar.
+                                    </div>
+                                </div>
+                                <div class="desktop-prompt-step">
+                                    <div class="desktop-prompt-step-num">2</div>
+                                    <div class="desktop-prompt-step-text">
+                                        Select <span class="ios-action-text">Add to Dock...</span>.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <global-footer></global-footer>
+
+
         </section>
 
     </main>
-
-
-    <!-- iOS Add to Home Screen Prompt Container (Sits below the end of the main app UI panel) -->
-    <div id="ios-pwa-prompt" class="ios-prompt-container collapsed">
-        <div class="ios-prompt-card">
-            <!-- Close Button (visible when expanded) -->
-            <button class="ios-prompt-close" aria-label="Close" onclick="collapseIosPrompt(event)">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
-                    stroke-linejoin="round">
-                    <line x1="18" y1="6" x2="6" y2="18"></line>
-                    <line x1="6" y1="6" x2="18" y2="18"></line>
-                </svg>
-            </button>
-
-            <!-- Collapsed State: Icon, Title, Install Button -->
-            <div class="ios-prompt-collapsed-content">
-                <div class="ios-prompt-header-compact">
-                    <div class="ios-prompt-app-icon">
-                        <img src="/assets/favicon/apple-touch-icon.png" alt="QR Maker Icon" width="180" height="180"
-                            loading="lazy">
-                    </div>
-                    <div class="ios-prompt-app-info">
-                        <h3>QR Maker</h3>
-                        <p>qrmaker.ryanmarch.me</p>
-                    </div>
-                </div>
-                <button class="ios-prompt-install-btn" onclick="expandIosPrompt(event)">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
-                        stroke-linejoin="round" class="btn-icon-svg">
-                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
-                        <polyline points="7 10 12 15 17 10"></polyline>
-                        <line x1="12" y1="15" x2="12" y2="3"></line>
-                    </svg>
-                    Install
-                </button>
-            </div>
-
-            <!-- Expanded State: Step-by-Step Instructions -->
-            <div class="ios-prompt-expanded-content">
-                <div class="ios-prompt-header">
-                    <div class="ios-prompt-app-icon">
-                        <img src="/assets/favicon/apple-touch-icon.png" alt="QR Maker Icon" width="180" height="180"
-                            loading="lazy">
-                    </div>
-                    <div class="ios-prompt-app-info">
-                        <h3>QR Maker</h3>
-                        <p>qrmaker.ryanmarch.me</p>
-                    </div>
-                </div>
-                <div class="ios-prompt-body">
-                    <p>Install this web app on your device to generate QR codes in full screen, use high-fidelity
-                        exports, and work offline.</p>
-                    <div class="ios-prompt-steps">
-                        <div class="ios-prompt-step">
-                            <div class="ios-prompt-step-num">1</div>
-                            <div class="ios-prompt-step-text">
-                                Tap the share button <span class="ios-icon-span"><svg viewBox="0 0 24 24" fill="none"
-                                        stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
-                                        stroke-linejoin="round" class="ios-action-icon">
-                                        <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"></path>
-                                        <polyline points="16 6 12 2 8 6"></polyline>
-                                        <line x1="12" y1="2" x2="12" y2="15"></line>
-                                    </svg></span> in Safari's toolbar.
-                            </div>
-                        </div>
-                        <div class="ios-prompt-step">
-                            <div class="ios-prompt-step-num">2</div>
-                            <div class="ios-prompt-step-text">
-                                Scroll down and select <span class="ios-action-text"><span
-                                        class="ios-icon-span-plus"><svg viewBox="0 0 24 24" fill="none"
-                                            stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
-                                            stroke-linejoin="round" class="ios-action-icon">
-                                            <circle cx="12" cy="12" r="10"></circle>
-                                            <line x1="12" y1="8" x2="12" y2="16"></line>
-                                            <line x1="8" y1="12" x2="16" y2="12"></line>
-                                        </svg></span> Add to Home Screen</span>.
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Desktop PWA Install Prompt Container (Sits below the iOS prompt, positioned dynamically) -->
-    <div id="desktop-pwa-prompt" class="desktop-prompt-container collapsed">
-        <div class="desktop-prompt-card">
-            <!-- Close Button -->
-            <button class="desktop-prompt-close" aria-label="Close" onclick="collapseDesktopPrompt(event)">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
-                    stroke-linejoin="round">
-                    <line x1="18" y1="6" x2="6" y2="18"></line>
-                    <line x1="6" y1="6" x2="18" y2="18"></line>
-                </svg>
-            </button>
-
-            <!-- Collapsed State -->
-            <div class="desktop-prompt-collapsed-content">
-                <div class="desktop-prompt-header-compact">
-                    <div class="desktop-prompt-app-icon">
-                        <img src="/assets/favicon/apple-touch-icon.png" alt="QR Maker Icon" width="180" height="180"
-                            loading="lazy">
-                    </div>
-                    <div class="desktop-prompt-app-info">
-                        <h3>QR Maker Web App</h3>
-                        <p id="desktop-prompt-subtitle">Install Desktop App</p>
-                    </div>
-                </div>
-                <button id="desktop-prompt-action-btn" class="desktop-prompt-install-btn"
-                    onclick="handleDesktopInstallAction(event)">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
-                        stroke-linejoin="round" class="btn-icon-svg">
-                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
-                        <polyline points="7 10 12 15 17 10"></polyline>
-                        <line x1="12" y1="15" x2="12" y2="3"></line>
-                    </svg>
-                    Install
-                </button>
-            </div>
-
-            <!-- Expanded State -->
-            <div class="desktop-prompt-expanded-content">
-                <div class="desktop-prompt-header">
-                    <div class="desktop-prompt-app-icon">
-                        <img src="/assets/favicon/apple-touch-icon.png" alt="QR Maker Icon" width="180" height="180"
-                            loading="lazy">
-                    </div>
-                    <div class="desktop-prompt-app-info">
-                        <h3>QR Maker</h3>
-                        <p>qrmaker.ryanmarch.me</p>
-                    </div>
-                </div>
-                <div class="desktop-prompt-body">
-                    <p id="desktop-prompt-instructions-text">Install this web app on your device to generate QR codes in
-                        full screen, use high-fidelity exports, and work offline.</p>
-                    <div class="desktop-prompt-steps" id="desktop-prompt-steps-container">
-                        <div class="desktop-prompt-step">
-                            <div class="desktop-prompt-step-num">1</div>
-                            <div class="desktop-prompt-step-text">
-                                Open the <strong>File</strong> menu in Safari's top menu bar.
-                            </div>
-                        </div>
-                        <div class="desktop-prompt-step">
-                            <div class="desktop-prompt-step-num">2</div>
-                            <div class="desktop-prompt-step-text">
-                                Select <span class="ios-action-text">Add to Dock...</span>.
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
 
     <!-- Toast notification -->
     <div class="toast" id="toast" role="status" aria-live="polite"></div>

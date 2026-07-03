@@ -2074,6 +2074,105 @@ input[type="range"]::-moz-range-thumb:hover {
     width: 100%;
 }
 
+/* ---- App Sidebar Footer (Only affects the main app workspace) ---- */
+.controls-section .page-footer {
+    margin-top: auto;
+    border-top: 1px solid var(--border-color);
+    padding: 1.5rem 1.85rem 1.5rem 1.5rem;
+    background-color: var(--sidebar-bg);
+    box-sizing: border-box;
+    width: 100%;
+    z-index: 1;
+}
+
+.controls-section .page-footer p {
+    margin: 0;
+    font-size: 0.775rem;
+    color: var(--text-subtle);
+    text-align: left;
+    line-height: 1.5;
+}
+
+.controls-section .page-footer .footer-links {
+    margin-top: 0.5rem;
+    display: flex;
+    gap: 0.85rem;
+    justify-content: flex-start;
+}
+
+.controls-section .page-footer .footer-link {
+    color: var(--text-muted);
+    text-decoration: none;
+    font-size: 0.775rem;
+    transition: color 0.2s ease;
+}
+
+.controls-section .page-footer .footer-link:hover {
+    color: var(--accent-readable);
+}
+
+/* ---- Standalone Page Footer (For About, Terms, and future text pages) ---- */
+body:not(#main-body) .page-footer {
+    margin-top: auto;
+    border-top: 1px solid var(--border-color);
+    padding: 2rem 1.5rem;
+    text-align: center;
+    background-color: var(--panel-bg);
+    width: 100%;
+    box-sizing: border-box;
+}
+
+body:not(#main-body) .page-footer p {
+    margin: 0;
+    font-size: 0.85rem;
+    color: var(--text-subtle);
+    line-height: 1.6;
+}
+
+body:not(#main-body) .page-footer .footer-links {
+    margin-top: 0.5rem;
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+}
+
+/* ---- Global Template Footer ---- */
+.page-footer {
+    margin-top: auto;
+    border-top: 1px solid var(--border-color);
+    padding: 2rem 1.5rem;
+    text-align: center;
+    background-color: var(--panel-bg);
+    width: 100%;
+    box-sizing: border-box;
+    z-index: 10;
+}
+
+.page-footer p {
+    margin: 0;
+    font-size: 0.85rem;
+    color: var(--text-subtle);
+    line-height: 1.6;
+}
+
+.page-footer .footer-links {
+    margin-top: 0.5rem;
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+}
+
+.page-footer .footer-link {
+    color: var(--text-muted);
+    text-decoration: none;
+    font-size: 0.85rem;
+    transition: color 0.2s ease;
+}
+
+.page-footer .footer-link:hover {
+    color: var(--accent);
+}
+
 .btn-random {
     flex-grow: 1;
     display: flex;
@@ -2302,20 +2401,38 @@ input[type="range"]::-moz-range-thumb:hover {
 .ios-prompt-container,
 .desktop-prompt-container {
     display: none !important;
+    width: 100%;
+    box-sizing: border-box;
 }
 
 /* Activated State (shows inline below the main container card on mobile/tablet) */
+/* ---- Mobile PWA Floating Overlay Fix ---- */
 @media (max-width: 960px) {
 
-    .ios-prompt-container.visible,
-    .desktop-prompt-container.visible {
-        display: flex !important;
-        justify-content: center;
-        width: 100%;
-        max-width: 600px;
-        margin: 1.5rem auto 2.5rem auto;
-        padding: 0 1rem;
-        box-sizing: border-box;
+    /* Push the core document body layout up slightly when a prompt is active */
+    body:has(.desktop-prompt-container.visible),
+    body:has(.ios-prompt-container.visible) {
+        padding-bottom: 120px !important;
+    }
+
+    /* Keep the floating injection container explicitly separated from your footer text */
+    #desktop-pwa-prompt.desktop-prompt-container.visible,
+    #ios-pwa-prompt.ios-prompt-container.visible {
+        position: fixed !important;
+        bottom: env(safe-area-inset-bottom, 0px) !important;
+        left: 50% !important;
+        transform: translateX(-50%) !important;
+        width: calc(100% - 2rem) !important;
+        max-width: 500px !important;
+        z-index: 9999 !important;
+        /* Forces it securely above your scrolling footer canvas track */
+        margin: 0 auto !important;
+    }
+
+    /* Ensure the mobile view footer flows naturally inside the content container */
+    .controls-section .page-footer {
+        padding: 2rem 1.25rem 6rem 1.25rem !important;
+        /* Added extra bottom padding so text scrolls clear of the prompt overlay */
     }
 }
 
