@@ -45,7 +45,7 @@
 </head>
 
 <body>
-    <global-header active-page="api" show-badge="API Docs" sidebar-toggle></global-header>
+    <global-header active-page="api" sidebar-toggle></global-header>
 
     <!-- Mobile Navigation Overlay -->
     <div id="mobile-overlay" class="mobile-overlay"></div>
@@ -663,17 +663,16 @@ app.get('/api/qr', async (req, res) => {
                     </div>
                 </div>
             </article>
-
-
-
-            <!-- Footer -->
-            <global-footer></global-footer>
-
         </section>
     </main>
 
+    <!-- Footer -->
+    <global-footer></global-footer>
+
     <script src="/js/header.js"></script>
-    <script src="script.js"></script>
+    <script src="/js/script.js"></script>
+    <!-- <script src="/js/pwa-helpers.js"></script> -->
+    <script src="/js/api-playground.js"></script>
 </body>
 
 </html>

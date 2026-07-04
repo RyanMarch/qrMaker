@@ -44,8 +44,8 @@ function getHeaderHTML(activePage = '', showBadge = '', sidebarToggle = false) {
 
 function getFooterHTML() {
     return `
-    <footer class="page-footer" style="margin-top: 80px;">
-        <p class="footer-copyright">&copy; 2026 QR Maker. All rights reserved. <br> <a href="/terms/" class="footer-link footer-terms">Terms of Service</a > | <a href="/terms/#privacy-policy/" class="footer-link">Privacy Policy</a> <span class="footer-app-link"> | <a href="/" class="footer-link">Back to QR Maker</a></span></p>
+    <footer class="page-footer">
+        <p class="footer-copyright">&copy; 2026 QR Maker. All rights reserved. <br> <a href="/terms/" class="footer-link footer-terms">Terms of Service</a > | <a href="/terms/#privacy-policy" class="footer-link">Privacy Policy</a> <span class="footer-app-link"> | <a href="/" class="footer-link">QR Maker</a></span></p>
     </footer>
     `;
 }

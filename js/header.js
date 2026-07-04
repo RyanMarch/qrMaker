@@ -4,10 +4,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const themeStatus = document.getElementById('theme-status');
     let themeStatusTimeout;
 
-    function triggerHaptic() {
-        if ('vibrate' in navigator) { try { navigator.vibrate(12); } catch (e) { } }
-    }
-
     function showThemeStatus(text) {
         if (!themeStatus) return;
         themeStatus.textContent = text;
@@ -30,7 +26,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (themeToggle) {
         themeToggle.addEventListener('click', () => {
-            triggerHaptic();
+            if (typeof triggerHaptic === 'function') triggerHaptic();
             const currentTheme = localStorage.getItem('qrm-theme') || 'dark';
             let newTheme = currentTheme === 'dark' ? 'light' : currentTheme === 'light' ? 'system' : 'dark';
             let statusText = newTheme === 'light' ? 'Light Theme' : newTheme === 'system' ? 'System Theme' : 'Dark Theme';
@@ -45,6 +41,21 @@ document.addEventListener('DOMContentLoaded', () => {
     const mobileNavMenu = document.getElementById('mobile-nav-menu');
 
     if (mobileMenuToggle) {
+        // Auto-inject SVGs if the button is empty to prevent the "gray pill" rendering issue
+        if (!mobileMenuToggle.innerHTML.trim()) {
+            mobileMenuToggle.innerHTML = `
+                <svg class="menu-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display: block; width: 18px; height: 18px;">
+                    <line x1="3" y1="12" x2="21" y2="12"></line>
+                    <line x1="3" y1="6" x2="21" y2="6"></line>
+                    <line x1="3" y1="18" x2="21" y2="18"></line>
+                </svg>
+                <svg class="close-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display: none; width: 18px; height: 18px;">
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+            `;
+        }
+
         const menuIcon = mobileMenuToggle.querySelector('.menu-icon');
         const closeIcon = mobileMenuToggle.querySelector('.close-icon');
 
@@ -66,8 +77,10 @@ document.addEventListener('DOMContentLoaded', () => {
             mobileNavMenu.classList.remove('active');
             if (mobileMenuToggle) {
                 mobileMenuToggle.setAttribute('aria-expanded', 'false');
-                mobileMenuToggle.querySelector('.menu-icon').style.display = 'block';
-                mobileMenuToggle.querySelector('.close-icon').style.display = 'none';
+                const menuIcon = mobileMenuToggle.querySelector('.menu-icon');
+                const closeIcon = mobileMenuToggle.querySelector('.close-icon');
+                if (menuIcon) menuIcon.style.display = 'block';
+                if (closeIcon) closeIcon.style.display = 'none';
             }
         }
     });

@@ -40,8 +40,6 @@
     <!-- AI-Agent/LLM Metadata -->
     <link rel="openapi" type="application/json" href="/api/openapi.json">
     <link rel="alternate" type="text/markdown" href="/llms.txt" title="LLM-friendly API Documentation">
-    <!-- Cloudflare Turnstile CAPTCHA (loaded with callback) -->
-    <script src="https://challenges.cloudflare.com/turnstile/v0/api.js?onload=onloadTurnstileCallback" defer></script>
 </head>
 
 <body>
@@ -57,11 +55,11 @@
             <div class="sidebar-site-nav">
                 <a href="/" class="sidebar-site-link">App</a>
                 <a href="/about/" class="sidebar-site-link">About</a>
-                <a href="/api/" class="sidebar-site-link active">API</a>
+                <a href="/api/" class="sidebar-site-link">API</a>
             </div>
             <hr class="sidebar-divider">
             <ul>
-                <li><a href="#terms-of-service" class="sidebar-link active">Terms of Service</a></li>
+                <li><a href="#terms-of-service" class="sidebar-link">Terms of Service</a></li>
                 <li><a href="#privacy-policy" class="sidebar-link">Privacy Policy</a></li>
             </ul>
             <div class="sidebar-footer">
@@ -223,13 +221,14 @@
 
 
             <!-- Footer -->
-            <global-footer></global-footer>
+
 
         </section>
-    </main>
 
+    </main>
+    <global-footer></global-footer>
     <script src="/js/header.js"></script>
-    <script src="script.js"></script>
+    <script src="/js/script.js"></script>
 </body>
 
 </html>

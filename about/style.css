@@ -618,37 +618,6 @@ body {
     gap: 1rem;
 }
 
-.btn {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    padding: 0.75rem 1.5rem;
-    font-size: 0.95rem;
-    font-weight: 600;
-    border-radius: var(--radius-sm);
-    text-decoration: none;
-    transition: background-color 0.2s, border-color 0.2s;
-    cursor: pointer;
-}
-
-.btn.primary {
-    background-color: var(--accent);
-    color: #ffffff;
-}
-
-.btn.primary:hover {
-    background-color: var(--accent-hover);
-}
-
-.btn.secondary {
-    background-color: var(--control-bg);
-    color: var(--text-main);
-    border: 1px solid var(--border-color);
-}
-
-.btn.secondary:hover {
-    background-color: var(--control-bg-hover);
-}
 
 /* Use Cases Section */
 .use-cases-section {
@@ -933,7 +902,22 @@ body {
         gap: 0.75rem;
     }
 
-    .btn {
+    /* Full-width, taller, more substantial buttons on mobile */
+    .hero-showcase-buttons .btn,
+    .cta-buttons .btn {
         width: 100%;
+        padding: 1rem 1.5rem;
+        font-size: 1rem;
+        font-weight: 600;
+        white-space: normal;
+        border-radius: 10px;
+        letter-spacing: 0.01em;
+    }
+
+    /* More visible secondary button on mobile */
+    .hero-showcase-buttons .btn.secondary,
+    .cta-buttons .btn.secondary {
+        border-width: 1.5px;
+        border-color: var(--border-color-strong);
     }
 }
