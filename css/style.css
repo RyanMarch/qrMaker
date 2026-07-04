@@ -246,6 +246,10 @@ body#main-body {
         background: transparent;
         border-bottom: none;
     }
+
+    .main-app .page-footer {
+        height: 74px !important;
+    }
 }
 
 /* ---- Theme Toggle ---- */
@@ -629,6 +633,7 @@ body#main-body {
 .btn {
     display: inline-flex;
     align-items: center;
+    justify-content: center;
     gap: 0.375rem;
     padding: 0.5rem 0.875rem;
     border-radius: var(--radius-sm);
@@ -645,6 +650,17 @@ body#main-body {
 
 .btn:active {
     transform: scale(0.97);
+}
+
+.btn.primary {
+    background-color: var(--accent);
+    border-color: var(--accent);
+    color: #ffffff;
+}
+
+.btn.primary:hover {
+    background-color: var(--accent-hover);
+    border-color: var(--accent-hover);
 }
 
 .btn.secondary {
@@ -773,6 +789,41 @@ body#main-body {
     -webkit-text-fill-color: transparent;
     background-clip: text;
     margin: 0;
+}
+
+/* Sidebar Site Navigation (Mobile Sidebar links) */
+.sidebar-site-nav {
+    display: none;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.sidebar-divider {
+    display: none;
+    border: 0;
+    border-top: 1px solid var(--border-color);
+    margin-bottom: 1.5rem;
+}
+
+.sidebar-site-link {
+    color: var(--text-muted);
+    text-decoration: none;
+    font-size: 1rem;
+    font-weight: 600;
+    padding: 0.5rem 0.75rem;
+    border-radius: var(--radius-sm);
+    transition: background-color 0.2s, color 0.2s;
+}
+
+.sidebar-site-link:hover {
+    background-color: var(--control-bg);
+    color: var(--accent-readable);
+}
+
+.sidebar-site-link.active {
+    background-color: var(--control-bg-hover);
+    color: var(--text-main);
 }
 
 @media (max-width: 960px) {
@@ -1499,9 +1550,9 @@ input[type="range"]::-moz-range-thumb:hover {
 /* ---- Toast ---- */
 .toast {
     position: fixed;
-    bottom: 1.5rem;
+    top: 1.5rem;
     left: 50%;
-    transform: translateX(-50%) translateY(80px);
+    transform: translateX(-50%) translateY(-80px);
     background: var(--panel-bg);
     border: 1px solid var(--border-color-strong);
     border-radius: var(--radius-sm);
@@ -1938,6 +1989,9 @@ input[type="range"]::-moz-range-thumb:hover {
         border-left: none;
         zoom: 1 !important;
         height: auto;
+        /* Allow touch scroll events to pass through to the document.
+           The base style has overflow:hidden which traps scroll on iOS. */
+        overflow: visible;
         padding: calc(0.75rem - 0.25rem * var(--scroll-progress, 0)) 1.25rem;
         position: sticky;
         top: calc(60px + env(safe-area-inset-top, 0px));
@@ -2072,6 +2126,105 @@ input[type="range"]::-moz-range-thumb:hover {
     margin-top: 0.5rem;
     padding-bottom: 0.5rem;
     width: 100%;
+}
+
+/* ---- App Sidebar Footer (Only affects the main app workspace) ---- */
+.controls-section .page-footer {
+    margin-top: auto;
+    border-top: 0 !important;
+    padding: 1rem 0 2.8rem 1rem;
+    background-color: var(--sidebar-bg);
+    box-sizing: border-box;
+    width: 100%;
+    z-index: 1;
+}
+
+.controls-section .page-footer p {
+    margin: 0;
+    font-size: 0.775rem;
+    color: var(--text-subtle);
+    text-align: center;
+    line-height: 1.5;
+}
+
+.controls-section .page-footer .footer-links {
+    margin-top: 0.5rem;
+    display: flex;
+    gap: 0.85rem;
+    justify-content: flex-start;
+}
+
+.controls-section .page-footer .footer-link {
+    color: var(--text-muted);
+    text-decoration: none;
+    font-size: 0.775rem;
+    transition: color 0.2s ease;
+}
+
+.controls-section .page-footer .footer-link:hover {
+    color: var(--accent-readable);
+}
+
+/* ---- Standalone Page Footer (For About, Terms, and future text pages) ---- */
+body:not(#main-body) .page-footer {
+    margin-top: auto;
+    border-top: 1px solid var(--border-color);
+    padding: 0.5rem 0;
+    text-align: center;
+    background-color: var(--panel-bg);
+    width: 100%;
+    box-sizing: border-box;
+}
+
+body:not(#main-body) .page-footer p {
+    margin: 0;
+    font-size: 0.85rem;
+    color: var(--text-subtle);
+    line-height: 1.6;
+}
+
+body:not(#main-body) .page-footer .footer-links {
+    margin-top: 0.5rem;
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+}
+
+/* ---- Global Template Footer ---- */
+.page-footer {
+    margin-top: auto;
+    border-top: 1px solid var(--border-color);
+    padding: 2rem 1.5rem;
+    text-align: center;
+    background-color: var(--panel-bg);
+    width: 100%;
+    box-sizing: border-box;
+    z-index: 10;
+}
+
+.page-footer p {
+    margin: 0;
+    font-size: 0.85rem;
+    color: var(--text-subtle);
+    line-height: 1.6;
+}
+
+.page-footer .footer-links {
+    margin-top: 0.5rem;
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+}
+
+.page-footer .footer-link {
+    color: var(--text-muted);
+    text-decoration: none;
+    font-size: 0.85rem;
+    transition: color 0.2s ease;
+}
+
+.page-footer .footer-link:hover {
+    color: var(--accent);
 }
 
 .btn-random {
@@ -2302,20 +2455,37 @@ input[type="range"]::-moz-range-thumb:hover {
 .ios-prompt-container,
 .desktop-prompt-container {
     display: none !important;
+    width: 100%;
+    box-sizing: border-box;
 }
 
 /* Activated State (shows inline below the main container card on mobile/tablet) */
+/* ---- Mobile PWA Floating Overlay Fix ---- */
 @media (max-width: 960px) {
 
-    .ios-prompt-container.visible,
-    .desktop-prompt-container.visible {
-        display: flex !important;
-        justify-content: center;
-        width: 100%;
-        max-width: 600px;
-        margin: 1.5rem auto 2.5rem auto;
-        padding: 0 1rem;
-        box-sizing: border-box;
+    /* Push the core document body layout up slightly when a prompt is active */
+    body:has(.desktop-prompt-container.visible),
+    body:has(.ios-prompt-container.visible) {
+        /* padding-bottom: 120px !important; */
+    }
+
+    /* Keep the floating injection container explicitly separated from your footer text */
+    #desktop-pwa-prompt.desktop-prompt-container.visible,
+    #ios-pwa-prompt.ios-prompt-container.visible {
+        position: fixed !important;
+        bottom: env(safe-area-inset-bottom, 0px) !important;
+        left: 50% !important;
+        transform: translateX(-50%) !important;
+        width: calc(100% - 2rem) !important;
+        max-width: 500px !important;
+        z-index: 9999 !important;
+        /* Forces it securely above your scrolling footer canvas track */
+        margin: 0 auto !important;
+    }
+
+    /* Ensure the mobile view footer flows naturally inside the content container */
+    .controls-section .page-footer {
+        padding: 1rem !important;
     }
 }
 
@@ -3092,6 +3262,15 @@ input[type="range"]::-moz-range-thumb:hover {
     text-align: left;
 }
 
+[data-theme="light"] .shortcut-cta-card {
+    background: linear-gradient(42deg, rgba(39, 174, 96, 0.29), rgba(229, 255, 250, 0.05) 86.13%);
+}
+
+[data-theme="light"] .shortcut-cta-card h4,
+[data-theme="light"] .shortcut-cta-card p {
+    color: black;
+}
+
 .shortcut-cta-header {
     display: flex;
     align-items: center;
@@ -3306,6 +3485,7 @@ input[type="range"]::-moz-range-thumb:hover {
         grid-column: auto !important;
         border-left: none !important;
         background-image: none !important;
+        overflow: visible !important;
     }
 
     .controls-section {
@@ -3447,6 +3627,7 @@ input[type="range"]::-moz-range-thumb:hover {
     color: var(--text-main);
     align-items: center;
     justify-content: center;
+    flex-shrink: 0;
     transition: background-color 0.2s, border-color 0.2s;
 }
 
@@ -3505,7 +3686,7 @@ input[type="range"]::-moz-range-thumb:hover {
 
 .mobile-menu-link:hover {
     background-color: var(--control-bg);
-    color: var(--accent);
+    color: var(--accent-readable);
 }
 
 .mobile-menu-link.active {
@@ -3533,4 +3714,30 @@ body.has-global-header {
     body.has-global-header .container {
         height: calc(100vh - (60px + env(safe-area-inset-top, 0px))) !important;
     }
+}
+
+.main-app .footer-app-link {
+    display: none !important;
+}
+
+.main-app .controls-section {
+    display: flex !important;
+    flex-direction: column !important;
+    height: calc(100vh - 60px) !important;
+    overflow: hidden !important;
+    margin-top: 0;
+
+}
+
+.controls-content-wrapper {
+    flex: 1;
+    overflow-y: auto;
+}
+
+.main-app.controls-section .page-footer {
+    margin-top: 0;
+}
+
+.main-app-footer {
+    flex-shrink: 0;
 }

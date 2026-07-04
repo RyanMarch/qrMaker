@@ -1,0 +1,320 @@
+/* ============================================================
+   QR Maker - Terms Docs — style.css
+   ============================================================ */
+
+/* Local tokens not defined in global stylesheet */
+:root {
+    --radius-md: 8px;
+    --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    --font-title: 'Outfit', sans-serif;
+}
+
+body {
+    background-color: var(--bg-color);
+    color: var(--text-main);
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    line-height: 1.6;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    overflow-x: hidden;
+}
+
+/* --- Layout Structure --- */
+.api-container {
+    display: flex;
+    margin-top: 60px;
+    min-height: calc(100vh - 60px);
+}
+
+.page-content {
+    flex: 1;
+    min-width: 0;
+    width: 100%;
+    margin: 0 auto;
+    padding: 3rem 4rem 5rem 3.5rem;
+    max-width: 960px;
+}
+
+/* --- Sidebar Navigation --- */
+.api-sidebar {
+    width: 260px;
+    background-color: var(--sidebar-bg);
+    border-right: 1px solid var(--border-color);
+    padding: 2rem 1.5rem;
+    position: sticky;
+    top: 60px;
+    height: calc(100vh - 60px);
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    flex-shrink: 0;
+}
+
+
+
+.api-sidebar ul {
+    list-style: none;
+}
+
+.api-sidebar li {
+    margin-bottom: 0.75rem;
+}
+
+.sidebar-link {
+    color: var(--text-subtle);
+    text-decoration: none;
+    font-size: 0.95rem;
+    font-weight: 500;
+    display: block;
+    padding: 0.25rem 0;
+    transition: color 0.2s;
+}
+
+.sidebar-link:hover,
+.sidebar-link.active {
+    color: var(--accent-readable);
+}
+
+.sidebar-footer {
+    border-top: 1px solid var(--border-color);
+    padding-top: 1.5rem;
+    margin-top: 2rem;
+}
+
+/* --- Sidebar Sidebar Content Card --- */
+.cta-card {
+    background: linear-gradient(135deg, rgba(39, 132, 51, 0.15) 0%, rgba(27, 82, 86, 0.1) 100%);
+    border: 1px solid rgba(39, 132, 51, 0.3);
+    border-radius: var(--radius-md);
+    padding: 1.15rem;
+    margin-bottom: 1.25rem;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+[data-theme="light"] .cta-card {
+    background: linear-gradient(135deg, rgba(27, 82, 86, 0.12) 0%, rgba(39, 132, 51, 0.06) 100%);
+    border: 1px solid rgba(27, 82, 86, 0.24);
+}
+
+.cta-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+}
+
+.cta-card-icon {
+    width: 32px;
+    height: 32px;
+    border-radius: var(--radius-sm);
+    background: rgba(39, 132, 51, 0.12);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 0.65rem;
+    color: var(--accent);
+}
+
+.cta-card-title {
+    font-family: var(--font-title);
+    font-size: 0.95rem;
+    font-weight: 700;
+    margin-bottom: 0.35rem;
+}
+
+.cta-card-desc {
+    font-size: 0.78rem;
+    line-height: 1.4;
+    color: var(--text-subtle) !important;
+    margin-bottom: 0.85rem;
+}
+
+.btn-cta-generator {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.4rem;
+    width: 100%;
+    padding: 0.55rem;
+    background-color: var(--accent);
+    color: #ffffff !important;
+    text-decoration: none;
+    font-size: 0.8rem;
+    font-weight: 600;
+    border-radius: var(--radius-sm);
+    transition: all 0.2s ease;
+}
+
+.btn-cta-generator:hover {
+    background-color: var(--accent-hover);
+    transform: translateY(-1px);
+}
+
+.btn-cta-generator svg {
+    transition: transform 0.2s ease;
+}
+
+.btn-cta-generator:hover svg {
+    transform: translateX(3px);
+}
+
+.about-app-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    color: var(--text-subtle);
+    text-decoration: none;
+    font-size: 0.8rem;
+    font-weight: 500;
+    transition: color 0.2s;
+    width: 100%;
+    padding-left: 0.25rem;
+}
+
+.about-app-link:hover {
+    color: var(--accent);
+}
+
+/* --- Document Content Typography --- */
+.doc-section {
+    padding: 1rem 0;
+}
+
+.doc-section h1,
+.doc-section h2 {
+    scroll-margin-top: 80px;
+    font-family: var(--font-title);
+    color: var(--text-main);
+}
+
+.doc-section h1 {
+    font-size: 2.5rem;
+    font-weight: 800;
+    margin-bottom: 2rem;
+    letter-spacing: -0.02em;
+}
+
+.doc-section h2 {
+    font-size: 1.75rem;
+    font-weight: 700;
+    margin-top: 2.5rem;
+    margin-bottom: 0.75rem;
+    letter-spacing: -0.01em;
+}
+
+.doc-section p {
+    color: var(--text-muted);
+    font-size: 0.975rem;
+    margin-bottom: 1.25rem;
+    max-width: 72ch;
+}
+
+.section-divider {
+    border: none;
+    border-top: 1px solid var(--border-color);
+    margin: 2.5rem 0;
+}
+
+/* --- Lists Alignment --- */
+.doc-section ul {
+    list-style-position: outside;
+    padding-left: 1.25rem;
+    margin-bottom: 1.5rem;
+    max-width: 72ch;
+}
+
+.doc-section li {
+    color: var(--text-muted);
+    margin-bottom: 0.5rem;
+    line-height: 1.6;
+}
+
+.doc-section li strong {
+    color: var(--text-main);
+}
+
+/* --- Global Layout Footer --- */
+body .page-footer {
+    width: 100%;
+    background-color: var(--panel-bg);
+    border-top: 1px solid var(--border-color);
+    padding: 2rem 1.5rem;
+    text-align: center;
+    box-sizing: border-box;
+    margin-top: auto;
+}
+
+/* --- Media Breakpoints --- */
+@media (max-width: 1024px) {
+    .sidebar-site-nav {
+        display: flex;
+    }
+
+    .sidebar-divider {
+        display: block;
+    }
+
+    .mobile-nav-toggle {
+        display: inline-flex;
+        background: none;
+        border: none;
+        cursor: pointer;
+        color: var(--text-main);
+        padding: 0.5rem;
+        border-radius: var(--radius-sm);
+        align-items: center;
+        justify-content: center;
+    }
+
+    .mobile-nav-toggle svg {
+        display: block;
+        width: 20px;
+        height: 20px;
+        stroke: currentColor;
+    }
+
+    .api-sidebar {
+        position: fixed;
+        top: 60px;
+        bottom: 0;
+        left: -260px;
+        z-index: 99;
+        visibility: hidden;
+        transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), visibility 0.3s;
+        box-shadow: 5px 0 25px rgba(0, 0, 0, 0.5);
+        height: calc(100vh - 60px);
+    }
+
+    .api-sidebar.active {
+        visibility: visible;
+        transform: translateX(260px);
+    }
+
+    .page-content {
+        padding: 2.5rem 2rem;
+    }
+}
+
+@media (max-width: 640px) {
+    .page-content {
+        padding: 1.5rem 1rem;
+    }
+
+    .page-content h1 {
+        font-size: 2rem;
+    }
+
+    .page-content h2 {
+        font-size: 1.5rem;
+    }
+
+    body .page-footer .footer-links {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        gap: 1rem;
+        flex-wrap: wrap;
+    }
+}

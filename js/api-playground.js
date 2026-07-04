@@ -1,9 +1,8 @@
-// ============================================================
-// QR Maker API Docs — script.js
-// ============================================================
+/* ============================================================
+   QR Maker API Docs — api-playground.js
+   ============================================================ */
 
 document.addEventListener('DOMContentLoaded', () => {
-
 
     // ---- Sidebar Active State on Scroll ----
     const sidebarLinks = document.querySelectorAll('.sidebar-link');
@@ -56,7 +55,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const playCornerRadius = document.getElementById('play-corner-radius');
     const playgroundUrlInput = document.getElementById('playground-url');
 
-    // Synchronize color picker inputs
     function syncColorPicker(picker, textInput) {
         picker.addEventListener('input', () => {
             textInput.value = picker.value.replace('#', '').toUpperCase();
@@ -70,66 +68,56 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     }
-    syncColorPicker(playFgPicker, playFg);
-    syncColorPicker(playBgPicker, playBg);
+    if (playFgPicker && playFg) syncColorPicker(playFgPicker, playFg);
+    if (playBgPicker && playBg) syncColorPicker(playBgPicker, playBg);
 
-    // Update playground preview URL
     function updatePlayground() {
+        if (!playContent || !playgroundUrlInput) return;
         const content = encodeURIComponent(playContent.value.trim() || 'https://qrmaker.ryanmarch.me');
-        const format = playFormat.value;
-        const fg = playFg.value.trim() || '000000';
-        const bg = playBg.value.trim() || 'ffffff';
-        const style = playStyle.value;
-        const icon = playIcon.value;
-        const iconBg = playIconBg.value;
-        const margin = Math.min(Math.max(parseInt(playMargin.value) || 0, 0), 10);
-        const cornerRadius = Math.min(Math.max(parseInt(playCornerRadius.value) || 0, 0), 100);
+        const format = playFormat ? playFormat.value : 'png';
+        const fg = playFg ? playFg.value.trim() || '000000' : '000000';
+        const bg = playBg ? playBg.value.trim() || 'ffffff' : 'ffffff';
+        const style = playStyle ? playStyle.value : 'square';
+        const icon = playIcon ? playIcon.value : 'none';
+        const iconBg = playIconBg ? playIconBg.value : 'ffffff';
+        const margin = playMargin ? Math.min(Math.max(parseInt(playMargin.value) || 0, 0), 10) : 2;
+        const cornerRadius = playCornerRadius ? Math.min(Math.max(parseInt(playCornerRadius.value) || 0, 0), 100) : 0;
 
-        // Base API path
         let apiUrl = `https://qrmaker.ryanmarch.me/api/qr?content=${content}&fgColor=${fg}&bgColor=${bg}&cornerStyle=${style}&margin=${margin}&cornerRadius=${cornerRadius}`;
 
-        if (format !== 'png') {
-            apiUrl += `&format=${format}`;
-        }
-        if (icon !== 'none') {
-            apiUrl += `&icon=${icon}&iconBg=${iconBg}`;
-        }
+        if (format !== 'png') apiUrl += `&format=${format}`;
+        if (icon !== 'none') apiUrl += `&icon=${icon}&iconBg=${iconBg}`;
 
-        // Set visual text URL
         playgroundUrlInput.value = apiUrl;
     }
 
-    // Attach listeners to playground form controls
     [playContent, playFormat, playStyle, playIcon, playIconBg, playMargin, playCornerRadius].forEach(el => {
-        el.addEventListener('input', updatePlayground);
+        if (el) el.addEventListener('input', updatePlayground);
     });
 
     // ---- Clipboard Copy Operations ----
     const btnCopyUrl = document.getElementById('btn-copy-url');
-    btnCopyUrl.addEventListener('click', () => {
-        navigator.clipboard.writeText(playgroundUrlInput.value)
-            .then(() => {
+    if (btnCopyUrl && playgroundUrlInput) {
+        btnCopyUrl.addEventListener('click', () => {
+            navigator.clipboard.writeText(playgroundUrlInput.value).then(() => {
                 const originalText = btnCopyUrl.innerHTML;
                 btnCopyUrl.innerHTML = 'Copied!';
-                setTimeout(() => {
-                    btnCopyUrl.innerHTML = originalText;
-                }, 1500);
+                setTimeout(() => { btnCopyUrl.innerHTML = originalText; }, 1500);
             });
-    });
+        });
+    }
 
     const copyCodeBtns = document.querySelectorAll('.btn-copy-code');
     copyCodeBtns.forEach(btn => {
         btn.addEventListener('click', () => {
             const targetId = btn.getAttribute('data-target');
             const codeEl = document.querySelector(`#tab-${targetId} code`);
-            navigator.clipboard.writeText(codeEl.textContent)
-                .then(() => {
-                    const originalText = btn.textContent;
-                    btn.textContent = 'Copied!';
-                    setTimeout(() => {
-                        btn.textContent = originalText;
-                    }, 1500);
-                });
+            if (!codeEl) return;
+            navigator.clipboard.writeText(codeEl.textContent).then(() => {
+                const originalText = btn.textContent;
+                btn.textContent = 'Copied!';
+                setTimeout(() => { btn.textContent = originalText; }, 1500);
+            });
         });
     });
 
@@ -152,52 +140,28 @@ document.addEventListener('DOMContentLoaded', () => {
 
                     if (defaultEl) {
                         defaultValue = defaultEl.textContent.trim();
-                        if (defaultValue === '—') {
-                            defaultValue = '';
-                        }
+                        if (defaultValue === '—') defaultValue = '';
                     }
 
-                    // Sensible default values for testing
                     let value = defaultValue;
-                    if (key === 'content') {
-                        value = 'https://qrmaker.ryanmarch.me';
-                    } else if (key === 'format') {
-                        value = 'png';
-                    } else if (key === 'size') {
-                        value = '512';
-                    } else if (key === 'fgColor') {
-                        value = '000000';
-                    } else if (key === 'bgColor') {
-                        value = 'ffffff';
-                    } else if (key === 'transparent') {
-                        value = 'false';
-                    } else if (key === 'margin') {
-                        value = '2';
-                    } else if (key === 'cornerRadius') {
-                        value = '0';
-                    } else if (key === 'cornerStyle') {
-                        value = 'square';
-                    } else if (key === 'icon') {
-                        value = 'link';
-                    } else if (key === 'iconBg') {
-                        value = 'ffffff';
-                    } else if (key === 'iconColor') {
-                        value = '000000';
-                    }
+                    if (key === 'content') value = 'https://qrmaker.ryanmarch.me';
+                    else if (key === 'format') value = 'png';
+                    else if (key === 'size') value = '512';
+                    else if (key === 'fgColor') value = '000000';
+                    else if (key === 'bgColor') value = 'ffffff';
+                    else if (key === 'transparent') value = 'false';
+                    else if (key === 'margin') value = '2';
+                    else if (key === 'cornerRadius') value = '0';
+                    else if (key === 'cornerStyle') value = 'square';
+                    else if (key === 'icon') value = 'link';
+                    else if (key === 'iconBg') value = 'ffffff';
+                    else if (key === 'iconColor') value = '000000';
 
-                    queryParams.push({
-                        key: key,
-                        value: value,
-                        description: description
-                    });
+                    queryParams.push({ key, value, description });
                 }
             });
 
-            const formattedDate = new Date().toLocaleDateString('en-US', {
-                year: 'numeric',
-                month: 'long',
-                day: 'numeric'
-            });
+            const formattedDate = new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
 
             const collection = {
                 info: {
@@ -213,13 +177,7 @@ document.addEventListener('DOMContentLoaded', () => {
                             method: "GET",
                             header: [],
                             description: "Generate customized QR codes dynamically on the fly using the public rate-limited endpoint. No authentication required.",
-                            url: {
-                                raw: "",
-                                protocol: "https",
-                                host: ["qrmaker", "ryanmarch", "me"],
-                                path: ["api", "qr"],
-                                query: queryParams
-                            }
+                            url: { raw: "", protocol: "https", host: ["qrmaker", "ryanmarch", "me"], path: ["api", "qr"], query: queryParams }
                         },
                         response: []
                     },
@@ -227,36 +185,19 @@ document.addEventListener('DOMContentLoaded', () => {
                         name: "Generate QR Code (Secure)",
                         request: {
                             method: "GET",
-                            header: [
-                                {
-                                    key: "Authorization",
-                                    value: "Bearer YOUR_API_KEY",
-                                    type: "text",
-                                    description: "Replace YOUR_API_KEY with your generated API key"
-                                }
-                            ],
+                            header: [{ key: "Authorization", value: "Bearer YOUR_API_KEY", type: "text", description: "Replace YOUR_API_KEY with your generated API key" }],
                             description: "Generate customized QR codes dynamically on the fly using the authenticated endpoint. Requires your personal Bearer API Key.",
-                            url: {
-                                raw: "",
-                                protocol: "https",
-                                host: ["qrmaker", "ryanmarch", "me"],
-                                path: ["api", "plus"],
-                                query: queryParams
-                            }
+                            url: { raw: "", protocol: "https", host: ["qrmaker", "ryanmarch", "me"], path: ["api", "plus"], query: queryParams }
                         },
                         response: []
                     }
                 ]
             };
 
-            // Set raw URL
-            const rawUrlParams = queryParams
-                .map(p => `${p.key}=${encodeURIComponent(p.value)}`)
-                .join('&');
+            const rawUrlParams = queryParams.map(p => `${p.key}=${encodeURIComponent(p.value)}`).join('&');
             collection.item[0].request.url.raw = `https://qrmaker.ryanmarch.me/api/qr?${rawUrlParams}`;
             collection.item[1].request.url.raw = `https://qrmaker.ryanmarch.me/api/plus?${rawUrlParams}`;
 
-            // Trigger file download
             const blob = new Blob([JSON.stringify(collection, null, 2)], { type: 'application/json' });
             const url = URL.createObjectURL(blob);
             const a = document.createElement('a');
@@ -269,7 +210,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Run initial update on load
     updatePlayground();
 
     // ---- API Key Registration Form Handling ----
@@ -286,20 +226,11 @@ document.addEventListener('DOMContentLoaded', () => {
         formRegisterKey.addEventListener('submit', async (e) => {
             e.preventDefault();
 
-            // Hide previous results/errors
             keyOutputWrapper.style.display = 'none';
             regErrorMessage.style.display = 'none';
 
             const email = regEmailInput.value.trim();
-
-            // Retrieve Turnstile token
-            let token = '';
-            if (window.turnstile) {
-                token = window.turnstile.getResponse();
-            } else {
-                const turnstileInput = formRegisterKey.querySelector('[name="cf-turnstile-response"]');
-                token = turnstileInput ? turnstileInput.value : '';
-            }
+            let token = window.turnstile ? window.turnstile.getResponse() : (formRegisterKey.querySelector('[name="cf-turnstile-response"]')?.value || '');
 
             if (!token) {
                 regErrorMessage.textContent = 'Please solve the Turnstile security challenge first.';
@@ -323,17 +254,9 @@ document.addEventListener('DOMContentLoaded', () => {
                     generatedApiKey.value = data.apiKey;
 
                     const expiry = new Date(data.expiresAt);
-                    const expiryStr = expiry.toLocaleString(undefined, {
-                        year: 'numeric',
-                        month: 'long',
-                        day: 'numeric',
-                        hour: '2-digit',
-                        minute: '2-digit',
-                        timeZoneName: 'short'
-                    });
+                    const expiryStr = expiry.toLocaleString(undefined, { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit', timeZoneName: 'short' });
                     keyExpiryDate.textContent = expiryStr;
 
-                    // Update mailto URL
                     const lnkEmailKey = document.getElementById('lnk-email-key');
                     if (lnkEmailKey) {
                         const emailSubject = encodeURIComponent("Your QR Maker API Key");
@@ -343,7 +266,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     }
 
                     keyOutputWrapper.style.display = 'block';
-                    regEmailInput.value = ''; // clear input
+                    regEmailInput.value = '';
                 } else {
                     regErrorMessage.textContent = data.error || 'An error occurred generating your key.';
                     regErrorMessage.style.display = 'block';
@@ -354,60 +277,18 @@ document.addEventListener('DOMContentLoaded', () => {
             } finally {
                 btnRequestKey.disabled = false;
                 btnRequestKey.textContent = 'Generate API Key';
-                if (window.turnstile) {
-                    window.turnstile.reset();
-                }
+                if (window.turnstile) window.turnstile.reset();
             }
         });
     }
 
     if (btnCopyKey && generatedApiKey) {
         btnCopyKey.addEventListener('click', () => {
-            navigator.clipboard.writeText(generatedApiKey.value)
-                .then(() => {
-                    const originalText = btnCopyKey.innerHTML;
-                    btnCopyKey.innerHTML = 'Copied!';
-                    setTimeout(() => {
-                        btnCopyKey.innerHTML = originalText;
-                    }, 1500);
-                });
-        });
-    }
-
-    // ---- Mobile Navigation Toggle ----
-    const mobileNavToggle = document.getElementById('mobile-nav-toggle');
-    const apiSidebar = document.querySelector('.api-sidebar');
-    const mobileOverlay = document.getElementById('mobile-overlay');
-
-    if (mobileNavToggle && apiSidebar && mobileOverlay) {
-        function toggleMobileNav() {
-            const isOpen = apiSidebar.classList.contains('active');
-            if (isOpen) {
-                closeMobileNav();
-            } else {
-                openMobileNav();
-            }
-        }
-
-        function openMobileNav() {
-            apiSidebar.classList.add('active');
-            mobileOverlay.classList.add('active');
-            mobileNavToggle.setAttribute('aria-expanded', 'true');
-        }
-
-        function closeMobileNav() {
-            apiSidebar.classList.remove('active');
-            mobileOverlay.classList.remove('active');
-            mobileNavToggle.setAttribute('aria-expanded', 'false');
-        }
-
-        mobileNavToggle.addEventListener('click', toggleMobileNav);
-        mobileOverlay.addEventListener('click', closeMobileNav);
-
-        // Close sidebar when clicking any link inside it
-        const sidebarLinks = apiSidebar.querySelectorAll('.sidebar-link');
-        sidebarLinks.forEach(link => {
-            link.addEventListener('click', closeMobileNav);
+            navigator.clipboard.writeText(generatedApiKey.value).then(() => {
+                const originalText = btnCopyKey.innerHTML;
+                btnCopyKey.innerHTML = 'Copied!';
+                setTimeout(() => { btnCopyKey.innerHTML = originalText; }, 1500);
+            });
         });
     }
 
@@ -415,23 +296,13 @@ document.addEventListener('DOMContentLoaded', () => {
     function getHeadingId(heading) {
         if (heading.id) return heading.id;
 
-        // Check if this is the first heading in a section/article with an ID
         const parentSection = heading.closest('[id]');
         if (parentSection) {
             const firstHeading = parentSection.querySelector('h1, h2, h3, h4, h5, h6');
-            if (firstHeading === heading) {
-                return parentSection.id;
-            }
+            if (firstHeading === heading) return parentSection.id;
         }
 
-        // Generate slug
-        const slug = heading.textContent
-            .toLowerCase()
-            .trim()
-            .replace(/[^\w\s-]/g, '')
-            .replace(/[\s_]+/g, '-')
-            .replace(/^-+|-+$/g, '');
-
+        const slug = heading.textContent.toLowerCase().trim().replace(/[^\w\s-]/g, '').replace(/[\s_]+/g, '-').replace(/^-+|-+$/g, '');
         let uniqueSlug = slug;
         let count = 1;
         while (document.getElementById(uniqueSlug)) {
@@ -443,7 +314,7 @@ document.addEventListener('DOMContentLoaded', () => {
         return uniqueSlug;
     }
 
-    const headings = document.querySelectorAll('.api-content h1, .api-content h2, .api-content h3');
+    const headings = document.querySelectorAll('.page-content h1, .page-content h2, .page-content h3');
     headings.forEach(heading => {
         const id = getHeadingId(heading);
         if (!id) return;
@@ -475,8 +346,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
             navigator.clipboard.writeText(url).then(() => {
                 history.pushState(null, null, `#${id}`);
-                
-                // Scroll to the heading smoothly
                 heading.scrollIntoView({ behavior: 'smooth' });
 
                 const linkIcon = anchor.querySelector('.anchor-svg-link');
@@ -501,18 +370,14 @@ document.addEventListener('DOMContentLoaded', () => {
 // ---- Dynamic Turnstile Rendering ----
 window.onloadTurnstileCallback = function () {
     const sitekey = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
-        ? '1x00000000000000000000AA' // Local dev dummy key
-        : '0x4AAAAAADtAb2hYyQchZ15m'; // Production key
+        ? '1x00000000000000000000AA'
+        : '0x4AAAAAADtAb2hYyQchZ15m';
 
     if (window.turnstile) {
-        window.turnstile.render('#registration-turnstile', {
-            sitekey: sitekey,
-            theme: 'dark'
-        });
+        window.turnstile.render('#registration-turnstile', { sitekey: sitekey, theme: 'dark' });
     }
 };
 
-// If Turnstile loaded before this script runs, manually initialize
 if (window.turnstile && typeof window.turnstile.render === 'function') {
     window.onloadTurnstileCallback();
 }

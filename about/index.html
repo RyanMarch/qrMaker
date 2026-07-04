@@ -65,7 +65,7 @@
                 </p>
                 <div class="hero-showcase-buttons">
                     <a href="/" class="btn primary">
-                        <span>Open Design Studio</span>
+                        <span>Start Creating</span>
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="16"
                             height="16">
                             <line x1="5" y1="12" x2="19" y2="12"></line>
@@ -73,7 +73,7 @@
                         </svg>
                     </a>
                     <a href="/api/" class="btn secondary">
-                        <span>Developer API</span>
+                        <span>View Developer API</span>
                     </a>
                 </div>
             </div>
@@ -408,9 +408,7 @@
     </main>
 
     <!-- Footer -->
-    <footer class="about-footer-area">
-        <p>&copy; 2026 QR Maker. All rights reserved.</p>
-    </footer>
+    <global-footer></global-footer>
 
     <!-- Lightbox Dialog -->
     <dialog id="lightbox-dialog" class="lightbox-dialog" closedby="any" aria-label="Image Preview">
@@ -430,6 +428,8 @@
     <!-- Scripts -->
     <script src="/js/qrcode-lib.js"></script>
     <script src="/js/header.js"></script>
+    <script src="/js/script.js"></script>
+    <script src="/js/pwa-helpers.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const canvas1 = document.getElementById('showcase-canvas-1');
@@ -733,31 +733,15 @@
                     ctx.fill();
                     ctx.restore();
 
+                    // Optimized rendering using native system emoji fonts
                     ctx.save();
-                    try {
-                        const points = Array.from(config.icon).map(ch => ch.codePointAt(0).toString(16).toUpperCase());
-                        const emojiHex = points.join('-');
-                        const appleEmojiUrl = `https://img.emojiall.com/pic/apple/512/${emojiHex}.png`;
-
-                        const response = await fetch(appleEmojiUrl, {
-                            headers: { 'User-Agent': 'QR-Maker-API/1.0' }
-                        });
-                        if (!response.ok) throw new Error('Apple emoji asset variant missing');
-
-                        const arrayBuffer = await response.arrayBuffer();
-                        const imageBuffer = new Uint8Array(arrayBuffer);
-                        const emojiImg = await loadImage(imageBuffer);
-
-                        const iconX = center - logoSizePx / 2;
-                        const iconY = center - logoSizePx / 2;
-                        ctx.drawImage(emojiImg, iconX, iconY, logoSizePx, logoSizePx);
-                    } catch (err) {
-                        ctx.font = `${logoSizePx * 0.65}px sans-serif`;
-                        ctx.textAlign = 'center';
-                        ctx.textBaseline = 'middle';
-                        ctx.fillStyle = config.fgColor;
-                        ctx.fillText(config.icon, center, center);
-                    }
+                    // Prioritize Apple and Windows emoji sets, fallback to sans-serif
+                    ctx.font = `${logoSizePx * 0.8}px 'Apple Color Emoji', 'Segoe UI Emoji', 'Noto Color Emoji', sans-serif`;
+                    ctx.textAlign = 'center';
+                    ctx.textBaseline = 'middle';
+                    ctx.fillStyle = config.fgColor;
+                    ctx.fillText(config.icon, center, center);
+                    ctx.restore();
                     ctx.restore();
                 }
             }
