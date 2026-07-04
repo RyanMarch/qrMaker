@@ -1,10 +1,15 @@
-const CACHE_NAME = 'qrmaker-v1.0.4';
+const CACHE_NAME = 'qrmaker-v1.0.5';
 const ASSETS = [
     '/',
     '/index.html',
     '/css/style.css',
-    '/js/script.js',
     '/js/qrcode-lib.js',
+    '/js/ui-state.js',
+    '/js/qr-core.js',
+    '/js/export-share.js',
+    '/js/pwa-helpers.js',
+    '/js/header.js',
+    '/js/script.js',
     '/assets/favicon/favicon-96x96.png',
     '/assets/favicon/favicon.svg',
     '/assets/favicon/favicon.ico',
@@ -42,6 +47,9 @@ self.addEventListener('activate', (event) => {
 
 // Fetch Event - network-first with cache fallback
 self.addEventListener('fetch', (event) => {
+    if (event.request.url.includes('img.emojiall.com')) {
+        return; // Let the browser handle the request normally, bypassing your service worker
+    }
     // Only cache GET requests
     if (event.request.method !== 'GET') return;
 

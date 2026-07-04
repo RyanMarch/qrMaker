@@ -131,7 +131,7 @@
             "name": "icon",
             "in": "query",
             "required": false,
-            "description": "Overlay an icon: link, globe,\n                                    text, wifi, contact, email,\n                                    phone, map-pin, sms, event,\n                                    github, linkedin, instagram,\n                                    facebook, whatsapp, youtube,\n                                    patreon, discord, pinterest. You can\n                                    also pass any URL-encoded custom emoji (e.g., icon=%F0%9F%9A%80 for\n                                    🚀). Emojis are fully rendered in SVG output and clear the background card space in\n                                    PNG output.",
+            "description": "Overlay an icon: link, globe,\n                                    text, wifi, contact, email,\n                                    phone, map-pin, sms, event,\n                                    github, linkedin, instagram,\n                                    facebook, whatsapp, youtube,\n                                    patreon, discord, pinterest.\n                                    You can also pass any URL-encoded custom emoji (e.g.,\n                                        icon=%F0%9F%9A%80 for 🚀). Emojis are fully rendered in SVG output\n                                        only.",
             "schema": {
               "type": "string",
               "default": "none"
@@ -326,7 +326,7 @@
             "name": "icon",
             "in": "query",
             "required": false,
-            "description": "Overlay an icon: link, globe,\n                                    text, wifi, contact, email,\n                                    phone, map-pin, sms, event,\n                                    github, linkedin, instagram,\n                                    facebook, whatsapp, youtube,\n                                    patreon, discord, pinterest. You can\n                                    also pass any URL-encoded custom emoji (e.g., icon=%F0%9F%9A%80 for\n                                    🚀). Emojis are fully rendered in SVG output and clear the background card space in\n                                    PNG output.",
+            "description": "Overlay an icon: link, globe,\n                                    text, wifi, contact, email,\n                                    phone, map-pin, sms, event,\n                                    github, linkedin, instagram,\n                                    facebook, whatsapp, youtube,\n                                    patreon, discord, pinterest.\n                                    You can also pass any URL-encoded custom emoji (e.g.,\n                                        icon=%F0%9F%9A%80 for 🚀). Emojis are fully rendered in SVG output\n                                        only.",
             "schema": {
               "type": "string",
               "default": "none"
