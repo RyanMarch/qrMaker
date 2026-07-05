@@ -675,7 +675,7 @@ function showThemeStatus(text) {
 }
 
 function cycleTheme() {
-    triggerHaptic();
+    if (typeof triggerHaptic === 'function') triggerHaptic();
     const current = localStorage.getItem('qrm-theme') || 'dark';
     let next, statusText;
     if (current === 'dark') { next = 'light'; statusText = 'Light Theme'; }

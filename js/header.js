@@ -24,7 +24,7 @@ document.addEventListener('DOMContentLoaded', () => {
         localStorage.setItem('qrm-theme', theme);
     }
 
-    if (themeToggle) {
+    if (themeToggle && !document.documentElement.classList.contains('main-app')) {
         themeToggle.addEventListener('click', () => {
             if (typeof triggerHaptic === 'function') triggerHaptic();
             const currentTheme = localStorage.getItem('qrm-theme') || 'dark';
