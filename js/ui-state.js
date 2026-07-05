@@ -850,7 +850,13 @@ function handleCustomEmojiInput(val) {
     const emoji = chars.slice(0, 10).join('');
     const input = document.getElementById('custom-emoji-input');
     if (input) input.value = emoji;
-    if (emoji) setIcon(emoji); else setIcon('none');
+    if (emoji) {
+        setIcon(emoji);
+    } else {
+        // Field is cleared — keep the emoji panel visible, just remove the icon from the QR
+        state.icon = '';
+        scheduleGenerate();
+    }
 }
 
 function applySuggestionEmoji(emoji) {
