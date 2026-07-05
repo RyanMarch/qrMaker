@@ -3,39 +3,20 @@
 
 <head>
     <meta charset="UTF-8">
-    <script>
-        // Theme initialization to prevent flicker
-        (function () {
-            const savedTheme = localStorage.getItem('qrm-theme') || 'dark';
-            if (savedTheme === 'system') {
-                const isDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-                document.documentElement.setAttribute('data-theme', isDark ? 'dark' : 'light');
-                document.documentElement.setAttribute('data-theme-mode', 'system');
-            } else {
-                document.documentElement.setAttribute('data-theme', savedTheme);
-                document.documentElement.removeAttribute('data-theme-mode');
-            }
-        })();
-    </script>
-    <meta name="google" content="notranslate">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <global-head></global-head>
 
     <title>QR Maker API Documentation</title>
     <meta name="description"
         content="Developer API documentation for QR Maker. Learn how to generate customized QR codes on the fly using standard HTTP requests.">
+    <link rel="canonical" href="https://qrmaker.ryanmarch.me/api/">
 
-    <!-- Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link
-        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@500;700;800&family=Fira+Code:wght@400;500&display=swap"
-        rel="stylesheet">
+    <!-- Open Graph -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://qrmaker.ryanmarch.me/api/">
+    <meta property="og:title" content="QR Maker API Documentation">
+    <meta property="og:description"
+        content="Developer API documentation for QR Maker. Learn how to generate customized QR codes on the fly using standard HTTP requests.">
 
-    <!-- Favicons -->
-    <link rel="icon" type="image/png" href="/assets/favicon/favicon-96x96.png" sizes="96x96" />
-    <link rel="icon" type="image/svg+xml" href="/assets/favicon/favicon.svg" />
-
-    <link rel="stylesheet" href="/css/style.css">
     <link rel="stylesheet" href="style.css">
     <!-- AI-Agent/LLM Metadata -->
     <link rel="openapi" type="application/json" href="/api/openapi.json">
@@ -51,9 +32,9 @@
     <div id="mobile-overlay" class="mobile-overlay"></div>
 
     <!-- Main Container -->
-    <main class="api-container">
+    <main class="page-container-sidebar">
         <!-- Sidebar Navigation -->
-        <nav class="api-sidebar" aria-label="Documentation sections">
+        <nav class="page-sidebar" aria-label="Documentation sections">
             <div class="sidebar-site-nav">
                 <a href="/" class="sidebar-site-link">App</a>
                 <a href="/about/" class="sidebar-site-link">About</a>
@@ -670,7 +651,6 @@ app.get('/api/qr', async (req, res) => {
     <global-footer></global-footer>
 
     <script src="/js/header.js"></script>
-    <script src="/js/script.js"></script>
     <!-- <script src="/js/pwa-helpers.js"></script> -->
     <script src="/js/api-playground.js"></script>
 </body>

@@ -194,7 +194,7 @@ QR Maker is built directly on standard web technologies to keep page load times 
 ### 1. Browser-Side Rendering
 
 * **QR Engine:** The app uses an inlined version of [Kazuhiko Arase's QR Code generator library](https://github.com/kazuhikoarase/qrcode-generator) (MIT License) to compile the raw text data into a grid.
-* **HTML5 Canvas:** Custom drawing logic in `js/script.js` reads the grid and draws custom pixel shapes and finder patterns to render the final PNG images.
+* **HTML5 Canvas:** Custom drawing logic in `js/qr-core.js` reads the grid and draws custom pixel shapes and finder patterns to render the final PNG images.
 * **Vector SVG Generator:** Outputs clean, editable XML SVG strings directly.
 
 ### 2. Standalone Application

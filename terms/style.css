@@ -21,7 +21,7 @@ body {
 }
 
 /* --- Layout Structure --- */
-.api-container {
+.page-container-sidebar {
     display: flex;
     margin-top: 60px;
     min-height: calc(100vh - 60px);
@@ -37,7 +37,7 @@ body {
 }
 
 /* --- Sidebar Navigation --- */
-.api-sidebar {
+.page-sidebar {
     width: 260px;
     background-color: var(--sidebar-bg);
     border-right: 1px solid var(--border-color);
@@ -54,11 +54,11 @@ body {
 
 
 
-.api-sidebar ul {
+.page-sidebar ul {
     list-style: none;
 }
 
-.api-sidebar li {
+.page-sidebar li {
     margin-bottom: 0.75rem;
 }
 
@@ -275,7 +275,7 @@ body .page-footer {
         stroke: currentColor;
     }
 
-    .api-sidebar {
+    .page-sidebar {
         position: fixed;
         top: 60px;
         bottom: 0;
@@ -287,7 +287,7 @@ body .page-footer {
         height: calc(100vh - 60px);
     }
 
-    .api-sidebar.active {
+    .page-sidebar.active {
         visibility: visible;
         transform: translateX(260px);
     }

@@ -22,6 +22,11 @@ document.addEventListener('DOMContentLoaded', () => {
             document.documentElement.removeAttribute('data-theme-mode');
         }
         localStorage.setItem('qrm-theme', theme);
+        
+        // Notify main app if loaded
+        if (typeof updateAppTint === 'function' && typeof state !== 'undefined') {
+            updateAppTint(state.themeColor);
+        }
     }
 
     if (themeToggle) {
@@ -35,6 +40,16 @@ document.addEventListener('DOMContentLoaded', () => {
             showThemeStatus(statusText);
         });
     }
+
+    // ---- System Theme Change Listener ----
+    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
+        if (localStorage.getItem('qrm-theme') === 'system') {
+            document.documentElement.setAttribute('data-theme', e.matches ? 'dark' : 'light');
+            if (typeof updateAppTint === 'function' && typeof state !== 'undefined') {
+                updateAppTint(state.themeColor);
+            }
+        }
+    });
 
     // ---- Mobile Nav Menu Toggle ----
     const mobileMenuToggle = document.getElementById('mobile-menu-toggle') || document.getElementById('mobile-nav-toggle');
@@ -82,6 +97,24 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (menuIcon) menuIcon.style.display = 'block';
                 if (closeIcon) closeIcon.style.display = 'none';
             }
+        }
+    });
+
+    // ---- Mobile Sidebar / Backdrop Toggle Logic (via delegation) ----
+    document.addEventListener('click', (event) => {
+        const toggleBtn = event.target.closest('[sidebar-toggle]') || event.target.closest('.mobile-nav-toggle');
+        const sidebar = document.querySelector('.page-sidebar');
+        const overlay = document.querySelector('#mobile-overlay');
+
+        if (toggleBtn && sidebar && overlay) {
+            sidebar.classList.toggle('active');
+            overlay.classList.toggle('active');
+        }
+
+        // Close sidebar when clicking the dark backdrop overlay
+        if (event.target.matches('#mobile-overlay')) {
+            sidebar?.classList.remove('active');
+            overlay?.classList.remove('active');
         }
     });
 });
