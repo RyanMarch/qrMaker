@@ -3720,18 +3720,20 @@ body.has-global-header {
     display: none !important;
 }
 
-.main-app .controls-section {
-    display: flex !important;
-    flex-direction: column !important;
-    height: calc(100vh - 60px) !important;
-    overflow: hidden !important;
-    margin-top: 0;
+/* Desktop-only: constrain controls to viewport height and scroll internally */
+@media (min-width: 961px) {
+    .main-app .controls-section {
+        display: flex !important;
+        flex-direction: column !important;
+        height: calc(100vh - 60px) !important;
+        overflow: hidden !important;
+        margin-top: 0;
+    }
 
-}
-
-.controls-content-wrapper {
-    flex: 1;
-    overflow-y: auto;
+    .controls-content-wrapper {
+        flex: 1;
+        overflow-y: auto;
+    }
 }
 
 .main-app.controls-section .page-footer {
