@@ -103,7 +103,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // ---- Mobile Sidebar / Backdrop Toggle Logic (via delegation) ----
     document.addEventListener('click', (event) => {
         const toggleBtn = event.target.closest('[sidebar-toggle]') || event.target.closest('.mobile-nav-toggle');
-        const sidebar = document.querySelector('.api-sidebar');
+        const sidebar = document.querySelector('.page-sidebar');
         const overlay = document.querySelector('#mobile-overlay');
 
         if (toggleBtn && sidebar && overlay) {

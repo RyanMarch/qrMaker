@@ -5,7 +5,8 @@
   "scripts": {
     "dev": "node scripts/generate-agent-docs.js && wrangler pages dev . --compatibility-date=2024-01-01",
     "build": "node scripts/generate-agent-docs.js",
-    "deploy": "node scripts/generate-agent-docs.js && wrangler pages deploy ."
+    "deploy": "node scripts/generate-agent-docs.js && wrangler pages deploy .",
+    "create-page": "node scripts/create-page.js"
   },
   "dependencies": {
     "@resvg/resvg-wasm": "^2.6.2",
