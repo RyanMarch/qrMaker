@@ -1,4 +1,4 @@
-const CACHE_NAME = 'qrmaker-v1.0.5';
+const CACHE_NAME = 'qrmaker-v1.0.6';
 const ASSETS = [
     '/',
     '/index.html',
@@ -9,7 +9,6 @@ const ASSETS = [
     '/js/export-share.js',
     '/js/pwa-helpers.js',
     '/js/header.js',
-    '/js/script.js',
     '/assets/favicon/favicon-96x96.png',
     '/assets/favicon/favicon.svg',
     '/assets/favicon/favicon.ico',

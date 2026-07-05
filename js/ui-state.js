@@ -664,36 +664,7 @@ function getFilenameFromUrl(url) {
     try { const parts = url.split('/'); return parts[parts.length - 1]; } catch (e) { return 'logo.png'; }
 }
 
-let themeStatusTimeout;
-function showThemeStatus(text) {
-    const themeStatus = document.getElementById('theme-status');
-    if (!themeStatus) return;
-    themeStatus.textContent = text;
-    themeStatus.classList.add('visible');
-    clearTimeout(themeStatusTimeout);
-    themeStatusTimeout = setTimeout(() => { themeStatus.classList.remove('visible'); }, 2000);
-}
 
-function cycleTheme() {
-    if (typeof triggerHaptic === 'function') triggerHaptic();
-    const current = localStorage.getItem('qrm-theme') || 'dark';
-    let next, statusText;
-    if (current === 'dark') { next = 'light'; statusText = 'Light Theme'; }
-    else if (current === 'light') { next = 'system'; statusText = 'System Theme'; }
-    else { next = 'dark'; statusText = 'Dark Theme'; }
-
-    if (next === 'system') {
-        const isDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-        document.documentElement.setAttribute('data-theme', isDark ? 'dark' : 'light');
-        document.documentElement.setAttribute('data-theme-mode', 'system');
-    } else {
-        document.documentElement.setAttribute('data-theme', next);
-        document.documentElement.removeAttribute('data-theme-mode');
-    }
-    localStorage.setItem('qrm-theme', next);
-    updateAppTint(state.themeColor);
-    showThemeStatus(statusText);
-}
 
 let toastTimer = null;
 function showToast(msg) {
@@ -1042,14 +1013,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    const themeToggleBtn = document.getElementById('theme-toggle');
-    if (themeToggleBtn) themeToggleBtn.addEventListener('click', cycleTheme);
-    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
-        if (localStorage.getItem('qrm-theme') === 'system') {
-            document.documentElement.setAttribute('data-theme', e.matches ? 'dark' : 'light');
-            updateAppTint(state.themeColor);
-        }
-    });
+
 
     window.addEventListener('scroll', handleMobileScroll, { passive: true });
     window.addEventListener('resize', handleMobileScroll, { passive: true });
