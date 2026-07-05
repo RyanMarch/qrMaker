@@ -304,7 +304,9 @@ function loadFromURL() {
             state.isTransparent = false;
         }
     } else {
-        state.themeColor = '#ffffff'; state.bgColor = '#ffffff'; state.fgColor = '#000000'; state.isTransparent = false;
+        state.themeColor = '#ffffff'; state.bgColor = '#ffffff';
+        if (!params.has('fg')) state.fgColor = '#000000';
+        state.isTransparent = false;
     }
 
     updateColorTriggerUI();
