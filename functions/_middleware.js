@@ -82,6 +82,10 @@ function getHeadHTML() {
 
     <!-- Global Style -->
     <link rel="stylesheet" href="/css/style.css">
+
+    <!-- Global SEO & Social Sharing -->
+    <meta property="og:site_name" content="QR Maker" />
+    <meta property="og:image" content="https://qrmaker.ryanmarch.me/assets/og-image.png" />
     `;
 }
 
