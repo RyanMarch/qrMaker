@@ -3,39 +3,12 @@
 
 <head>
     <meta charset="UTF-8">
-    <script>
-        // Theme initialization to prevent flicker
-        (function () {
-            const savedTheme = localStorage.getItem('qrm-theme') || 'dark';
-            if (savedTheme === 'system') {
-                const isDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-                document.documentElement.setAttribute('data-theme', isDark ? 'dark' : 'light');
-                document.documentElement.setAttribute('data-theme-mode', 'system');
-            } else {
-                document.documentElement.setAttribute('data-theme', savedTheme);
-                document.documentElement.removeAttribute('data-theme-mode');
-            }
-        })();
-    </script>
-    <meta name="google" content="notranslate">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <global-head></global-head>
 
     <title>QR Maker API Documentation</title>
     <meta name="description"
         content="Developer API documentation for QR Maker. Learn how to generate customized QR codes on the fly using standard HTTP requests.">
 
-    <!-- Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link
-        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@500;700;800&family=Fira+Code:wght@400;500&display=swap"
-        rel="stylesheet">
-
-    <!-- Favicons -->
-    <link rel="icon" type="image/png" href="/assets/favicon/favicon-96x96.png" sizes="96x96" />
-    <link rel="icon" type="image/svg+xml" href="/assets/favicon/favicon.svg" />
-
-    <link rel="stylesheet" href="/css/style.css">
     <link rel="stylesheet" href="style.css">
     <!-- AI-Agent/LLM Metadata -->
     <link rel="openapi" type="application/json" href="/api/openapi.json">
