@@ -27,7 +27,7 @@
     <div id="mobile-overlay" class="mobile-overlay"></div>
 
     <!-- Main Container -->
-    <main class="page-container-sidebar">
+    <main class="page-container-sidebar user-docs">
         <!-- Sidebar Navigation -->
         <nav class="page-sidebar" aria-label="Documentation sections">
             <div class="sidebar-site-nav">
@@ -49,17 +49,20 @@
                         <img src="/assets/favicon/favicon.svg" alt="QR Maker Icon" width="30" height="30">
                     </div>
                     <h4 class="cta-card-title">QR Maker</h4>
-                    <p class="cta-card-desc">Try the interactive web app for custom colors, logos, icons, SVG exports, and more.</p>
+                    <p class="cta-card-desc">Try the interactive web app for custom colors, logos, icons, SVG exports,
+                        and more.</p>
                     <a href="/app/" class="btn-cta-generator">
                         <span>Go to QR Maker</span>
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="14" height="14">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="14"
+                            height="14">
                             <line x1="5" y1="12" x2="19" y2="12"></line>
                             <polyline points="12 5 19 12 12 19"></polyline>
                         </svg>
                     </a>
                 </div>
-                
-                <a href="/api/" class="about-app-link" style="margin-top: 1rem; display: flex; align-items: center; gap: 0.5rem;">
+
+                <a href="/api/" class="about-app-link"
+                    style="margin-top: 1rem; display: flex; align-items: center; gap: 0.5rem;">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14">
                         <polyline points="16 18 22 12 16 6"></polyline>
                         <polyline points="8 6 2 12 8 18"></polyline>
@@ -76,18 +79,32 @@
             <article id="overview" class="doc-section">
                 <h1>User Manual & Guide</h1>
                 <p class="lead">
-                    Learn about the features and customizations available in QR Maker to design, share, and export your own unique QR codes.
+                    Learn about the features and customizations available in QR Maker to design, share, and export your
+                    own unique QR codes.
                 </p>
-        <p>
-            QR Maker is a simple, visual creator that builds custom-styled QR codes right inside your web browser. There are no registration accounts to set up, no subscription fees, and no trackers. All design generation and image encoding are performed locally on your device, ensuring your inputs remain completely private.
-        </p>
-        <!-- Instructive Media Placeholder -->
-        <div class="media-placeholder" title="Visualizing the app layout">
-            <div class="media-icon">🖼️</div>
-            <div class="media-title">Interface Showcase</div>
-            <p class="media-description">Future Visual: A real-time screenshot illustrating the left-hand styling inspector panel alongside the right-hand canvas preview.</p>
-        </div>
-    </article>
+                <p>
+                    QR Maker is a simple, visual creator that builds custom-styled QR codes right inside your web
+                    browser. There are no accounts to set up, no subscription fees, and built with a privacy-first
+                    mindset. All QR generation and customizations are performed locally on your device, ensuring your
+                    inputs remain private to you.
+                </p>
+
+                <!-- Instructive Media Placeholder inside Figure -->
+                <figure class="media-figure">
+                    <div class="media-placeholder has-image" title="Visualizing the app layout">
+                        <picture>
+                            <source srcset="/assets/images/app-overview-light-theme.avif" type="image/avif">
+                            <img src="/assets/images/app-overview-light-theme.png"
+                                alt="QR Maker Web Application Interface Layout" loading="lazy">
+                        </picture>
+                        <div class="media-icon">🖼️</div>
+                        <div class="media-title">Interface Showcase</div>
+                        <p class="media-description">Future Visual: A real-time screenshot illustrating the left-hand
+                            styling inspector panel alongside the right-hand canvas preview.</p>
+                    </div>
+                    <figcaption class="media-caption">Main screen of QR Maker.</figcaption>
+                </figure>
+            </article>
 
             <hr class="section-divider">
 
@@ -97,25 +114,140 @@
                 <div class="col-split col-60-40">
                     <div class="col-content">
                         <p>
-                            QR Maker lets you bundle many different types of information inside a QR code. Select from the following input tabs to enter your details:
+                            QR Maker lets you bundle many different types of information inside a QR code. Select from
+                            the following input tabs to enter your details:
                         </p>
-                        <ul class="help-list">
-                            <li><strong>Link (URL):</strong> Share a website address, document link, or online profile. Ideal for print flyers, menu signs, and portfolios.</li>
-                            <li><strong>Plain Text:</strong> Write simple notes, instructions, reference codes, or messages. Scanners will display the text directly on screen.</li>
-                            <li><strong>WiFi Network:</strong> Provide network credentials (SSID name, password, and security type) so guests can scan to instantly connect to your WiFi without typing a password. Supports hidden networks.</li>
-                            <li><strong>Contact Card:</strong> Generate a virtual contact file (vCard) including first name, last name, company, email, and phone number. Scanners can immediately save you as a contact.</li>
-                            <li><strong>Email & SMS:</strong> Pre-fill a recipient address and initial subject line or message. Scanners will open their default messaging app ready to hit send.</li>
-                            <li><strong>Phone & Map Location:</strong> Set a phone number to trigger direct dialing, or share map coordinates (latitude and longitude) with a built-in auto-detect button to get your current position.</li>
-                            <li><strong>Calendar Event:</strong> Set a title, start/end dates, location, and description so scanners can instantly add the event to their calendar.</li>
+                        <ul class="help-list-custom">
+                            <li>
+                                <div class="list-icon">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path>
+                                        <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
+                                    </svg>
+                                </div>
+                                <div class="list-text">
+                                    <strong>Link (URL):</strong> Share a website address, document link, or online profile.
+                                    Ideal for print flyers, menu signs, and portfolios.
+                                </div>
+                            </li>
+                            <li>
+                                <div class="list-icon">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                                        <polyline points="14 2 14 8 20 8"></polyline>
+                                        <line x1="16" y1="13" x2="8" y2="13"></line>
+                                        <line x1="16" y1="17" x2="8" y2="17"></line>
+                                        <polyline points="10 9 9 9 8 9"></polyline>
+                                    </svg>
+                                </div>
+                                <div class="list-text">
+                                    <strong>Plain Text:</strong> Write simple notes, instructions, reference codes, or
+                                    messages. Scanners will display the text directly on screen.
+                                </div>
+                            </li>
+                            <li>
+                                <div class="list-icon">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M5 12.55a11 11 0 0 1 14.08 0"></path>
+                                        <path d="M1.42 9a16 16 0 0 1 21.16 0"></path>
+                                        <path d="M8.53 16.11a6 6 0 0 1 6.95 0"></path>
+                                        <line x1="12" y1="20" x2="12.01" y2="20"></line>
+                                    </svg>
+                                </div>
+                                <div class="list-text">
+                                    <strong>WiFi Network:</strong> Provide network credentials (SSID name, password, and
+                                    security type) to allow instant connections.
+                                </div>
+                            </li>
+                            <li>
+                                <div class="list-icon">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                                        <circle cx="12" cy="7" r="4"></circle>
+                                    </svg>
+                                </div>
+                                <div class="list-text">
+                                    <strong>Contact Card:</strong> Generate a virtual contact file (vCard) including first
+                                    name, last name, company, email, and phone number.
+                                </div>
+                            </li>
+                            <li>
+                                <div class="list-icon">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                                        <polyline points="22,6 12,13 2,6"></polyline>
+                                    </svg>
+                                </div>
+                                <div class="list-text">
+                                    <strong>Email:</strong> Pre-fill a recipient address and initial subject line. Scanning will open a default email app ready to send.
+                                </div>
+                            </li>
+                            <li>
+                                <div class="list-icon">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+                                    </svg>
+                                </div>
+                                <div class="list-text">
+                                    <strong>Phone Number:</strong> Set a phone number to trigger direct dialing.
+                                </div>
+                            </li>
+                            <li>
+                                <div class="list-icon">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                                        <circle cx="12" cy="10" r="3"></circle>
+                                    </svg>
+                                </div>
+                                <div class="list-text">
+                                    <strong>Map Location:</strong> Share map coordinates (latitude & longitude) with a
+                                    built-in auto-detect button to get your current position.
+                                </div>
+                            </li>
+                            <li>
+                                <div class="list-icon">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                                    </svg>
+                                </div>
+                                <div class="list-text">
+                                    <strong>SMS:</strong> Pre-fill a recipient phone number and initial message. Scanning will open a default messaging app ready to send.
+                                </div>
+                            </li>
+                            <li>
+                                <div class="list-icon">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                                        <line x1="16" y1="2" x2="16" y2="6"></line>
+                                        <line x1="8" y1="2" x2="8" y2="6"></line>
+                                        <line x1="3" y1="10" x2="21" y2="10"></line>
+                                    </svg>
+                                </div>
+                                <div class="list-text">
+                                    <strong>Calendar Event:</strong> Set a title, start/end dates, location, and description
+                                    to easily add to a calendar.
+                                </div>
+                            </li>
                         </ul>
                     </div>
                     <div class="col-media">
-                        <!-- Instructive Media Placeholder -->
-                        <div class="media-placeholder" style="margin: 0;" title="Demonstrating Content Selection">
-                            <div class="media-icon">📱</div>
-                            <div class="media-title">Content Selection</div>
-                            <p class="media-description">Future Visual: An animation demonstrating selecting the WiFi tab, typing network details, and watching the QR code update.</p>
-                        </div>
+                        <!-- Instructive Media Placeholder inside Figure -->
+                        <figure class="media-figure">
+                            <div class="media-placeholder" style="margin: 0;" title="Demonstrating Content Selection">
+                                <picture>
+                                    <source srcset="/assets/images/content-selection.avif" type="image/avif">
+                                    <img src="/assets/images/content-selection.png" alt="Content panel selector tabs"
+                                        loading="lazy">
+                                </picture>
+                                <div class="media-icon">📱</div>
+                                <div class="media-title">Content Selection</div>
+                                <p class="media-description">Future Visual: An animation demonstrating selecting the
+                                    WiFi
+                                    tab, typing network details, and watching the QR code update.</p>
+                            </div>
+                            <figcaption class="media-caption">Figure 2: Quick-toggle navigation tabs to swap between
+                                different content formats.</figcaption>
+                        </figure>
                     </div>
                 </div>
             </article>
@@ -128,24 +260,44 @@
                 <div class="col-split col-60-40">
                     <div class="col-content">
                         <p>
-                            Go beyond traditional black-and-white grids by styling every part of your QR code to match your theme:
+                            Go beyond traditional black-and-white grids by styling every part of your QR code to match
+                            your theme:
                         </p>
                         <ul class="help-list">
-                            <li><strong>Pixel Shapes:</strong> Swap out classic square blocks for softer rounded points, pills, capsules, dots, or connected grid lines.</li>
-                            <li><strong>Corner Markers:</strong> Separately style the signature outer frames and inner eyes located in the three corners of the QR code (Rounded, Circle, Square, Leaf, or Beveled).</li>
-                            <li><strong>Frame Spacing:</strong> Use the margin slider to adjust the quiet zone border around the QR code, or round the edges of the overall background container.</li>
-                            <li><strong>Solid & Transparent Backdrops:</strong> Set solid background fills or make the background fully transparent (perfect for layering your QR code on complex graphic designs).</li>
-                            <li><strong>Palettes & Custom Hex Codes:</strong> Select from preset swatches or type in custom color codes for the pixels and background.</li>
-                            <li><strong>Automatic Contrast Guard:</strong> An active contrast check lets you know if your pixel color is too close to your background color to scan successfully.</li>
+                            <li><strong>Pixel Shapes:</strong> Swap out classic square blocks for softer rounded points,
+                                pills, capsules, dots, or connected grid lines.</li>
+                            <li><strong>Corner Markers:</strong> Separately style the signature outer frames and inner
+                                eyes located in the three corners of the QR code (Rounded, Circle, Square, Leaf, or
+                                Beveled).</li>
+                            <li><strong>Frame Spacing:</strong> Use the margin slider to adjust the quiet zone border
+                                around the QR code, or round the edges of the overall background container.</li>
+                            <li><strong>Solid & Transparent Backdrops:</strong> Set solid background fills or make the
+                                background fully transparent (perfect for layering your QR code on complex graphic
+                                designs).</li>
+                            <li><strong>Palettes & Custom Hex Codes:</strong> Select from preset swatches or type in
+                                custom color codes for the pixels and background.</li>
+                            <li><strong>Automatic Contrast Guard:</strong> An active contrast check lets you know if
+                                your pixel color is too close to your background color to scan successfully.</li>
                         </ul>
                     </div>
                     <div class="col-media">
-                        <!-- Instructive Media Placeholder -->
-                        <div class="media-placeholder" style="margin: 0;" title="Color Picker and Shape Selection Controls">
-                            <div class="media-icon">🎨</div>
-                            <div class="media-title">Style & Color Controls</div>
-                            <p class="media-description">Future Visual: Close-up screenshot highlighting the color spectrum canvas, auto-contrast warning indicator, and custom shape selectors.</p>
-                        </div>
+                        <!-- Instructive Media Placeholder inside Figure -->
+                        <figure class="media-figure">
+                            <div class="media-placeholder" style="margin: 0;"
+                                title="Color Picker and Shape Selection Controls">
+                                <picture>
+                                    <source srcset="/assets/images/style-color-controls.avif" type="image/avif">
+                                    <img src="/assets/images/style-color-controls.png"
+                                        alt="Color and shape control menus" loading="lazy">
+                                </picture>
+                                <div class="media-icon">🎨</div>
+                                <div class="media-title">Style & Color Controls</div>
+                                <p class="media-description">Future Visual: Close-up screenshot highlighting the color
+                                    spectrum canvas, auto-contrast warning indicator, and custom shape selectors.</p>
+                            </div>
+                            <figcaption class="media-caption">Figure 3: Customizing blocks, finder patterns, and
+                                backdrop colors.</figcaption>
+                        </figure>
                     </div>
                 </div>
             </article>
@@ -158,29 +310,52 @@
                 <div class="col-split col-60-40">
                     <div class="col-content">
                         <p>
-                            Make your QR code instantly recognizable by placing a central brand indicator or custom graphic right in the middle:
+                            Make your QR code instantly recognizable by placing a central brand indicator or custom
+                            graphic right in the middle:
                         </p>
                         <ul class="help-list">
-                            <li><strong>Preloaded Icons:</strong> Choose from popular system icons like Link, Globe, Wifi, GitHub, LinkedIn, Instagram, and YouTube.</li>
-                            <li><strong>System Emojis:</strong> Paste or type any system emoji directly into the icon inspector to place it in the center.</li>
-                            <li><strong>Custom Image Uploads:</strong> Drag and drop your own PNG or JPG logo file directly onto the canvas.</li>
-                            <li><strong>Backing Cards:</strong> Place a square, rounded, or circular backing card behind the center logo or emoji to clear out overlapping pixels and preserve readability.</li>
+                            <li><strong>Preloaded Icons:</strong> Choose from popular system icons like Link, Globe,
+                                Wifi, GitHub, LinkedIn, Instagram, and YouTube.</li>
+                            <li><strong>System Emojis:</strong> Paste or type any system emoji directly into the icon
+                                inspector to place it in the center.</li>
+                            <li><strong>Custom Image Uploads:</strong> Drag and drop your own PNG or JPG logo file
+                                directly onto the canvas.</li>
+                            <li><strong>Backing Cards:</strong> Place a square, rounded, or circular backing card behind
+                                the center logo or emoji to clear out overlapping pixels and preserve readability.</li>
                         </ul>
                         <!-- Cheeky aside callout for error correction -->
                         <div class="info-aside">
                             <div class="aside-badge">We've got your back!</div>
                             <p>
-                                Placing a brand logo or custom emoji in the center blocks a portion of the QR code grid. To keep everything functioning smoothly, QR Maker automatically bumps up the built-in Error Correction level in the background. This builds extra redundancy into the design so scanners can read your code easily, without you having to worry about the technical details.
+                                Placing a brand logo or custom emoji in the center blocks a portion of the QR code grid.
+                                To keep everything functioning smoothly, QR Maker automatically bumps up the built-in
+                                Error Correction level in the background. This builds extra redundancy into the design
+                                so scanners can read your code easily, without you having to worry about the technical
+                                details.
                             </p>
                         </div>
                     </div>
                     <div class="col-media">
-                        <!-- Instructive Media Placeholder -->
-                        <div class="media-placeholder" style="margin: 0;" title="Custom Logo & Emoji Placement">
-                            <div class="media-icon">🚀</div>
-                            <div class="media-title">Logo & Backing Setup</div>
-                            <p class="media-description">Future Visual: Close-up screenshot of a styled QR code with a circular logo in the center, demonstrating how the card backing clears overlapping QR code modules.</p>
-                        </div>
+                        <!-- Instructive Media Placeholder inside Figure -->
+                        <figure class="media-figure">
+                            <div class="media-placeholder has-image" style="margin: 0;"
+                                title="Custom Logo & Emoji Placement">
+                                <picture>
+                                    <source srcset="/assets/images/app-icon-emoji-alien.avif" type="image/avif">
+                                    <img src="/assets/images/app-icon-emoji-alien.png"
+                                        alt="QR Code with central emoji branding" loading="lazy">
+                                </picture>
+                                <div class="media-icon">🚀</div>
+                                <div class="media-title">Logo & Backing Setup</div>
+                                <p class="media-description">Future Visual: Close-up screenshot of a styled QR code with
+                                    a
+                                    circular logo in the center, demonstrating how the card backing clears overlapping
+                                    QR
+                                    code modules.</p>
+                            </div>
+                            <figcaption class="media-caption">Figure 4: Placing icons, brand logos, or custom system
+                                emojis in the center.</figcaption>
+                        </figure>
                     </div>
                 </div>
             </article>
@@ -193,21 +368,42 @@
                 <div class="col-split col-60-40">
                     <div class="col-content">
                         <p>
-                            Once your custom design is complete, you can download it or share the editable template with others:
+                            Once your custom design is complete, you can download it or share the editable template with
+                            others:
                         </p>
                         <ul class="help-list">
-                            <li><strong>Vector SVG:</strong> Save your QR code as a scalable vector SVG file. This format is perfect for graphic designers, print media, high-resolution signs, and packaging since it scales infinitely without losing detail.</li>
-                            <li><strong>PNG Images (Multi-Size):</strong> Export your QR code as a standard PNG image file, ideal for website embeds, emails, and presentations. Click the size trigger in the PNG export button to choose a width of 512px, 1024px, or 2048px.</li>
-                            <li><strong>Share Links:</strong> Generate a unique shareable link that copies straight to your clipboard. This link encodes all your design coordinates, custom colors, text contents, and style presets, allowing other users to load and edit your exact design instantly.</li>
+                            <li><strong>Vector SVG:</strong> Save your QR code as a scalable vector SVG file. This
+                                format is perfect for graphic designers, print media, high-resolution signs, and
+                                packaging since it scales infinitely without losing detail.</li>
+                            <li><strong>PNG Images (Multi-Size):</strong> Export your QR code as a standard PNG image
+                                file, ideal for website embeds, emails, and presentations. Click the size trigger in the
+                                PNG export button to choose a width of 512px, 1024px, or 2048px.</li>
+                            <li><strong>Share Links:</strong> Generate a unique shareable link that copies straight to
+                                your clipboard. This link encodes all your design coordinates, custom colors, text
+                                contents, and style presets, allowing other users to load and edit your exact design
+                                instantly.</li>
                         </ul>
                     </div>
                     <div class="col-media">
-                        <!-- Instructive Media Placeholder -->
-                        <div class="media-placeholder" style="margin: 0;" title="Export Menu Options">
-                            <div class="media-icon">💾</div>
-                            <div class="media-title">Export Settings</div>
-                            <p class="media-description">Future Visual: Screenshot highlighting the SVG and Export PNG buttons, with the size selector dropdown popover open (showing 512px, 1024px, and 2048px options).</p>
-                        </div>
+                        <!-- Instructive Media Placeholder inside Figure -->
+                        <figure class="media-figure">
+                            <div class="media-placeholder" style="margin: 0;" title="Export Menu Options">
+                                <picture>
+                                    <source srcset="/assets/images/export-settings.avif" type="image/avif">
+                                    <img src="/assets/images/export-settings.png" alt="Export buttons and options"
+                                        loading="lazy">
+                                </picture>
+                                <div class="media-icon">💾</div>
+                                <div class="media-title">Export Settings</div>
+                                <p class="media-description">Future Visual: Screenshot highlighting the SVG and Export
+                                    PNG
+                                    buttons, with the size selector dropdown popover open (showing 512px, 1024px, and
+                                    2048px
+                                    options).</p>
+                            </div>
+                            <figcaption class="media-caption">Figure 5: Action buttons to export vector SVG, raster PNG,
+                                or share config links.</figcaption>
+                        </figure>
                     </div>
                 </div>
             </article>
@@ -222,32 +418,57 @@
                         <p>
                             QR Maker integrates with your devices to speed up your daily workflows:
                         </p>
-                        <h3 style="font-size: 1.15rem; margin-top: 1.5rem; margin-bottom: 0.5rem;">Native Apple Shortcut</h3>
+                        <h3 style="font-size: 1.15rem; margin-top: 1.5rem; margin-bottom: 0.5rem;">Native Apple Shortcut
+                        </h3>
                         <p>
-                            Convert highlighted text, links, or contact details directly into a custom QR code from anywhere on your Mac or iOS device without launching the browser.
+                            Convert highlighted text, links, or contact details directly into a custom QR code from
+                            anywhere on your Mac or iOS device without launching the browser.
                         </p>
                         <ul class="help-list" style="margin-bottom: 1.5rem;">
-                            <li><strong>How it works:</strong> Trigger the shortcut from your Mac's right-click Quick Actions menu or your iPhone's standard Share Sheet.</li>
-                            <li><strong>Get the shortcut:</strong> <a href="https://www.icloud.com/shortcuts/a308b98b830943278700d20e5ff07bc6" target="_blank" rel="noopener">Download QR Maker Apple Shortcut</a>.</li>
+                            <li><strong>How it works:</strong> Trigger the shortcut from your Mac's right-click Quick
+                                Actions menu or your iPhone's standard Share Sheet.</li>
+                            <li><strong>Get the shortcut:</strong> <a
+                                    href="https://www.icloud.com/shortcuts/a308b98b830943278700d20e5ff07bc6"
+                                    target="_blank" rel="noopener">Download QR Maker Apple Shortcut</a>.</li>
                         </ul>
 
-                        <h3 style="font-size: 1.15rem; margin-top: 1.5rem; margin-bottom: 0.5rem;">Offline PWA App Installation</h3>
+                        <h3 style="font-size: 1.15rem; margin-top: 1.5rem; margin-bottom: 0.5rem;">Offline PWA App
+                            Installation</h3>
                         <p>
-                            QR Maker can be installed on your device, allowing you to design and download custom QR codes completely offline.
+                            QR Maker can be installed on your device, allowing you to design and download custom QR
+                            codes completely offline.
                         </p>
                         <ul class="help-list">
-                            <li><strong>macOS (Safari):</strong> Select <strong>File</strong> in the top menu bar, then choose <strong>Add to Dock...</strong>.</li>
-                            <li><strong>iOS & iPadOS (Safari):</strong> Tap the standard <strong>Share</strong> button, then select <strong>Add to Home Screen</strong>.</li>
-                            <li><strong>Chrome & Edge:</strong> Click the installation icon (app drawer indicator) on the right end of the address URL bar to add QR Maker to your system desktop or device app folder.</li>
+                            <li><strong>macOS (Safari):</strong> Select <strong>File</strong> in the top menu bar, then
+                                choose <strong>Add to Dock...</strong>.</li>
+                            <li><strong>iOS & iPadOS (Safari):</strong> Tap the standard <strong>Share</strong> button,
+                                then select <strong>Add to Home Screen</strong>.</li>
+                            <li><strong>Chrome & Edge:</strong> Click the installation icon (app drawer indicator) on
+                                the right end of the address URL bar to add QR Maker to your system desktop or device
+                                app folder.</li>
                         </ul>
                     </div>
                     <div class="col-media">
-                        <!-- Instructive Media Placeholder -->
-                        <div class="media-placeholder" style="margin: 0;" title="Apple Shortcuts & PWA Installation">
-                            <div class="media-icon">💻</div>
-                            <div class="media-title">Shortcuts & Standalone</div>
-                            <p class="media-description">Future Visual: Animated GIF demonstrating triggering the Apple Shortcut from a browser selection, and a screenshot of QR Maker running as a standalone offline window.</p>
-                        </div>
+                        <!-- Instructive Media Placeholder inside Figure -->
+                        <figure class="media-figure">
+                            <div class="media-placeholder" style="margin: 0;"
+                                title="Apple Shortcuts & PWA Installation">
+                                <picture>
+                                    <source srcset="/assets/images/shortcuts-standalone.avif" type="image/avif">
+                                    <img src="/assets/images/shortcuts-standalone.png"
+                                        alt="Apple shortcuts and desktop window" loading="lazy">
+                                </picture>
+                                <div class="media-icon">💻</div>
+                                <div class="media-title">Shortcuts & Standalone</div>
+                                <p class="media-description">Future Visual: Animated GIF demonstrating triggering the
+                                    Apple
+                                    Shortcut from a browser selection, and a screenshot of QR Maker running as a
+                                    standalone
+                                    offline window.</p>
+                            </div>
+                            <figcaption class="media-caption">Figure 6: standalone offline window support and Apple
+                                Shortcuts trigger.</figcaption>
+                        </figure>
                     </div>
                 </div>
             </article>
@@ -256,6 +477,13 @@
 
     <!-- Footer -->
     <global-footer></global-footer>
+
+    <!-- Lightbox Modal -->
+    <div id="lightbox-modal" class="lightbox-modal" aria-hidden="true" role="dialog" aria-label="Image Viewer">
+        <button class="lightbox-close" aria-label="Close image viewer">&times;</button>
+        <img class="lightbox-content" id="lightbox-img" alt="">
+        <div class="lightbox-caption" id="lightbox-caption"></div>
+    </div>
 
     <script src="/js/header.js"></script>
     <script>
@@ -266,9 +494,9 @@
 
             function makeActive() {
                 let scrollPos = window.scrollY || document.documentElement.scrollTop || document.body.scrollTop;
-                
+
                 // Add offset for header height
-                scrollPos += 100; 
+                scrollPos += 100;
 
                 for (let i = 0; i < sections.length; i++) {
                     const section = sections[i];
@@ -291,9 +519,50 @@
 
             window.addEventListener('scroll', makeActive);
             window.addEventListener('resize', makeActive);
-            
+
             // Initial call
             setTimeout(makeActive, 100);
+
+            // ---- Lightbox functionality ----
+            const lightbox = document.getElementById('lightbox-modal');
+            const lightboxImg = document.getElementById('lightbox-img');
+            const lightboxCaption = document.getElementById('lightbox-caption');
+
+            document.querySelectorAll('.media-placeholder.has-image img').forEach(img => {
+                img.style.cursor = 'zoom-in';
+                img.addEventListener('click', () => {
+                    lightbox.classList.add('active');
+                    lightbox.setAttribute('aria-hidden', 'false');
+                    lightboxImg.src = img.src;
+                    lightboxImg.alt = img.alt;
+
+                    // Retrieve caption from figcaption if available
+                    const figure = img.closest('.media-figure');
+                    if (figure) {
+                        const figcaption = figure.querySelector('.media-caption');
+                        lightboxCaption.textContent = figcaption ? figcaption.textContent : img.alt;
+                    } else {
+                        lightboxCaption.textContent = img.alt;
+                    }
+                });
+            });
+
+            function closeLightbox() {
+                lightbox.classList.remove('active');
+                lightbox.setAttribute('aria-hidden', 'true');
+            }
+
+            lightbox.addEventListener('click', (e) => {
+                if (e.target !== lightboxImg) {
+                    closeLightbox();
+                }
+            });
+
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape' && lightbox.classList.contains('active')) {
+                    closeLightbox();
+                }
+            });
         });
     </script>
 </body>

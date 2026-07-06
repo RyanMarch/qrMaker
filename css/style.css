@@ -1262,8 +1262,8 @@ label {
 }
 
 
-/* ---- Password input ---- */
-.password-wrapper {
+/* ---- Masked input ---- */
+.masked-wrapper {
     position: relative;
 }
 
@@ -1272,11 +1272,11 @@ label {
     text-security: disc !important;
 }
 
-.password-wrapper .text-input {
+.masked-wrapper .text-input {
     padding-right: 2.5rem;
 }
 
-.password-toggle {
+.mask-toggle {
     position: absolute;
     right: 0.625rem;
     top: 50%;
@@ -1292,7 +1292,7 @@ label {
     transition: color 0.15s;
 }
 
-.password-toggle:hover {
+.mask-toggle:hover {
     color: var(--text-muted);
 }
 
