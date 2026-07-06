@@ -105,14 +105,58 @@ class TemplateHandler {
 }
 
 export async function onRequest(context) {
-    const response = await context.next();
+    const url = new URL(context.request.url);
+    if ((url.hostname === 'localhost' || url.hostname === '127.0.0.1') && url.pathname === '/sw.js') {
+        return new Response(`
+            self.addEventListener('install', () => { self.skipWaiting(); });
+            self.addEventListener('activate', (event) => {
+                event.waitUntil(
+                    self.registration.unregister()
+                        .then(() => self.clients.matchAll())
+                        .then((clients) => { clients.forEach(c => c.navigate(c.url)); })
+                );
+            });
+        `, {
+            headers: { 'Content-Type': 'application/javascript', 'Cache-Control': 'no-store' }
+        });
+    }
+
+    let response = await context.next();
 
     if (response.headers.get("content-type")?.includes("text/html")) {
-        return new HTMLRewriter()
+        let transformed = new HTMLRewriter()
             .on('global-head', new TemplateHandler())
             .on('global-header', new TemplateHandler())
             .on('global-footer', new TemplateHandler())
             .transform(response);
+
+        if (url.hostname === 'localhost' || url.hostname === '127.0.0.1') {
+            transformed = new HTMLRewriter()
+                .on('head', {
+                    element(el) {
+                        el.append(`
+                            <script>
+                                (function() {
+                                    const eventSource = new EventSource('http://127.0.0.1:8789/sse');
+                                    eventSource.onmessage = function(event) {
+                                        if (event.data === 'reload') {
+                                            console.log('[Live Reload] Change detected. Reloading...');
+                                            location.reload();
+                                        }
+                                    };
+                                    eventSource.onerror = function() {
+                                        setTimeout(() => {
+                                            location.reload();
+                                        }, 1500);
+                                    };
+                                })();
+                            </script>
+                        `, { html: true });
+                    }
+                })
+                .transform(transformed);
+        }
+        return transformed;
     }
     return response;
 }

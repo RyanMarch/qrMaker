@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "dev": "node scripts/generate-agent-docs.js && wrangler pages dev . --compatibility-date=2024-01-01",
+    "dev": "node scripts/generate-agent-docs.js && node scripts/live-reload.js",
     "build": "node scripts/generate-agent-docs.js",
     "deploy": "node scripts/generate-agent-docs.js && wrangler pages deploy .",
     "create-page": "node scripts/create-page.js",
