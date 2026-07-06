@@ -72,7 +72,7 @@ QR Maker integrates deeply with your desktop or mobile environments for faster w
 
 ### Native Apple Shortcut
 Skip copying and pasting entirely. Use this Apple Shortcut to instantly turn any highlighted text, link, or phone number into a customized QR code directly from your Mac's right-click Quick Actions menu or your iPhone/iPad's native Share Sheet.
-* **Download link:** [Get the Apple Shortcut](https://www.icloud.com/shortcuts/a308b98b830943278700d20e5ff07bc6)
+* **Download link:** [Get the Apple Shortcut](https://qrmaker.ryanmarch.me/shortcut)
 
 ### Offline App
 Install QR Maker directly to your system hard drive to design, configure, and download custom QR codes completely offline:

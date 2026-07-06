@@ -106,6 +106,9 @@ class TemplateHandler {
 
 export async function onRequest(context) {
     const url = new URL(context.request.url);
+    if (url.pathname === '/shortcut' || url.pathname === '/shortcut/') {
+        return Response.redirect('https://www.icloud.com/shortcuts/11c29006a41f48df90dfadf85cd86dc1', 302);
+    }
     if ((url.hostname === 'localhost' || url.hostname === '127.0.0.1') && url.pathname === '/sw.js') {
         return new Response(`
             self.addEventListener('install', () => { self.skipWaiting(); });
@@ -119,6 +122,31 @@ export async function onRequest(context) {
         `, {
             headers: { 'Content-Type': 'application/javascript', 'Cache-Control': 'no-store' }
         });
+    }
+
+    const rangeHeader = context.request.headers.get('range');
+    if (rangeHeader && url.pathname.endsWith('.mp4')) {
+        const fullResponse = await context.next();
+        if (fullResponse.status === 200) {
+            const arrayBuffer = await fullResponse.arrayBuffer();
+            const totalLength = arrayBuffer.byteLength;
+
+            const parts = rangeHeader.replace(/bytes=/, "").split("-");
+            const start = parseInt(parts[0], 10);
+            const end = parts[1] ? parseInt(parts[1], 10) : totalLength - 1;
+
+            const chunk = arrayBuffer.slice(start, end + 1);
+            const headers = new Headers(fullResponse.headers);
+            headers.set('Content-Range', `bytes ${start}-${end}/${totalLength}`);
+            headers.set('Content-Length', chunk.byteLength.toString());
+            headers.set('Accept-Ranges', 'bytes');
+
+            return new Response(chunk, {
+                status: 206,
+                statusText: 'Partial Content',
+                headers
+            });
+        }
     }
 
     let response = await context.next();

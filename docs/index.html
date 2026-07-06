@@ -42,6 +42,7 @@
                 <li><a href="#logos-emojis" class="sidebar-link">Logos & Emojis</a></li>
                 <li><a href="#export-share" class="sidebar-link">Exporting & Sharing</a></li>
                 <li><a href="#integrations" class="sidebar-link">Integrations & Offline</a></li>
+                <li><a href="#developer-api" class="sidebar-link">Developer API</a></li>
             </ul>
             <div class="sidebar-footer">
                 <div class="cta-card">
@@ -97,14 +98,35 @@
                             <img src="/assets/images/app-overview-light-theme.png"
                                 alt="QR Maker Web Application Interface Layout" loading="lazy">
                         </picture>
-                        <div class="media-icon">🖼️</div>
                         <div class="media-title">Interface Showcase</div>
-                        <p class="media-description">Future Visual: A real-time screenshot illustrating the left-hand
-                            styling inspector panel alongside the right-hand canvas preview.</p>
+                        <p class="media-description">Screenshot illustrating the left-hand styling inspector panel
+                            alongside the right-hand canvas preview.</p>
                     </div>
                     <figcaption class="media-caption">Main screen of QR Maker.</figcaption>
                 </figure>
             </article>
+
+            <!-- Table of Contents -->
+            <nav class="inline-toc" aria-label="Table of contents">
+                <div class="toc-title">Table of Contents</div>
+                <ul class="toc-list">
+                    <li><a href="#content-types">Content Options</a></li>
+                    <li><a href="#style-color">Style & Color</a></li>
+                    <li><a href="#logos-emojis">Logos, Emojis & Icons</a></li>
+                    <li><a href="#export-share">Exporting & Sharing</a></li>
+                    <li><a href="#integrations">Integrations & Offline</a></li>
+                    <li><a href="#developer-api">Developer API</a></li>
+                </ul>
+            </nav>
+
+            <div class="info-aside" style="max-width: 700px; margin: 0 auto;">
+                <div class="aside-badge">Looking for Developer API Documentation?</div>
+                <p>
+                    Check out the <a href="/api">API Docs</a> for comprehensive documentation on the developer API,
+                    including the fully-interactive playground, collection downloads, and code samples for easy
+                    integration into your own projects.
+                </p>
+            </div>
 
             <hr class="section-divider">
 
@@ -120,19 +142,22 @@
                         <ul class="help-list-custom">
                             <li>
                                 <div class="list-icon">
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                        stroke-linecap="round" stroke-linejoin="round">
                                         <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path>
                                         <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
                                     </svg>
                                 </div>
                                 <div class="list-text">
-                                    <strong>Link (URL):</strong> Share a website address, document link, or online profile.
+                                    <strong>Link (URL):</strong> Share a website address, document link, or online
+                                    profile.
                                     Ideal for print flyers, menu signs, and portfolios.
                                 </div>
                             </li>
                             <li>
                                 <div class="list-icon">
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                        stroke-linecap="round" stroke-linejoin="round">
                                         <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
                                         <polyline points="14 2 14 8 20 8"></polyline>
                                         <line x1="16" y1="13" x2="8" y2="13"></line>
@@ -147,7 +172,8 @@
                             </li>
                             <li>
                                 <div class="list-icon">
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                        stroke-linecap="round" stroke-linejoin="round">
                                         <path d="M5 12.55a11 11 0 0 1 14.08 0"></path>
                                         <path d="M1.42 9a16 16 0 0 1 21.16 0"></path>
                                         <path d="M8.53 16.11a6 6 0 0 1 6.95 0"></path>
@@ -161,31 +187,40 @@
                             </li>
                             <li>
                                 <div class="list-icon">
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                        stroke-linecap="round" stroke-linejoin="round">
                                         <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
                                         <circle cx="12" cy="7" r="4"></circle>
                                     </svg>
                                 </div>
                                 <div class="list-text">
-                                    <strong>Contact Card:</strong> Generate a virtual contact file (vCard) including first
+                                    <strong>Contact Card:</strong> Generate a virtual contact file (vCard) including
+                                    first
                                     name, last name, company, email, and phone number.
                                 </div>
                             </li>
                             <li>
                                 <div class="list-icon">
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                        <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                        stroke-linecap="round" stroke-linejoin="round">
+                                        <path
+                                            d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z">
+                                        </path>
                                         <polyline points="22,6 12,13 2,6"></polyline>
                                     </svg>
                                 </div>
                                 <div class="list-text">
-                                    <strong>Email:</strong> Pre-fill a recipient address and initial subject line. Scanning will open a default email app ready to send.
+                                    <strong>Email:</strong> Pre-fill a recipient address and initial subject line.
+                                    Scanning will open a default email app ready to send.
                                 </div>
                             </li>
                             <li>
                                 <div class="list-icon">
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                        <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                        stroke-linecap="round" stroke-linejoin="round">
+                                        <path
+                                            d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z">
+                                        </path>
                                     </svg>
                                 </div>
                                 <div class="list-text">
@@ -194,7 +229,8 @@
                             </li>
                             <li>
                                 <div class="list-icon">
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                        stroke-linecap="round" stroke-linejoin="round">
                                         <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
                                         <circle cx="12" cy="10" r="3"></circle>
                                     </svg>
@@ -206,17 +242,20 @@
                             </li>
                             <li>
                                 <div class="list-icon">
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                        stroke-linecap="round" stroke-linejoin="round">
                                         <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
                                     </svg>
                                 </div>
                                 <div class="list-text">
-                                    <strong>SMS:</strong> Pre-fill a recipient phone number and initial message. Scanning will open a default messaging app ready to send.
+                                    <strong>SMS:</strong> Pre-fill a recipient phone number and initial message.
+                                    Scanning will open a default messaging app ready to send.
                                 </div>
                             </li>
                             <li>
                                 <div class="list-icon">
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                        stroke-linecap="round" stroke-linejoin="round">
                                         <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
                                         <line x1="16" y1="2" x2="16" y2="6"></line>
                                         <line x1="8" y1="2" x2="8" y2="6"></line>
@@ -224,7 +263,8 @@
                                     </svg>
                                 </div>
                                 <div class="list-text">
-                                    <strong>Calendar Event:</strong> Set a title, start/end dates, location, and description
+                                    <strong>Calendar Event:</strong> Set a title, start/end dates, location, and
+                                    description
                                     to easily add to a calendar.
                                 </div>
                             </li>
@@ -233,20 +273,16 @@
                     <div class="col-media">
                         <!-- Instructive Media Placeholder inside Figure -->
                         <figure class="media-figure">
-                            <div class="media-placeholder" style="margin: 0;" title="Demonstrating Content Selection">
-                                <picture>
-                                    <source srcset="/assets/images/content-selection.avif" type="image/avif">
-                                    <img src="/assets/images/content-selection.png" alt="Content panel selector tabs"
-                                        loading="lazy">
-                                </picture>
+                            <div class="media-placeholder has-video" style="margin: 0;"
+                                title="Demonstrating Content Selection">
+                                <video src="/docs/assets/video/qr-maker-content-type.mp4" autoplay loop muted
+                                    playsinline width="872" height="1888"></video>
                                 <div class="media-icon">📱</div>
                                 <div class="media-title">Content Selection</div>
-                                <p class="media-description">Future Visual: An animation demonstrating selecting the
-                                    WiFi
-                                    tab, typing network details, and watching the QR code update.</p>
+                                <p class="media-description">An animation demonstrating selecting the WiFi tab, typing
+                                    network details, and watching the QR code update.</p>
                             </div>
-                            <figcaption class="media-caption">Figure 2: Quick-toggle navigation tabs to swap between
-                                different content formats.</figcaption>
+                            <figcaption class="media-caption">Choose different content formats.</figcaption>
                         </figure>
                     </div>
                 </div>
@@ -257,7 +293,23 @@
             <!-- Style & Color -->
             <article id="style-color" class="doc-section">
                 <h2>Style & Color</h2>
-                <div class="col-split col-60-40">
+                <div class="col-split col-50-50">
+                    <div class="col-media">
+                        <!-- Instructive Media Placeholder inside Figure -->
+                        <figure class="media-figure">
+                            <div class="media-placeholder has-video" style="margin: 0;"
+                                title="Demonstrating Color Selection">
+                                <video src="/docs/assets/video/qr-maker-color-selection.mp4" autoplay loop muted
+                                    playsinline width="872" height="1888"></video>
+                                <div class="media-icon">📱</div>
+                                <div class="media-title">Picking Colors and Styles</div>
+                                <p class="media-description">An animation demonstrating picking foreground & background
+                                    colors and corner styles for a QR
+                                    code.</p>
+                            </div>
+                            <figcaption class="media-caption">Picking colors and styles for a QR code.</figcaption>
+                        </figure>
+                    </div>
                     <div class="col-content">
                         <p>
                             Go beyond traditional black-and-white grids by styling every part of your QR code to match
@@ -265,39 +317,20 @@
                         </p>
                         <ul class="help-list">
                             <li><strong>Pixel Shapes:</strong> Swap out classic square blocks for softer rounded points,
-                                pills, capsules, dots, or connected grid lines.</li>
-                            <li><strong>Corner Markers:</strong> Separately style the signature outer frames and inner
-                                eyes located in the three corners of the QR code (Rounded, Circle, Square, Leaf, or
-                                Beveled).</li>
-                            <li><strong>Frame Spacing:</strong> Use the margin slider to adjust the quiet zone border
-                                around the QR code, or round the edges of the overall background container.</li>
+                                pills, capsules, dots, or connected lines.</li>
+                            <li><strong>Corner Markers:</strong> Style the outer corners of the QR code with Rounded,
+                                Circle, Square, Leaf, or Beveled.</li>
+                            <li><strong>Frame Spacing:</strong> Use the margin slider to give more space
+                                around the QR code or round the outer frame.</li>
                             <li><strong>Solid & Transparent Backdrops:</strong> Set solid background fills or make the
-                                background fully transparent (perfect for layering your QR code on complex graphic
-                                designs).</li>
-                            <li><strong>Palettes & Custom Hex Codes:</strong> Select from preset swatches or type in
-                                custom color codes for the pixels and background.</li>
-                            <li><strong>Automatic Contrast Guard:</strong> An active contrast check lets you know if
-                                your pixel color is too close to your background color to scan successfully.</li>
+                                background fully transparent.</li>
+                            <li><strong>Palettes & Custom Hex Codes:</strong> Select from preset or custom
+                                colors for the pixels and background.</li>
+                            <li><strong>Contrast Guard:</strong> An active contrast check warns you if
+                                low contrast could prevent sucessful scanning.</li>
+                            <li><strong>Randomize:</strong> Click the Random button to instantly generate a random
+                                color palette for the QR code.</li>
                         </ul>
-                    </div>
-                    <div class="col-media">
-                        <!-- Instructive Media Placeholder inside Figure -->
-                        <figure class="media-figure">
-                            <div class="media-placeholder" style="margin: 0;"
-                                title="Color Picker and Shape Selection Controls">
-                                <picture>
-                                    <source srcset="/assets/images/style-color-controls.avif" type="image/avif">
-                                    <img src="/assets/images/style-color-controls.png"
-                                        alt="Color and shape control menus" loading="lazy">
-                                </picture>
-                                <div class="media-icon">🎨</div>
-                                <div class="media-title">Style & Color Controls</div>
-                                <p class="media-description">Future Visual: Close-up screenshot highlighting the color
-                                    spectrum canvas, auto-contrast warning indicator, and custom shape selectors.</p>
-                            </div>
-                            <figcaption class="media-caption">Figure 3: Customizing blocks, finder patterns, and
-                                backdrop colors.</figcaption>
-                        </figure>
                     </div>
                 </div>
             </article>
@@ -307,33 +340,21 @@
             <!-- Logos & Emojis -->
             <article id="logos-emojis" class="doc-section">
                 <h2>Logos, Emojis & Icons</h2>
-                <div class="col-split col-60-40">
+                <div class="col-split col-40-60">
                     <div class="col-content">
                         <p>
-                            Make your QR code instantly recognizable by placing a central brand indicator or custom
-                            graphic right in the middle:
+                            Make your QR code instantly recognizable by placing a brand image or custom graphic right in
+                            the middle.
                         </p>
+                        <p>Alternately, choose an icon or emoji to help communicate the purpose of the QR code.</p>
                         <ul class="help-list">
-                            <li><strong>Preloaded Icons:</strong> Choose from popular system icons like Link, Globe,
-                                Wifi, GitHub, LinkedIn, Instagram, and YouTube.</li>
+                            <li><strong>Icon Library:</strong> Choose from popular utility and social icons like Link,
+                                Globe, Wifi, GitHub, LinkedIn, Instagram, and YouTube.</li>
                             <li><strong>System Emojis:</strong> Paste or type any system emoji directly into the icon
                                 inspector to place it in the center.</li>
                             <li><strong>Custom Image Uploads:</strong> Drag and drop your own PNG or JPG logo file
                                 directly onto the canvas.</li>
-                            <li><strong>Backing Cards:</strong> Place a square, rounded, or circular backing card behind
-                                the center logo or emoji to clear out overlapping pixels and preserve readability.</li>
                         </ul>
-                        <!-- Cheeky aside callout for error correction -->
-                        <div class="info-aside">
-                            <div class="aside-badge">We've got your back!</div>
-                            <p>
-                                Placing a brand logo or custom emoji in the center blocks a portion of the QR code grid.
-                                To keep everything functioning smoothly, QR Maker automatically bumps up the built-in
-                                Error Correction level in the background. This builds extra redundancy into the design
-                                so scanners can read your code easily, without you having to worry about the technical
-                                details.
-                            </p>
-                        </div>
                     </div>
                     <div class="col-media">
                         <!-- Instructive Media Placeholder inside Figure -->
@@ -358,6 +379,14 @@
                         </figure>
                     </div>
                 </div>
+                <div class="info-aside" style="max-width: 700px; margin: 0 auto;">
+                    <div class="aside-badge">Keep Scanning Easy</div>
+                    <p>
+                        Placing an image, icon, or emoji in the center blocks a portion of the QR code grid.
+                        QR Maker automatically adjusts the built-in error correction level in the background.
+                        This ensures your code can be read easily, without having to worry about the technical details.
+                    </p>
+                </div>
             </article>
 
             <hr class="section-divider">
@@ -365,19 +394,19 @@
             <!-- Exporting & Sharing -->
             <article id="export-share" class="doc-section">
                 <h2>Exporting & Sharing</h2>
-                <div class="col-split col-60-40">
+                <div class="col-split col-50-50">
                     <div class="col-content">
                         <p>
                             Once your custom design is complete, you can download it or share the editable template with
                             others:
                         </p>
                         <ul class="help-list">
-                            <li><strong>Vector SVG:</strong> Save your QR code as a scalable vector SVG file. This
-                                format is perfect for graphic designers, print media, high-resolution signs, and
+                            <li><strong>Vector SVG:</strong> Save your QR code as a scalable vector SVG file, perfect
+                                for graphic designers, print media, high-resolution signs, and
                                 packaging since it scales infinitely without losing detail.</li>
-                            <li><strong>PNG Images (Multi-Size):</strong> Export your QR code as a standard PNG image
-                                file, ideal for website embeds, emails, and presentations. Click the size trigger in the
-                                PNG export button to choose a width of 512px, 1024px, or 2048px.</li>
+                            <li><strong>PNG Images (Multi-Size):</strong> Export your QR code as a PNG image
+                                file, ideal for website embeds, emails, and presentations. Choose a size of 512px,
+                                1024px (default), or 2048px.</li>
                             <li><strong>Share Links:</strong> Generate a unique shareable link that copies straight to
                                 your clipboard. This link encodes all your design coordinates, custom colors, text
                                 contents, and style presets, allowing other users to load and edit your exact design
@@ -385,24 +414,18 @@
                         </ul>
                     </div>
                     <div class="col-media">
-                        <!-- Instructive Media Placeholder inside Figure -->
                         <figure class="media-figure">
-                            <div class="media-placeholder" style="margin: 0;" title="Export Menu Options">
+                            <div class="media-placeholder has-image" style="margin: 0;" title="Export Menu Options">
                                 <picture>
-                                    <source srcset="/assets/images/export-settings.avif" type="image/avif">
-                                    <img src="/assets/images/export-settings.png" alt="Export buttons and options"
+                                    <source srcset="/docs/assets/images/qr-maker-export-options.avif" type="image/avif">
+                                    <img src="/docs/assets/images/qr-maker-export-options.png" alt="Export buttons and"
                                         loading="lazy">
                                 </picture>
-                                <div class="media-icon">💾</div>
-                                <div class="media-title">Export Settings</div>
-                                <p class="media-description">Future Visual: Screenshot highlighting the SVG and Export
-                                    PNG
-                                    buttons, with the size selector dropdown popover open (showing 512px, 1024px, and
-                                    2048px
-                                    options).</p>
+                                <div class="media-title">Export Options</div>
+                                <p class="media-description">QR maker is shown with a customized QR code and the user
+                                    has opened the export size selector menu on the Export PNG button.</p>
                             </div>
-                            <figcaption class="media-caption">Figure 5: Action buttons to export vector SVG, raster PNG,
-                                or share config links.</figcaption>
+                            <figcaption class="media-caption">Choose an export size for PNG images.</figcaption>
                         </figure>
                     </div>
                 </div>
@@ -422,55 +445,127 @@
                         </h3>
                         <p>
                             Convert highlighted text, links, or contact details directly into a custom QR code from
-                            anywhere on your Mac or iOS device without launching the browser.
+                            anywhere on your Mac or iOS device.
                         </p>
                         <ul class="help-list" style="margin-bottom: 1.5rem;">
-                            <li><strong>How it works:</strong> Trigger the shortcut from your Mac's right-click Quick
-                                Actions menu or your iPhone's standard Share Sheet.</li>
-                            <li><strong>Get the shortcut:</strong> <a
-                                    href="https://www.icloud.com/shortcuts/a308b98b830943278700d20e5ff07bc6"
-                                    target="_blank" rel="noopener">Download QR Maker Apple Shortcut</a>.</li>
-                        </ul>
-
-                        <h3 style="font-size: 1.15rem; margin-top: 1.5rem; margin-bottom: 0.5rem;">Offline PWA App
-                            Installation</h3>
-                        <p>
-                            QR Maker can be installed on your device, allowing you to design and download custom QR
-                            codes completely offline.
-                        </p>
-                        <ul class="help-list">
-                            <li><strong>macOS (Safari):</strong> Select <strong>File</strong> in the top menu bar, then
-                                choose <strong>Add to Dock...</strong>.</li>
-                            <li><strong>iOS & iPadOS (Safari):</strong> Tap the standard <strong>Share</strong> button,
-                                then select <strong>Add to Home Screen</strong>.</li>
-                            <li><strong>Chrome & Edge:</strong> Click the installation icon (app drawer indicator) on
-                                the right end of the address URL bar to add QR Maker to your system desktop or device
-                                app folder.</li>
+                            <li><strong>macOS:</strong> Highlight text, a link, or contact details, right-click, and
+                                select the shortcut from the Quick Actions menu.</li>
+                            <li><strong>iOS & iPadOS:</strong> Highlight content or view a webpage, tap the standard
+                                Share button, and select the shortcut from the Share Sheet.</li>
+                            <li><strong>Get the shortcut:</strong> <a href="/shortcut" target="_blank"
+                                    rel="noopener">Download QR Maker Apple Shortcut</a>.</li>
                         </ul>
                     </div>
-                    <div class="col-media">
-                        <!-- Instructive Media Placeholder inside Figure -->
-                        <figure class="media-figure">
-                            <div class="media-placeholder" style="margin: 0;"
-                                title="Apple Shortcuts & PWA Installation">
-                                <picture>
-                                    <source srcset="/assets/images/shortcuts-standalone.avif" type="image/avif">
-                                    <img src="/assets/images/shortcuts-standalone.png"
-                                        alt="Apple shortcuts and desktop window" loading="lazy">
-                                </picture>
-                                <div class="media-icon">💻</div>
-                                <div class="media-title">Shortcuts & Standalone</div>
-                                <p class="media-description">Future Visual: Animated GIF demonstrating triggering the
-                                    Apple
-                                    Shortcut from a browser selection, and a screenshot of QR Maker running as a
-                                    standalone
-                                    offline window.</p>
+                    <div class="col-media"
+                        style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1.5rem;">
+                        <div class="shortcuts-widget-aside">
+                            <a href="/shortcut">
+                                <div class="native-shortcuts-card">
+                                    <div class="card-top-row">
+                                        <svg class="widget-qr-icon" viewBox="0 0 24 24" fill="none" stroke="#ffffff"
+                                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                            <rect x="3" y="3" width="6" height="6" rx="1" />
+                                            <rect x="5" y="5" width="2" height="2" />
+                                            <rect x="3" y="15" width="6" height="6" rx="1" />
+                                            <rect x="5" y="17" width="2" height="2" />
+                                            <rect x="15" y="3" width="6" height="6" rx="1" />
+                                            <rect x="17" y="5" width="2" height="2" />
+                                            <rect x="14" y="14" width="2" height="2" fill="#ffffff" stroke="none" />
+                                            <rect x="18" y="18" width="2" height="2" fill="#ffffff" stroke="none" />
+                                            <rect x="14" y="18" width="2" height="2" fill="#ffffff" stroke="none" />
+                                            <rect x="18" y="14" width="2" height="2" fill="#ffffff" stroke="none" />
+                                            <rect x="10" y="10" width="2" height="2" fill="#ffffff" stroke="none" />
+                                        </svg>
+                                        <div class="widget-play-orb">
+                                            <svg viewBox="0 0 24 24" fill="#ffffff">
+                                                <polygon points="6 4 20 12 6 20 6 4" />
+                                            </svg>
+                                        </div>
+                                    </div>
+                                    <div class="widget-app-title">QR Maker</div>
+                                </div>
+                            </a>
+                        </div>
+                        <a href="/shortcut" class="apple-shortcuts-badge" target="_blank" rel="noopener"
+                            style="margin-top: 0;">
+                            <picture class="apple-shortcuts-logo">
+                                <source srcset="/assets/images/shortcuts-icon.avif" type="image/avif">
+                                <source srcset="/assets/images/shortcuts-icon-40.png" type="image/png">
+                                <img src="/assets/images/shortcuts-icon.png" alt="Apple Shortcuts Logo" width="40"
+                                    height="40" style="display: block; object-fit: contain;">
+                            </picture>
+                            <div class="badge-text-wrapper">
+                                <span class="badge-label">Add to</span>
+                                <span class="badge-title">Apple Shortcuts</span>
                             </div>
-                            <figcaption class="media-caption">Figure 6: standalone offline window support and Apple
-                                Shortcuts trigger.</figcaption>
-                        </figure>
+                        </a>
                     </div>
                 </div>
+
+                <!-- Instructive Media Placeholder inside Figure -->
+                <figure class="media-figure shortcuts-demo-video-figure">
+                    <div class="media-placeholder has-video fullwidth-video" style="margin: 0;"
+                        title="QR Maker for Apple Shortcuts demo video">
+                        <video autoplay muted loop playsinline>
+                            <source src="/docs/assets/video/qr-maker-shortcuts-demo.mp4" type="video/mp4">
+                            Your browser does not support the video tag.
+                        </video>
+                        <div class="media-icon">💻</div>
+                        <div class="media-title">Shortcuts & Standalone</div>
+                        <p class="media-description">Demo video showing how to use QR Maker with Apple Shortcuts
+                            from a browser selection.</p>
+                    </div>
+                    <figcaption class="media-caption">Generate QR Codes quickly from highlighted text.
+                    </figcaption>
+                </figure>
+
+                <div>
+                    <h3 style="font-size: 1.15rem; margin-top: 1.5rem; margin-bottom: 0.5rem;">Offline PWA App
+                        Installation</h3>
+                    <p>
+                        QR Maker can be installed on your device, allowing you to design and download custom QR
+                        codes completely offline.
+                    </p>
+                    <ul class="help-list">
+                        <li><strong>macOS (Safari):</strong> Select <strong>File</strong> in the top menu bar, then
+                            choose <strong>Add to Dock...</strong>.</li>
+                        <li><strong>iOS & iPadOS (Safari):</strong> Tap the standard <strong>Share</strong> button,
+                            then select <strong>Add to Home Screen</strong>.</li>
+                        <li><strong>Chrome & Edge:</strong> Click the installation icon (app drawer indicator) on
+                            the right end of the address URL bar to add QR Maker to your system desktop or device
+                            app folder.</li>
+                    </ul>
+                </div>
+                <figure class="media-figure">
+                    <div class="media-placeholder has-image" style="margin: 0;" title="Export Menu Options">
+                        <picture>
+                            <source srcset="/docs/assets/images/qr-maker-multi-device.avif" type="image/avif">
+                            <img src="/docs/assets/images/qr-maker-multi-device.png"
+                                alt="QR Maker as a web app on iPad Mini and iPhone" loading="lazy">
+                        </picture>
+                        <div class="media-title">Multi-Device PWA</div>
+                        <p class="media-description">Add QR Maker to your home screen to use it as a standalone app
+                            with quick access and offline support.</p>
+                    </div>
+                    <figcaption class="media-caption">Add QR Maker to your home screen to use it as a standalone app
+                        with quick access and offline support.</figcaption>
+                </figure>
+            </article>
+
+            <hr class="section-divider">
+
+            <!-- Developer API -->
+            <article id="developer-api" class="doc-section">
+                <h2>Developer API</h2>
+                <p>
+                    Integrate QR Maker directly into your own applications, developer workflows, and automated tasks.
+                    The API enables you to programmatically generate custom QR codes, making it easy to connect with
+                    API development tools, custom internal applications, and AI agent platforms.
+                </p>
+                <p>
+                    To get started with generating QR codes via HTTP requests, read the detailed endpoint documentation,
+                    view code examples, and test requests in the <a href="/api/">Developer API Reference</a>.
+                </p>
             </article>
         </section>
     </main>
