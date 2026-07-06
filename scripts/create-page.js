@@ -96,7 +96,7 @@ function run() {
         <nav class="page-sidebar" aria-label="Sections">
             <div class="sidebar-site-nav">
                 <a href="/app/" class="sidebar-site-link">App</a>
-                <a href="/api/" class="sidebar-site-link">API</a>
+                <a href="/docs/" class="sidebar-site-link">Docs</a>
             </div>
             <hr class="sidebar-divider">
             <ul>

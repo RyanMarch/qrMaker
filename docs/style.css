@@ -1,0 +1,194 @@
+@import "../api/style.css";
+
+/* ============================================================
+   QR Maker Documentation Utilities
+   ============================================================ 
+   
+   1. COLUMN SPLITS (.col-split)
+      Used to create multi-column split sections. They automatically
+      collapse into a single column on screens smaller than 768px.
+      
+      Available column ratios:
+      - .col-50-50 : Equal 50% split (1fr 1fr)
+      - .col-60-40 : 60% text content / 40% media visual (3fr 2fr)
+      - .col-40-60 : 40% text content / 60% media visual (2fr 3fr)
+      - .col-70-30 : 70% text content / 30% media visual (7fr 3fr)
+      - .col-30-70 : 30% text content / 70% media visual (3fr 7fr)
+      - .col-75-25 : 75% text content / 25% media visual (3fr 1fr)
+      - .col-25-75 : 25% text content / 75% media visual (1fr 3fr)
+
+   2. CARDS MODULES (.help-feature-grid / .help-feature-card)
+      Original card grids to show features side-by-side. 
+      Responsive layout adjusts columns based on available space.
+   ============================================================ */
+
+/* --- Flexible Grid Columns --- */
+.col-split {
+    display: grid;
+    gap: 2rem;
+    align-items: start;
+    margin: 1.5rem 0;
+}
+
+/* Ratios */
+.col-50-50 {
+    grid-template-columns: 1fr 1fr;
+}
+
+.col-60-40 {
+    grid-template-columns: 3fr 2fr;
+}
+
+.col-40-60 {
+    grid-template-columns: 2fr 3fr;
+}
+
+.col-70-30 {
+    grid-template-columns: 7fr 3fr;
+}
+
+.col-30-70 {
+    grid-template-columns: 3fr 7fr;
+}
+
+.col-75-25 {
+    grid-template-columns: 3fr 1fr;
+}
+
+.col-25-75 {
+    grid-template-columns: 1fr 3fr;
+}
+
+/* Bullet list style inside docs */
+.help-list {
+    padding-left: 1.25rem;
+    margin: 1rem 0;
+}
+
+.help-list li {
+    margin-bottom: 0.75rem;
+    line-height: 1.6;
+    color: var(--text-muted);
+}
+
+.help-list li strong {
+    color: var(--text-main);
+}
+
+/* Responsive adjustment for columns */
+@media (max-width: 768px) {
+    .col-split {
+        grid-template-columns: 1fr !important;
+        gap: 1.5rem;
+    }
+}
+
+/* --- Help Feature Grid --- */
+.help-feature-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+    margin-top: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.help-feature-card {
+    background-color: var(--control-bg);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    padding: 1.25rem;
+    transition: transform 0.2s ease, border-color 0.2s ease;
+}
+
+.help-feature-card:hover {
+    transform: translateY(-2px);
+    border-color: var(--border-color-strong);
+}
+
+.help-feature-card h3 {
+    margin-top: 0;
+    margin-bottom: 0.5rem;
+    font-size: 1.1rem;
+    font-family: var(--font-title);
+    color: var(--text-main);
+}
+
+.help-feature-card p {
+    font-size: 0.9rem;
+    line-height: 1.5;
+    margin: 0;
+    color: var(--text-subtle);
+}
+
+/* --- Instructive Media Placeholders --- */
+.media-placeholder {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, rgba(27, 82, 86, 0.05) 0%, rgba(39, 132, 51, 0.03) 100%);
+    border: 2px dashed rgba(39, 132, 51, 0.25);
+    border-radius: var(--radius-md);
+    padding: 2.5rem 2rem;
+    margin: 2rem 0;
+    text-align: center;
+    box-sizing: border-box;
+}
+
+[data-theme="light"] .media-placeholder {
+    background: linear-gradient(135deg, rgba(27, 82, 86, 0.04) 0%, rgba(39, 132, 51, 0.02) 100%);
+    border: 2px dashed rgba(27, 82, 86, 0.18);
+}
+
+.media-icon {
+    font-size: 2.25rem;
+    margin-bottom: 0.75rem;
+    user-select: none;
+}
+
+.media-title {
+    font-family: var(--font-title);
+    font-size: 1.05rem;
+    font-weight: 700;
+    margin-bottom: 0.35rem;
+    color: var(--text-main);
+}
+
+.media-description {
+    font-size: 0.85rem;
+    line-height: 1.4;
+    color: var(--text-subtle);
+    max-width: 480px;
+    margin: 0 auto;
+}
+
+/* --- Info Aside (Cheeky Callout) --- */
+.info-aside {
+    background-color: rgba(39, 132, 51, 0.08);
+    border-left: 4px solid var(--accent);
+    border-radius: 0 var(--radius-md) var(--radius-md) 0;
+    padding: 1.25rem 1.5rem;
+    margin: 2rem 0;
+}
+
+[data-theme="light"] .info-aside {
+    background-color: rgba(27, 82, 86, 0.06);
+}
+
+.aside-badge {
+    display: inline-block;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--accent-readable);
+    margin-bottom: 0.5rem;
+    font-family: var(--font-title);
+}
+
+.info-aside p {
+    font-size: 0.925rem;
+    line-height: 1.55;
+    margin: 0;
+    color: var(--text-muted);
+}

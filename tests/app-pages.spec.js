@@ -51,6 +51,12 @@ test.describe('Pages and Layout Tests', () => {
     expect(response?.status()).toBe(200);
     await expect(page.locator('h1')).toContainText('Developer API');
   });
+  
+  test('User Documentation Page loads successfully', async ({ page }) => {
+    const response = await page.goto('/docs/');
+    expect(response?.status()).toBe(200);
+    await expect(page.locator('h1')).toContainText('User Manual & Guide');
+  });
 
   test('Terms and Privacy Page loads successfully', async ({ page }) => {
     const response = await page.goto('/terms/');
@@ -141,6 +147,12 @@ test.describe('Pages and Layout Tests', () => {
 
     test('API Documentation Page is accessible', async ({ page }) => {
       await page.goto('/api/');
+      const accessibilityResults = await new AxeBuilder({ page }).analyze();
+      expect(accessibilityResults.violations).toEqual([]);
+    });
+
+    test('User Documentation Page is accessible', async ({ page }) => {
+      await page.goto('/docs/');
       const accessibilityResults = await new AxeBuilder({ page }).analyze();
       expect(accessibilityResults.violations).toEqual([]);
     });

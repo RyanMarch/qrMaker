@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en" translate="no">
+
+<head>
+    <meta charset="UTF-8">
+    <global-head></global-head>
+
+    <title>User Manual — QR Maker</title>
+    <meta name="description"
+        content="Learn how to use QR Maker to create and style custom QR codes. Explore content options, styles, custom logos, and offline options.">
+    <link rel="canonical" href="https://qrmaker.ryanmarch.me/docs/">
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://qrmaker.ryanmarch.me/docs/">
+    <meta property="og:title" content="User Manual — QR Maker">
+    <meta property="og:description"
+        content="Learn how to use QR Maker to create and style custom QR codes. Explore content options, styles, custom logos, and offline options.">
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <global-header active-page="docs" sidebar-toggle></global-header>
+
+    <!-- Mobile Navigation Overlay -->
+    <div id="mobile-overlay" class="mobile-overlay"></div>
+
+    <!-- Main Container -->
+    <main class="page-container-sidebar">
+        <!-- Sidebar Navigation -->
+        <nav class="page-sidebar" aria-label="Documentation sections">
+            <div class="sidebar-site-nav">
+                <a href="/app/" class="sidebar-site-link">App</a>
+                <a href="/docs/" class="sidebar-site-link active">Docs</a>
+            </div>
+            <hr class="sidebar-divider">
+            <ul>
+                <li><a href="#overview" class="sidebar-link active">Overview</a></li>
+                <li><a href="#content-types" class="sidebar-link">Content Options</a></li>
+                <li><a href="#style-color" class="sidebar-link">Style & Color</a></li>
+                <li><a href="#logos-emojis" class="sidebar-link">Logos & Emojis</a></li>
+                <li><a href="#export-share" class="sidebar-link">Exporting & Sharing</a></li>
+                <li><a href="#integrations" class="sidebar-link">Integrations & Offline</a></li>
+            </ul>
+            <div class="sidebar-footer">
+                <div class="cta-card">
+                    <div class="cta-card-icon">
+                        <img src="/assets/favicon/favicon.svg" alt="QR Maker Icon" width="30" height="30">
+                    </div>
+                    <h4 class="cta-card-title">QR Maker</h4>
+                    <p class="cta-card-desc">Try the interactive web app for custom colors, logos, icons, SVG exports, and more.</p>
+                    <a href="/app/" class="btn-cta-generator">
+                        <span>Go to QR Maker</span>
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="14" height="14">
+                            <line x1="5" y1="12" x2="19" y2="12"></line>
+                            <polyline points="12 5 19 12 12 19"></polyline>
+                        </svg>
+                    </a>
+                </div>
+                
+                <a href="/api/" class="about-app-link" style="margin-top: 1rem; display: flex; align-items: center; gap: 0.5rem;">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14">
+                        <polyline points="16 18 22 12 16 6"></polyline>
+                        <polyline points="8 6 2 12 8 18"></polyline>
+                    </svg>
+                    Developer API Reference
+                </a>
+            </div>
+        </nav>
+
+        <!-- Content Area -->
+        <section class="page-content" aria-label="User Manual Content">
+
+            <!-- Overview -->
+            <article id="overview" class="doc-section">
+                <h1>User Manual & Guide</h1>
+                <p class="lead">
+                    Learn about the features and customizations available in QR Maker to design, share, and export your own unique QR codes.
+                </p>
+        <p>
+            QR Maker is a simple, visual creator that builds custom-styled QR codes right inside your web browser. There are no registration accounts to set up, no subscription fees, and no trackers. All design generation and image encoding are performed locally on your device, ensuring your inputs remain completely private.
+        </p>
+        <!-- Instructive Media Placeholder -->
+        <div class="media-placeholder" title="Visualizing the app layout">
+            <div class="media-icon">🖼️</div>
+            <div class="media-title">Interface Showcase</div>
+            <p class="media-description">Future Visual: A real-time screenshot illustrating the left-hand styling inspector panel alongside the right-hand canvas preview.</p>
+        </div>
+    </article>
+
+            <hr class="section-divider">
+
+            <!-- Content Options -->
+            <article id="content-types" class="doc-section">
+                <h2>Content Options</h2>
+                <div class="col-split col-60-40">
+                    <div class="col-content">
+                        <p>
+                            QR Maker lets you bundle many different types of information inside a QR code. Select from the following input tabs to enter your details:
+                        </p>
+                        <ul class="help-list">
+                            <li><strong>Link (URL):</strong> Share a website address, document link, or online profile. Ideal for print flyers, menu signs, and portfolios.</li>
+                            <li><strong>Plain Text:</strong> Write simple notes, instructions, reference codes, or messages. Scanners will display the text directly on screen.</li>
+                            <li><strong>WiFi Network:</strong> Provide network credentials (SSID name, password, and security type) so guests can scan to instantly connect to your WiFi without typing a password. Supports hidden networks.</li>
+                            <li><strong>Contact Card:</strong> Generate a virtual contact file (vCard) including first name, last name, company, email, and phone number. Scanners can immediately save you as a contact.</li>
+                            <li><strong>Email & SMS:</strong> Pre-fill a recipient address and initial subject line or message. Scanners will open their default messaging app ready to hit send.</li>
+                            <li><strong>Phone & Map Location:</strong> Set a phone number to trigger direct dialing, or share map coordinates (latitude and longitude) with a built-in auto-detect button to get your current position.</li>
+                            <li><strong>Calendar Event:</strong> Set a title, start/end dates, location, and description so scanners can instantly add the event to their calendar.</li>
+                        </ul>
+                    </div>
+                    <div class="col-media">
+                        <!-- Instructive Media Placeholder -->
+                        <div class="media-placeholder" style="margin: 0;" title="Demonstrating Content Selection">
+                            <div class="media-icon">📱</div>
+                            <div class="media-title">Content Selection</div>
+                            <p class="media-description">Future Visual: An animation demonstrating selecting the WiFi tab, typing network details, and watching the QR code update.</p>
+                        </div>
+                    </div>
+                </div>
+            </article>
+
+            <hr class="section-divider">
+
+            <!-- Style & Color -->
+            <article id="style-color" class="doc-section">
+                <h2>Style & Color</h2>
+                <div class="col-split col-60-40">
+                    <div class="col-content">
+                        <p>
+                            Go beyond traditional black-and-white grids by styling every part of your QR code to match your theme:
+                        </p>
+                        <ul class="help-list">
+                            <li><strong>Pixel Shapes:</strong> Swap out classic square blocks for softer rounded points, pills, capsules, dots, or connected grid lines.</li>
+                            <li><strong>Corner Markers:</strong> Separately style the signature outer frames and inner eyes located in the three corners of the QR code (Rounded, Circle, Square, Leaf, or Beveled).</li>
+                            <li><strong>Frame Spacing:</strong> Use the margin slider to adjust the quiet zone border around the QR code, or round the edges of the overall background container.</li>
+                            <li><strong>Solid & Transparent Backdrops:</strong> Set solid background fills or make the background fully transparent (perfect for layering your QR code on complex graphic designs).</li>
+                            <li><strong>Palettes & Custom Hex Codes:</strong> Select from preset swatches or type in custom color codes for the pixels and background.</li>
+                            <li><strong>Automatic Contrast Guard:</strong> An active contrast check lets you know if your pixel color is too close to your background color to scan successfully.</li>
+                        </ul>
+                    </div>
+                    <div class="col-media">
+                        <!-- Instructive Media Placeholder -->
+                        <div class="media-placeholder" style="margin: 0;" title="Color Picker and Shape Selection Controls">
+                            <div class="media-icon">🎨</div>
+                            <div class="media-title">Style & Color Controls</div>
+                            <p class="media-description">Future Visual: Close-up screenshot highlighting the color spectrum canvas, auto-contrast warning indicator, and custom shape selectors.</p>
+                        </div>
+                    </div>
+                </div>
+            </article>
+
+            <hr class="section-divider">
+
+            <!-- Logos & Emojis -->
+            <article id="logos-emojis" class="doc-section">
+                <h2>Logos, Emojis & Icons</h2>
+                <div class="col-split col-60-40">
+                    <div class="col-content">
+                        <p>
+                            Make your QR code instantly recognizable by placing a central brand indicator or custom graphic right in the middle:
+                        </p>
+                        <ul class="help-list">
+                            <li><strong>Preloaded Icons:</strong> Choose from popular system icons like Link, Globe, Wifi, GitHub, LinkedIn, Instagram, and YouTube.</li>
+                            <li><strong>System Emojis:</strong> Paste or type any system emoji directly into the icon inspector to place it in the center.</li>
+                            <li><strong>Custom Image Uploads:</strong> Drag and drop your own PNG or JPG logo file directly onto the canvas.</li>
+                            <li><strong>Backing Cards:</strong> Place a square, rounded, or circular backing card behind the center logo or emoji to clear out overlapping pixels and preserve readability.</li>
+                        </ul>
+                        <!-- Cheeky aside callout for error correction -->
+                        <div class="info-aside">
+                            <div class="aside-badge">We've got your back!</div>
+                            <p>
+                                Placing a brand logo or custom emoji in the center blocks a portion of the QR code grid. To keep everything functioning smoothly, QR Maker automatically bumps up the built-in Error Correction level in the background. This builds extra redundancy into the design so scanners can read your code easily, without you having to worry about the technical details.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="col-media">
+                        <!-- Instructive Media Placeholder -->
+                        <div class="media-placeholder" style="margin: 0;" title="Custom Logo & Emoji Placement">
+                            <div class="media-icon">🚀</div>
+                            <div class="media-title">Logo & Backing Setup</div>
+                            <p class="media-description">Future Visual: Close-up screenshot of a styled QR code with a circular logo in the center, demonstrating how the card backing clears overlapping QR code modules.</p>
+                        </div>
+                    </div>
+                </div>
+            </article>
+
+            <hr class="section-divider">
+
+            <!-- Exporting & Sharing -->
+            <article id="export-share" class="doc-section">
+                <h2>Exporting & Sharing</h2>
+                <div class="col-split col-60-40">
+                    <div class="col-content">
+                        <p>
+                            Once your custom design is complete, you can download it or share the editable template with others:
+                        </p>
+                        <ul class="help-list">
+                            <li><strong>Vector SVG:</strong> Save your QR code as a scalable vector SVG file. This format is perfect for graphic designers, print media, high-resolution signs, and packaging since it scales infinitely without losing detail.</li>
+                            <li><strong>PNG Images (Multi-Size):</strong> Export your QR code as a standard PNG image file, ideal for website embeds, emails, and presentations. Click the size trigger in the PNG export button to choose a width of 512px, 1024px, or 2048px.</li>
+                            <li><strong>Share Links:</strong> Generate a unique shareable link that copies straight to your clipboard. This link encodes all your design coordinates, custom colors, text contents, and style presets, allowing other users to load and edit your exact design instantly.</li>
+                        </ul>
+                    </div>
+                    <div class="col-media">
+                        <!-- Instructive Media Placeholder -->
+                        <div class="media-placeholder" style="margin: 0;" title="Export Menu Options">
+                            <div class="media-icon">💾</div>
+                            <div class="media-title">Export Settings</div>
+                            <p class="media-description">Future Visual: Screenshot highlighting the SVG and Export PNG buttons, with the size selector dropdown popover open (showing 512px, 1024px, and 2048px options).</p>
+                        </div>
+                    </div>
+                </div>
+            </article>
+
+            <hr class="section-divider">
+
+            <!-- Integrations & Offline -->
+            <article id="integrations" class="doc-section">
+                <h2>Integrations & Offline Use</h2>
+                <div class="col-split col-60-40">
+                    <div class="col-content">
+                        <p>
+                            QR Maker integrates with your devices to speed up your daily workflows:
+                        </p>
+                        <h3 style="font-size: 1.15rem; margin-top: 1.5rem; margin-bottom: 0.5rem;">Native Apple Shortcut</h3>
+                        <p>
+                            Convert highlighted text, links, or contact details directly into a custom QR code from anywhere on your Mac or iOS device without launching the browser.
+                        </p>
+                        <ul class="help-list" style="margin-bottom: 1.5rem;">
+                            <li><strong>How it works:</strong> Trigger the shortcut from your Mac's right-click Quick Actions menu or your iPhone's standard Share Sheet.</li>
+                            <li><strong>Get the shortcut:</strong> <a href="https://www.icloud.com/shortcuts/a308b98b830943278700d20e5ff07bc6" target="_blank" rel="noopener">Download QR Maker Apple Shortcut</a>.</li>
+                        </ul>
+
+                        <h3 style="font-size: 1.15rem; margin-top: 1.5rem; margin-bottom: 0.5rem;">Offline PWA App Installation</h3>
+                        <p>
+                            QR Maker can be installed on your device, allowing you to design and download custom QR codes completely offline.
+                        </p>
+                        <ul class="help-list">
+                            <li><strong>macOS (Safari):</strong> Select <strong>File</strong> in the top menu bar, then choose <strong>Add to Dock...</strong>.</li>
+                            <li><strong>iOS & iPadOS (Safari):</strong> Tap the standard <strong>Share</strong> button, then select <strong>Add to Home Screen</strong>.</li>
+                            <li><strong>Chrome & Edge:</strong> Click the installation icon (app drawer indicator) on the right end of the address URL bar to add QR Maker to your system desktop or device app folder.</li>
+                        </ul>
+                    </div>
+                    <div class="col-media">
+                        <!-- Instructive Media Placeholder -->
+                        <div class="media-placeholder" style="margin: 0;" title="Apple Shortcuts & PWA Installation">
+                            <div class="media-icon">💻</div>
+                            <div class="media-title">Shortcuts & Standalone</div>
+                            <p class="media-description">Future Visual: Animated GIF demonstrating triggering the Apple Shortcut from a browser selection, and a screenshot of QR Maker running as a standalone offline window.</p>
+                        </div>
+                    </div>
+                </div>
+            </article>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <global-footer></global-footer>
+
+    <script src="/js/header.js"></script>
+    <script>
+        // Smooth scroll spy logic for sidebar links
+        document.addEventListener('DOMContentLoaded', () => {
+            const sections = document.querySelectorAll('.doc-section');
+            const navLinks = document.querySelectorAll('.sidebar-link');
+
+            function makeActive() {
+                let scrollPos = window.scrollY || document.documentElement.scrollTop || document.body.scrollTop;
+                
+                // Add offset for header height
+                scrollPos += 100; 
+
+                for (let i = 0; i < sections.length; i++) {
+                    const section = sections[i];
+                    const top = section.offsetTop;
+                    const height = section.offsetHeight;
+
+                    if (scrollPos >= top && scrollPos < top + height) {
+                        const id = section.getAttribute('id');
+                        navLinks.forEach(link => {
+                            if (link.getAttribute('href') === `#${id}`) {
+                                link.classList.add('active');
+                            } else {
+                                link.classList.remove('active');
+                            }
+                        });
+                        break;
+                    }
+                }
+            }
+
+            window.addEventListener('scroll', makeActive);
+            window.addEventListener('resize', makeActive);
+            
+            // Initial call
+            setTimeout(makeActive, 100);
+        });
+    </script>
+</body>
+
+</html>
