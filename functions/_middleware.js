@@ -43,7 +43,17 @@ function getHeaderHTML(activePage = '', showBadge = '', sidebarToggle = false) {
 function getFooterHTML() {
     return `
     <footer class="page-footer">
-        <p class="footer-copyright">&copy; 2026 QR Maker | <a href="/terms/" class="footer-link footer-terms">Terms</a> | <a href="/terms/#privacy-policy" class="footer-link">Privacy</a> | <a href="/docs/" class="footer-link">Docs</a> | <a href="/api/" class="footer-link">API</a> | <a href="/" class="footer-link">About</a><span class="footer-app-link"> | <a href="/app/" class="footer-link">QR Maker</a></span></p>
+        <div class="footer-container">
+            <p class="footer-copyright">&copy; 2026 QR Maker</p>
+            <div class="footer-links">
+                <a href="/terms/" class="footer-link footer-terms">Terms</a>
+                <a href="/terms/#privacy-policy" class="footer-link">Privacy</a>
+                <a href="/docs/" class="footer-link">Docs</a>
+                <a href="/api/" class="footer-link">API</a>
+                <a href="/" class="footer-link">About</a>
+                <a href="/app/" class="footer-link footer-app-link">QR Maker</a>
+            </div>
+        </div>
     </footer>
     `;
 }

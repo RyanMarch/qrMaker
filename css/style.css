@@ -2203,11 +2203,20 @@ body:not(#main-body) .page-footer .footer-links {
     margin-top: auto;
     border-top: 1px solid var(--border-color);
     padding: 2rem 1.5rem;
-    text-align: center;
     background-color: var(--panel-bg);
     width: 100%;
     box-sizing: border-box;
     z-index: 10;
+}
+
+.footer-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1.5rem;
 }
 
 .page-footer p {
@@ -2218,9 +2227,9 @@ body:not(#main-body) .page-footer .footer-links {
 }
 
 .page-footer .footer-links {
-    margin-top: 0.5rem;
     display: flex;
-    gap: 1rem;
+    flex-wrap: wrap;
+    gap: 1.5rem 1rem;
     justify-content: center;
 }
 
@@ -2233,6 +2242,21 @@ body:not(#main-body) .page-footer .footer-links {
 
 .page-footer .footer-link:hover {
     color: var(--accent);
+}
+
+@media (max-width: 768px) {
+    .page-footer {
+        padding: 1.75rem 1.25rem;
+    }
+    .footer-container {
+        flex-direction: column-reverse;
+        gap: 1.25rem;
+        text-align: center;
+    }
+    .page-footer .footer-links {
+        justify-content: center;
+        gap: 1.25rem 1rem;
+    }
 }
 
 .btn-random {
