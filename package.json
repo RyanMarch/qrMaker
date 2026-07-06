@@ -6,13 +6,16 @@
     "dev": "node scripts/generate-agent-docs.js && wrangler pages dev . --compatibility-date=2024-01-01",
     "build": "node scripts/generate-agent-docs.js",
     "deploy": "node scripts/generate-agent-docs.js && wrangler pages deploy .",
-    "create-page": "node scripts/create-page.js"
+    "create-page": "node scripts/create-page.js",
+    "test": "playwright test"
   },
   "dependencies": {
     "@resvg/resvg-wasm": "^2.6.2",
     "fflate": "^0.8.2"
   },
   "devDependencies": {
+    "@axe-core/playwright": "^4.12.1",
+    "@playwright/test": "^1.61.1",
     "wrangler": "^3"
   }
 }
