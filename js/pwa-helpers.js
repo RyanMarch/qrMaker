@@ -9,6 +9,22 @@ let desktopPromptType = '';
 let suppressHaptic = false;
 
 function registerServiceWorker() {
+    if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') {
+        console.log('[Service Worker] Skipping registration on localhost for development.');
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.getRegistrations().then((registrations) => {
+                for (const registration of registrations) {
+                    registration.unregister().then((unregistered) => {
+                        if (unregistered) {
+                            console.log('[Service Worker] Unregistered active service worker.');
+                            location.reload();
+                        }
+                    });
+                }
+            });
+        }
+        return;
+    }
     if ('serviceWorker' in navigator) {
         window.addEventListener('load', () => {
             navigator.serviceWorker.register('/sw.js')
