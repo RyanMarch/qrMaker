@@ -241,7 +241,6 @@ body .page-footer {
     background-color: var(--panel-bg);
     border-top: 1px solid var(--border-color);
     padding: 2rem 1.5rem;
-    text-align: center;
     box-sizing: border-box;
     margin-top: auto;
 }
