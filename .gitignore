@@ -26,3 +26,7 @@ yarn-error.log*
 
 # others
 *.pxd
+
+# Playwright
+playwright-report/
+test-results/
