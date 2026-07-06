@@ -262,7 +262,12 @@ async function checkAuth(request, env) {
     try {
       // Decode base64url or base64 email safely
       const normalizedBase64 = encodedEmail.replace(/-/g, '+').replace(/_/g, '/');
-      decodedEmail = atob(normalizedBase64).toLowerCase();
+      const rawDecoded = atob(normalizedBase64);
+      try {
+        decodedEmail = decodeURIComponent(escape(rawDecoded)).toLowerCase();
+      } catch (e) {
+        decodedEmail = rawDecoded.toLowerCase();
+      }
     } catch (e) {
       // Fallback if base64 decoding fails
     }
@@ -290,42 +295,48 @@ async function checkAuth(request, env) {
 
 // Rate limiting helper using Cloudflare Cache API
 async function checkRateLimit(request, authHeader) {
-  const cache = caches.default;
-  const period = 10; // 10-second window
-  const timestamp = Math.floor(Date.now() / (period * 1000));
+  try {
+    const cache = typeof caches !== 'undefined' ? caches.default : null;
+    if (!cache) return null; // Skip rate limiting if cache is not available
 
-  // Use the token to identify rate-limit state (safely hashed or sliced)
-  const token = authHeader.split(' ')[1] || 'anonymous';
-  const rateLimitKey = `token-${token.slice(-16)}`;
+    const period = 10; // 10-second window
+    const timestamp = Math.floor(Date.now() / (period * 1000));
 
-  const limit = 20; // 20 requests per 10 seconds
+    // Use the token to identify rate-limit state (safely hashed or sliced)
+    const token = authHeader.split(' ')[1] || 'anonymous';
+    const rateLimitKey = `token-${token.slice(-16)}`;
 
-  const cacheKey = new Request(`https://rate-limit.internal/${rateLimitKey}/${timestamp}`);
+    const limit = 20; // 20 requests per 10 seconds
 
-  const cachedResponse = await cache.match(cacheKey);
-  let count = 0;
-  if (cachedResponse) {
-    count = parseInt(await cachedResponse.text(), 10) || 0;
-  }
+    const cacheKey = new Request(`https://rate-limit.internal/${rateLimitKey}/${timestamp}`);
 
-  if (count >= limit) {
-    return new Response(JSON.stringify({ error: 'Too Many Requests — Rate limit exceeded for this API Key' }), {
-      status: 429,
-      headers: {
-        'Content-Type': 'application/json',
-        'Access-Control-Allow-Origin': '*'
-      }
+    const cachedResponse = await cache.match(cacheKey);
+    let count = 0;
+    if (cachedResponse) {
+      count = parseInt(await cachedResponse.text(), 10) || 0;
+    }
+
+    if (count >= limit) {
+      return new Response(JSON.stringify({ error: 'Too Many Requests — Rate limit exceeded for this API Key' }), {
+        status: 429,
+        headers: {
+          'Content-Type': 'application/json',
+          'Access-Control-Allow-Origin': '*'
+        }
+      });
+    }
+
+    // Increment count and write back to cache
+    const newResponse = new Response((count + 1).toString(), {
+      headers: { 'Cache-Control': `public, max-age=${period}` }
     });
+
+    await cache.put(cacheKey, newResponse);
+  } catch (err) {
+    console.error('Rate limiting check failed:', err);
   }
 
-  // Increment count and write back to cache
-  const newResponse = new Response((count + 1).toString(), {
-    headers: { 'Cache-Control': `public, max-age=${period}` }
-  });
-
-  await cache.put(cacheKey, newResponse);
-
-  return null; // Under the limit
+  return null; // Under the limit or fallback
 }
 
 // ─── Entry points ─────────────────────────────────────────────────────────────

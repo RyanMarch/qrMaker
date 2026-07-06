@@ -50,8 +50,50 @@ function getFooterHTML() {
     `;
 }
 
+function getHeadHTML() {
+    return `
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="google" content="notranslate">
+    <script>
+        // Theme initialization to prevent flicker
+        (function () {
+            const savedTheme = localStorage.getItem('qrm-theme') || 'dark';
+            if (savedTheme === 'system') {
+                const isDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+                document.documentElement.setAttribute('data-theme', isDark ? 'dark' : 'light');
+                document.documentElement.setAttribute('data-theme-mode', 'system');
+            } else {
+                document.documentElement.setAttribute('data-theme', savedTheme);
+                document.documentElement.removeAttribute('data-theme-mode');
+            }
+        })();
+    </script>
+    <!-- Preconnect Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@500;700;800&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    
+    <!-- Favicons -->
+    <link rel="icon" type="image/png" href="/assets/favicon/favicon-96x96.png?v=2" sizes="96x96" />
+    <link rel="icon" type="image/svg+xml" href="/assets/favicon/favicon.svg?v=2" />
+    <link rel="shortcut icon" href="/assets/favicon/favicon.ico?v=2" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/assets/favicon/apple-touch-icon.png?v=2" />
+    <meta name="apple-mobile-web-app-title" content="QR Maker" />
+
+    <!-- Global Style -->
+    <link rel="stylesheet" href="/css/style.css">
+
+    <!-- Global SEO & Social Sharing -->
+    <meta property="og:site_name" content="QR Maker" />
+    <meta property="og:image" content="https://qrmaker.ryanmarch.me/assets/og-image.png" />
+    `;
+}
+
 class TemplateHandler {
     element(element) {
+        if (element.tagName === 'global-head') {
+            element.replace(getHeadHTML(), { html: true });
+        }
         if (element.tagName === 'global-header') {
             const activePage = element.getAttribute('active-page') || '';
             const showBadge = element.getAttribute('show-badge') || '';
@@ -69,6 +111,7 @@ export async function onRequest(context) {
 
     if (response.headers.get("content-type")?.includes("text/html")) {
         return new HTMLRewriter()
+            .on('global-head', new TemplateHandler())
             .on('global-header', new TemplateHandler())
             .on('global-footer', new TemplateHandler())
             .transform(response);

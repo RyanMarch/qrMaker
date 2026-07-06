@@ -105,7 +105,7 @@ export async function onRequestPost(context) {
   const expirationTime = Date.now() + (validityDays * 24 * 60 * 60 * 1000);
   
   // Format identity: base64(email):expirationTime
-  const encodedEmail = btoa(email).replace(/\+/g, '-').replace(/\//g, '_').replace(/=/g, '');
+  const encodedEmail = btoa(unescape(encodeURIComponent(email))).replace(/\+/g, '-').replace(/\//g, '_').replace(/=/g, '');
   const rawKeyData = `${encodedEmail}:${expirationTime}`;
   
   try {

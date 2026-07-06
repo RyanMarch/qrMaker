@@ -290,21 +290,37 @@ function loadFromURL() {
             if (bgSlider) bgSlider.value = bgc;
         }
     }
-    if (params.has('fg')) state.fgColor = '#' + params.get('fg');
+    if (params.has('fg')) {
+        state.fgColor = '#' + params.get('fg');
+        state.pixelAutoContrast = false;
+    } else {
+        state.pixelAutoContrast = true;
+    }
+
     if (params.has('bg')) {
         const bgParam = params.get('bg');
         if (bgParam === 'transparent') {
             state.bgColor = 'transparent';
             state.isTransparent = true;
             state.themeColor = params.has('fg') ? '#' + params.get('fg') : '#ffffff';
+            if (state.pixelAutoContrast) {
+                state.fgColor = state.themeColor;
+            }
         } else {
             const bg = '#' + bgParam;
             state.bgColor = bg;
             state.themeColor = bg;
             state.isTransparent = false;
+            if (state.pixelAutoContrast) {
+                state.fgColor = getContrastColor(bg);
+            }
         }
     } else {
-        state.themeColor = '#ffffff'; state.bgColor = '#ffffff'; state.fgColor = '#000000'; state.isTransparent = false;
+        state.themeColor = '#ffffff'; state.bgColor = '#ffffff';
+        state.isTransparent = false;
+        if (state.pixelAutoContrast) {
+            state.fgColor = '#000000';
+        }
     }
 
     updateColorTriggerUI();

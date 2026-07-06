@@ -3,22 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <script>
-        // Theme initialization to prevent flicker
-        (function () {
-            const savedTheme = localStorage.getItem('qrm-theme') || 'dark';
-            if (savedTheme === 'system') {
-                const isDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-                document.documentElement.setAttribute('data-theme', isDark ? 'dark' : 'light');
-                document.documentElement.setAttribute('data-theme-mode', 'system');
-            } else {
-                document.documentElement.setAttribute('data-theme', savedTheme);
-                document.documentElement.removeAttribute('data-theme-mode');
-            }
-        })();
-    </script>
-    <meta name="google" content="notranslate">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <global-head></global-head>
 
     <!-- Primary SEO Metadata -->
     <title>QR Maker | Generate & Customize QR Codes</title>
@@ -60,25 +45,12 @@
     }
     </script>
 
-    <!-- Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link
-        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@500;700;800&display=swap"
-        rel="stylesheet">
-
-    <!-- Favicons -->
-    <link rel="icon" type="image/png" href="/assets/favicon/favicon-96x96.png?v=2" sizes="96x96" />
-    <link rel="icon" type="image/svg+xml" href="/assets/favicon/favicon.svg?v=2" />
-    <link rel="shortcut icon" href="/assets/favicon/favicon.ico?v=2" />
-    <link rel="apple-touch-icon" sizes="180x180" href="/assets/favicon/apple-touch-icon.png?v=2" />
-    <meta name="apple-mobile-web-app-title" content="QR Maker" />
+    <!-- PWA / Mobile specific configuration -->
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
     <meta name="theme-color" content="#020617" />
     <link rel="manifest" href="/assets/favicon/site.webmanifest" />
 
-    <link rel="stylesheet" href="css/style.css">
     <!-- AI-Agent/LLM Metadata -->
     <link rel="openapi" type="application/json" href="/api/openapi.json">
     <link rel="alternate" type="text/markdown" href="/llms.txt" title="LLM-friendly API Documentation">
@@ -523,18 +495,48 @@
                 <div class="inspector-section">
                     <div class="inspector-section-title">Style & Color</div>
 
-                    <div class="inspector-row">
-                        <div class="property-label">Color</div>
-                        <div class="property-control color-property-control">
-                            <div class="color-trigger-btn" id="color-trigger-btn">
-                                <span class="color-trigger-preview" id="color-trigger-preview"
-                                    onclick="toggleColorPickerSheet(); event.stopPropagation();"
-                                    title="Toggle color picker"></span>
-                                <input type="text" class="color-trigger-hex" id="color-hex-input" value="#FFFFFF"
-                                    maxlength="7" placeholder="#FFFFFF" aria-label="Hex color code" autocomplete="off">
+                    <div class="inspector-row" id="colors-inspector-row">
+                        <div class="property-label">Colors</div>
+                        <div class="property-control color-property-control" style="gap: 0.5rem;">
+                            <!-- Trigger Row (Background Trigger, Link/Auto Button, Pixel Trigger) -->
+                            <div style="display: flex; gap: 0.5rem; align-items: flex-end; width: 100%;">
+                                <!-- Background Color Trigger Column -->
+                                <div style="flex: 1; display: flex; flex-direction: column; gap: 0.25rem;">
+                                    <span style="font-size: 0.725rem; color: var(--text-subtle); font-weight: 500; user-select: none;">Background</span>
+                                    <div class="color-trigger-btn" id="color-trigger-btn">
+                                        <span class="color-trigger-preview" id="color-trigger-preview"
+                                            onclick="toggleColorPickerSheet(); event.stopPropagation();"
+                                            title="Toggle background color picker"></span>
+                                        <input type="text" class="color-trigger-hex" id="color-hex-input" value="#FFFFFF"
+                                            maxlength="7" placeholder="#FFFFFF" aria-label="Background color code"
+                                            autocomplete="off">
+                                    </div>
+                                </div>
+
+                                <!-- Link Toggle Button (Aligned with buttons) -->
+                                <button type="button" class="color-match-btn active" id="pixel-auto-btn" onclick="togglePixelAutoContrast()"
+                                    title="Auto Contrast (Sync with Background)" style="margin-top: 0; margin-bottom: 0; align-self: flex-end;">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16">
+                                        <circle cx="12" cy="12" r="10"></circle>
+                                        <path d="M12 2v20"></path>
+                                        <path d="M12 18a6 6 0 0 0 0-12v12z" fill="currentColor"></path>
+                                    </svg>
+                                </button>
+
+                                <!-- Pixel Color Trigger Column -->
+                                <div style="flex: 1; display: flex; flex-direction: column; gap: 0.25rem;">
+                                    <span style="font-size: 0.725rem; color: var(--text-subtle); font-weight: 500; user-select: none;">Pixels</span>
+                                    <div class="color-trigger-btn" id="pixel-color-trigger-btn">
+                                        <span class="color-trigger-preview" id="pixel-color-trigger-preview"
+                                            onclick="togglePixelColorPickerSheet(); event.stopPropagation();"
+                                            title="Toggle pixel color picker"></span>
+                                        <input type="text" class="color-trigger-hex" id="pixel-color-hex-input" value="#000000"
+                                            maxlength="7" placeholder="#000000" aria-label="Pixel color code" autocomplete="off">
+                                    </div>
+                                </div>
                             </div>
 
-                            <!-- Inline Expandable Color Picker Panel -->
+                            <!-- Inline Expandable Background Color Picker Panel -->
                             <div class="inline-color-picker" id="color-picker-sheet">
                                 <div class="sheet-body">
                                     <!-- Background Type Selector -->
@@ -550,24 +552,6 @@
                                         </div>
                                     </div>
 
-                                    <!-- Transparent Pixel Preset Row -->
-                                    <div class="color-picker-mode-row" id="transparent-options-row"
-                                        style="display: none;">
-                                        <label class="mode-label">Pixels</label>
-                                        <div class="segmented-control" id="pixel-color-control" role="group"
-                                            aria-label="Pixel color mode">
-                                            <button type="button" class="seg-btn" id="px-color-black"
-                                                onclick="setTransparentPixelColor('#000000')"
-                                                aria-pressed="false">Black</button>
-                                            <button type="button" class="seg-btn" id="px-color-white"
-                                                onclick="setTransparentPixelColor('#ffffff')"
-                                                aria-pressed="false">White</button>
-                                            <button type="button" class="seg-btn" id="px-color-custom"
-                                                onclick="setTransparentPixelColor('custom')"
-                                                aria-pressed="false">Custom</button>
-                                        </div>
-                                    </div>
-
                                     <!-- Color spectrum canvas -->
                                     <div class="spectrum-container">
                                         <canvas id="color-spectrum-canvas" width="300" height="150"></canvas>
@@ -577,7 +561,7 @@
                                     <!-- Preset Swatches + Randomizer -->
                                     <div class="swatches-row">
                                         <button type="button" class="swatch-btn shuffle-btn"
-                                            onclick="shuffleThemeColor()" title="Shuffle color">
+                                            onclick="shuffleThemeColor()" title="Shuffle background color">
                                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                                                 stroke-linecap="round" stroke-linejoin="round" width="16" height="16">
                                                 <polyline points="16 3 21 3 21 8"></polyline>
@@ -606,16 +590,80 @@
                                             style="background-color: #06b6d4;"
                                             onclick="selectSwatch('#06b6d4')"></button>
                                         <button type="button" class="swatch-btn color-swatch"
-                                            style="background-color: #3b82f6;"
-                                            onclick="selectSwatch('#3b82f6')"></button>
+                                            style="background-color: #0044ff;"
+                                            onclick="selectSwatch('#0044ff')"></button>
                                         <button type="button" class="swatch-btn color-swatch"
-                                            style="background-color: #a855f7;"
-                                            onclick="selectSwatch('#a855f7')"></button>
+                                            style="background-color: #8E00FE;"
+                                            onclick="selectSwatch('#8E00FE')"></button>
                                     </div>
                                 </div>
                             </div>
+
+                            <!-- Inline Expandable Pixel Color Picker Panel -->
+                            <div class="inline-color-picker" id="pixel-color-picker-sheet">
+                                <div class="sheet-body">
+                                    <!-- Label Row -->
+                                    <div class="color-picker-mode-row">
+                                        <label class="mode-label">Pixels Color</label>
+                                    </div>
+
+                                    <!-- Color spectrum canvas -->
+                                    <div class="spectrum-container">
+                                        <canvas id="pixel-color-spectrum-canvas" width="300" height="150"></canvas>
+                                        <div class="spectrum-cursor" id="pixel-spectrum-cursor"></div>
+                                    </div>
+
+                                    <!-- Preset Swatches + Randomizer -->
+                                    <div class="swatches-row">
+                                        <button type="button" class="swatch-btn shuffle-btn"
+                                            onclick="shufflePixelColor()" title="Shuffle pixel color">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                                stroke-linecap="round" stroke-linejoin="round" width="16" height="16">
+                                                <polyline points="16 3 21 3 21 8"></polyline>
+                                                <line x1="4" y1="20" x2="21" y2="3"></line>
+                                                <polyline points="21 16 21 21 16 21"></polyline>
+                                                <line x1="15" y1="15" x2="21" y2="21"></line>
+                                                <line x1="4" y1="4" x2="9" y2="9"></line>
+                                            </svg>
+                                        </button>
+                                        <button type="button" class="swatch-btn color-swatch"
+                                            style="background-color: #000000;" onclick="selectPixelSwatch('#000000')"
+                                            title="Black"></button>
+                                        <button type="button" class="swatch-btn color-swatch"
+                                            style="background-color: #ffffff;" onclick="selectPixelSwatch('#ffffff')"
+                                            title="White"></button>
+                                        <button type="button" class="swatch-btn color-swatch"
+                                            style="background-color: #ef4444;" onclick="selectPixelSwatch('#ef4444')"></button>
+                                        <button type="button" class="swatch-btn color-swatch"
+                                            style="background-color: #f97316;" onclick="selectPixelSwatch('#f97316')"></button>
+                                        <button type="button" class="swatch-btn color-swatch"
+                                            style="background-color: #eab308;" onclick="selectPixelSwatch('#eab308')"></button>
+                                        <button type="button" class="swatch-btn color-swatch"
+                                            style="background-color: #22c55e;" onclick="selectPixelSwatch('#22c55e')"></button>
+                                        <button type="button" class="swatch-btn color-swatch"
+                                            style="background-color: #06b6d4;" onclick="selectPixelSwatch('#06b6d4')"></button>
+                                        <button type="button" class="swatch-btn color-swatch"
+                                            style="background-color: #0044ff;" onclick="selectPixelSwatch('#0044ff')"></button>
+                                        <button type="button" class="swatch-btn color-swatch"
+                                            style="background-color: #8E00FE;" onclick="selectPixelSwatch('#8E00FE')"></button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Warning Message -->
+                            <div id="pixel-contrast-warning" class="contrast-warning-msg" style="display: none;">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14"
+                                    height="14">
+                                    <path
+                                        d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z" />
+                                    <line x1="12" y1="9" x2="12" y2="13" />
+                                    <line x1="12" y1="17" x2="12.01" y2="17" />
+                                </svg>
+                                <span>Low contrast — QR might be hard to scan</span>
+                            </div>
                         </div>
                     </div>
+
 
                     <div class="inspector-row">
                         <div class="property-label">Pixel Style</div>
@@ -708,8 +756,7 @@
                                         Emoji:</span>
                                     <input type="text" id="custom-emoji-input" class="hex-input"
                                         style="width: 3.5rem; text-align: center; font-size: 16px; padding: 0.25rem;"
-                                        maxlength="10" oninput="handleCustomEmojiInput(this.value)"
-                                        autocomplete="off">
+                                        maxlength="10" oninput="handleCustomEmojiInput(this.value)" autocomplete="off">
                                 </div>
                                 <div
                                     style="display: flex; align-items: center; gap: 0.375rem; flex-wrap: wrap; margin-top: 0.25rem;">

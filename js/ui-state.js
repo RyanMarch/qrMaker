@@ -20,6 +20,7 @@ let state = {
     bgColor: '#ffffff',
     themeColor: '#ffffff',
     isTransparent: false,
+    pixelAutoContrast: true,
     logoUrl: '',
     logoDataUrl: '',
     logoSize: 20,
@@ -210,6 +211,7 @@ function updateMarginLabel() {
 // updateColorHex() removed — was an empty no-op (call site in qr-core.js also removed)
 
 function randomizeAppearance() {
+    state.pixelAutoContrast = true;
     shuffleThemeColor();
     const pixelStyles = ['square', 'rounded', 'dot', 'pill-h', 'pill-v', 'connected'];
     setPixelStyle(pixelStyles[Math.floor(Math.random() * pixelStyles.length)], false);
@@ -226,6 +228,7 @@ function randomizeAppearance() {
 
 function resetAppearance() {
     state.isTransparent = false;
+    state.pixelAutoContrast = true;
     updateThemeColor('#ffffff');
     positionCursorFromHex('#ffffff');
     setPixelStyle('square', false);
@@ -332,10 +335,14 @@ function updateThemeColor(baseColorHex) {
     state.themeColor = baseColorHex;
     if (state.isTransparent) {
         state.bgColor = 'transparent';
-        state.fgColor = baseColorHex;
+        if (state.pixelAutoContrast) {
+            state.fgColor = baseColorHex;
+        }
     } else {
         state.bgColor = baseColorHex;
-        state.fgColor = getContrastColor(baseColorHex);
+        if (state.pixelAutoContrast) {
+            state.fgColor = getContrastColor(baseColorHex);
+        }
     }
     updateColorTriggerUI();
     scheduleGenerate();
@@ -349,7 +356,6 @@ function updateColorTriggerUI() {
 
     const btnSolid = document.getElementById('bg-mode-solid');
     const btnTrans = document.getElementById('bg-mode-transparent');
-    const transOptions = document.getElementById('transparent-options-row');
     const canvasWrapper = document.getElementById('qr-canvas-wrapper');
 
     if (btnSolid && btnTrans) {
@@ -358,24 +364,37 @@ function updateColorTriggerUI() {
         btnTrans.classList.toggle('active', state.isTransparent);
         btnTrans.setAttribute('aria-pressed', state.isTransparent.toString());
     }
-    if (transOptions) transOptions.style.display = state.isTransparent ? 'flex' : 'none';
     if (canvasWrapper) canvasWrapper.classList.toggle('transparent-bg-active', state.isTransparent);
 
-    if (state.isTransparent) {
-        const pxBlack = document.getElementById('px-color-black');
-        const pxWhite = document.getElementById('px-color-white');
-        const pxCustom = document.getElementById('px-color-custom');
-        const isBlack = state.themeColor.toLowerCase() === '#000000';
-        const isWhite = state.themeColor.toLowerCase() === '#ffffff';
-        if (pxBlack && pxWhite && pxCustom) {
-            pxBlack.classList.toggle('active', isBlack);
-            pxBlack.setAttribute('aria-pressed', isBlack.toString());
-            pxWhite.classList.toggle('active', isWhite);
-            pxWhite.setAttribute('aria-pressed', isWhite.toString());
-            pxCustom.classList.toggle('active', !isBlack && !isWhite);
-            pxCustom.setAttribute('aria-pressed', (!isBlack && !isWhite).toString());
+    // Update Pixel Color UI
+    const pixelPreview = document.getElementById('pixel-color-trigger-preview');
+    const pixelHexInput = document.getElementById('pixel-color-hex-input');
+    const pixelAutoBtn = document.getElementById('pixel-auto-btn');
+
+    if (pixelPreview) pixelPreview.style.backgroundColor = state.fgColor;
+    if (pixelHexInput && document.activeElement !== pixelHexInput) pixelHexInput.value = state.fgColor.toUpperCase();
+    if (pixelAutoBtn) {
+        pixelAutoBtn.classList.toggle('active', state.pixelAutoContrast);
+        pixelAutoBtn.setAttribute('aria-pressed', state.pixelAutoContrast.toString());
+    }
+
+    // Check contrast warning
+    const warningEl = document.getElementById('pixel-contrast-warning');
+    if (warningEl) {
+        if (state.isTransparent) {
+            warningEl.style.display = 'none';
+        } else {
+            const l1 = getLuminance(state.bgColor);
+            const l2 = getLuminance(state.fgColor);
+            const ratio = getContrastRatio(l1, l2);
+            if (ratio < 4.5) {
+                warningEl.style.display = 'flex';
+            } else {
+                warningEl.style.display = 'none';
+            }
         }
     }
+
     updateAppTint(state.themeColor);
 }
 
@@ -384,23 +403,142 @@ function setBackgroundMode(mode) {
     updateThemeColor(state.themeColor);
 }
 
-function setTransparentPixelColor(color) {
-    if (color === 'custom') {
-        const pxBlack = document.getElementById('px-color-black');
-        const pxWhite = document.getElementById('px-color-white');
-        const pxCustom = document.getElementById('px-color-custom');
-        if (pxBlack && pxWhite && pxCustom) {
-            pxBlack.classList.remove('active');
-            pxBlack.setAttribute('aria-pressed', 'false');
-            pxWhite.classList.remove('active');
-            pxWhite.setAttribute('aria-pressed', 'false');
-            pxCustom.classList.add('active');
-            pxCustom.setAttribute('aria-pressed', 'true');
-        }
-        return;
+function handlePixelColorHexInput(val) {
+    let cleanHex = val.trim();
+    if (!cleanHex.startsWith('#')) cleanHex = '#' + cleanHex;
+    if (/^#[0-9A-F]{6}$/i.test(cleanHex) || /^#[0-9A-F]{3}$/i.test(cleanHex)) {
+        state.fgColor = cleanHex;
+        state.pixelAutoContrast = false;
+        updateColorTriggerUI();
+        positionPixelCursorFromHex(cleanHex);
+        scheduleGenerate();
     }
-    updateThemeColor(color);
-    positionCursorFromHex(color);
+}
+
+function togglePixelAutoContrast() {
+    state.pixelAutoContrast = !state.pixelAutoContrast;
+    if (state.pixelAutoContrast) {
+        state.fgColor = state.isTransparent ? state.themeColor : getContrastColor(state.bgColor);
+        positionPixelCursorFromHex(state.fgColor);
+    }
+    updateColorTriggerUI();
+    scheduleGenerate();
+}
+
+function togglePixelColorPickerSheet() {
+    const sheet = document.getElementById('pixel-color-picker-sheet');
+    if (!sheet) return;
+    const isOpen = sheet.classList.toggle('open');
+    if (isOpen) {
+        const canvas = document.getElementById('pixel-color-spectrum-canvas');
+        if (canvas) {
+            drawColorPickerCanvas(canvas);
+            setTimeout(() => { positionPixelCursorFromHex(state.fgColor); }, 50);
+            initPixelSpectrumEvents(canvas);
+        }
+        // Close background picker
+        const bgSheet = document.getElementById('color-picker-sheet');
+        if (bgSheet) bgSheet.classList.remove('open');
+    }
+}
+
+function positionPixelCursorFromHex(hex) {
+    const { h, s, l } = hexToHsl(hex);
+    const canvas = document.getElementById('pixel-color-spectrum-canvas');
+    if (!canvas) return;
+    const rect = canvas.getBoundingClientRect();
+    if (!rect.width || !rect.height) return;
+    const x = (h / 360) * rect.width;
+    const y = ((100 - l) / 100) * rect.height;
+    const cursor = document.getElementById('pixel-spectrum-cursor');
+    if (cursor) {
+        cursor.style.left = `${x}px`;
+        cursor.style.top = `${y}px`;
+    }
+}
+
+let isDraggingPixelSpectrum = false;
+function initPixelSpectrumEvents(canvas) {
+    if (canvas.dataset.eventsInitialized) return;
+    canvas.dataset.eventsInitialized = 'true';
+    const container = canvas.parentElement;
+
+    const handleColorSelect = (e) => {
+        const rect = canvas.getBoundingClientRect();
+        const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+        const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+        const x = Math.max(0, Math.min(rect.width - 1, clientX - rect.left));
+        const y = Math.max(0, Math.min(rect.height - 1, clientY - rect.top));
+        const rawY = clientY - rect.top;
+
+        let hex;
+        if (rawY <= 3) hex = '#ffffff';
+        else if (rawY >= rect.height - 3) hex = '#000000';
+        else {
+            const scaleX = canvas.width / rect.width, scaleY = canvas.height / rect.height;
+            const ctx = canvas.getContext('2d');
+            const imgData = ctx.getImageData(x * scaleX, y * scaleY, 1, 1).data;
+            hex = rgbToHex(imgData[0], imgData[1], imgData[2]);
+        }
+        const cursor = document.getElementById('pixel-spectrum-cursor');
+        if (cursor) { cursor.style.left = `${x}px`; cursor.style.top = `${y}px`; }
+        
+        state.fgColor = hex;
+        state.pixelAutoContrast = false;
+        updateColorTriggerUI();
+        scheduleGenerate();
+    };
+
+    container.addEventListener('mousedown', (e) => { isDraggingPixelSpectrum = true; handleColorSelect(e); });
+    window.addEventListener('mousemove', (e) => { if (isDraggingPixelSpectrum) handleColorSelect(e); });
+    window.addEventListener('mouseup', () => { isDraggingPixelSpectrum = false; });
+
+    container.addEventListener('touchstart', (e) => { isDraggingPixelSpectrum = true; handleColorSelect(e); }, { passive: true });
+    window.addEventListener('touchmove', (e) => { if (isDraggingPixelSpectrum) handleColorSelect(e); }, { passive: true });
+    window.addEventListener('touchend', () => { isDraggingPixelSpectrum = false; });
+}
+
+function selectPixelSwatch(colorHex) {
+    state.fgColor = colorHex;
+    state.pixelAutoContrast = false;
+    updateColorTriggerUI();
+    positionPixelCursorFromHex(colorHex);
+    scheduleGenerate();
+}
+
+function shufflePixelColor() {
+    let hex;
+    let attempts = 0;
+    const bgLuminance = state.isTransparent ? null : getLuminance(state.bgColor);
+
+    do {
+        const h = Math.floor(Math.random() * 360);
+        const s = 75 + Math.floor(Math.random() * 20);
+        const l = 15 + Math.floor(Math.random() * 70); // Generates full range of dark/light colors
+        hex = hslToHex(h, s, l);
+        attempts++;
+
+        if (state.isTransparent) break;
+
+        const ratio = getContrastRatio(bgLuminance, getLuminance(hex));
+        if (ratio >= 4.5) break;
+    } while (attempts < 50);
+
+    // Fallback if we couldn't find a contrasty random color
+    if (!state.isTransparent && getContrastRatio(bgLuminance, getLuminance(hex)) < 4.5) {
+        hex = getContrastColor(state.bgColor);
+    }
+
+    state.fgColor = hex;
+    state.pixelAutoContrast = false;
+    updateColorTriggerUI();
+    positionPixelCursorFromHex(hex);
+    scheduleGenerate();
+}
+
+function openPixelColorPickerSheet() {
+    const sheet = document.getElementById('pixel-color-picker-sheet');
+    if (sheet && !sheet.classList.contains('open')) togglePixelColorPickerSheet();
 }
 
 function selectSwatch(colorHex) {
@@ -428,6 +566,9 @@ function toggleColorPickerSheet() {
             setTimeout(() => { positionCursorFromHex(state.themeColor); }, 50);
             initSpectrumEvents(canvas);
         }
+        // Close pixel picker
+        const pixelSheet = document.getElementById('pixel-color-picker-sheet');
+        if (pixelSheet) pixelSheet.classList.remove('open');
     }
 }
 
@@ -664,36 +805,7 @@ function getFilenameFromUrl(url) {
     try { const parts = url.split('/'); return parts[parts.length - 1]; } catch (e) { return 'logo.png'; }
 }
 
-let themeStatusTimeout;
-function showThemeStatus(text) {
-    const themeStatus = document.getElementById('theme-status');
-    if (!themeStatus) return;
-    themeStatus.textContent = text;
-    themeStatus.classList.add('visible');
-    clearTimeout(themeStatusTimeout);
-    themeStatusTimeout = setTimeout(() => { themeStatus.classList.remove('visible'); }, 2000);
-}
 
-function cycleTheme() {
-    triggerHaptic();
-    const current = localStorage.getItem('qrm-theme') || 'dark';
-    let next, statusText;
-    if (current === 'dark') { next = 'light'; statusText = 'Light Theme'; }
-    else if (current === 'light') { next = 'system'; statusText = 'System Theme'; }
-    else { next = 'dark'; statusText = 'Dark Theme'; }
-
-    if (next === 'system') {
-        const isDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-        document.documentElement.setAttribute('data-theme', isDark ? 'dark' : 'light');
-        document.documentElement.setAttribute('data-theme-mode', 'system');
-    } else {
-        document.documentElement.setAttribute('data-theme', next);
-        document.documentElement.removeAttribute('data-theme-mode');
-    }
-    localStorage.setItem('qrm-theme', next);
-    updateAppTint(state.themeColor);
-    showThemeStatus(statusText);
-}
 
 let toastTimer = null;
 function showToast(msg) {
@@ -712,6 +824,14 @@ document.addEventListener('click', (e) => {
     const trigger = document.getElementById('color-trigger-btn');
     if (picker && picker.classList.contains('open')) {
         if (!picker.contains(e.target) && !trigger.contains(e.target)) picker.classList.remove('open');
+    }
+
+    const pixelPicker = document.getElementById('pixel-color-picker-sheet');
+    const pixelTrigger = document.getElementById('pixel-color-trigger-btn');
+    if (pixelPicker && pixelPicker.classList.contains('open')) {
+        if (!pixelPicker.contains(e.target) && !pixelTrigger.contains(e.target) && !e.target.closest('#pixel-auto-btn')) {
+            pixelPicker.classList.remove('open');
+        }
     }
 
     const tabDropdown = document.getElementById('tab-dropdown');
@@ -917,9 +1037,7 @@ function handleIconColorHexInput(val) {
 }
 
 function matchIconColorToFg() {
-    // If it's already black, toggle to white, and vice versa
-    const currentHex = state.iconColor.toLowerCase();
-    const newColor = (currentHex === '#000000') ? '#ffffff' : '#000000';
+    const newColor = state.fgColor;
 
     state.iconColor = newColor;
     updateIconColorUI(newColor);
@@ -1042,14 +1160,43 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    const themeToggleBtn = document.getElementById('theme-toggle');
-    if (themeToggleBtn) themeToggleBtn.addEventListener('click', cycleTheme);
-    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
-        if (localStorage.getItem('qrm-theme') === 'system') {
-            document.documentElement.setAttribute('data-theme', e.matches ? 'dark' : 'light');
-            updateAppTint(state.themeColor);
-        }
-    });
+    const pixelHexInput = document.getElementById('pixel-color-hex-input');
+    const pixelTriggerBtn = document.getElementById('pixel-color-trigger-btn');
+    if (pixelHexInput) {
+        pixelHexInput.addEventListener('input', (e) => {
+            let val = e.target.value.trim();
+            if (val && !val.startsWith('#')) { val = '#' + val; e.target.value = val; }
+            if (/^#[0-9A-F]{6}$/i.test(val)) {
+                state.fgColor = val;
+                state.pixelAutoContrast = false;
+                updateColorTriggerUI();
+                positionPixelCursorFromHex(val);
+                scheduleGenerate();
+            }
+            else if (/^#[0-9A-F]{3}$/i.test(val)) {
+                const expanded = '#' + val[1] + val[1] + val[2] + val[2] + val[3] + val[3];
+                state.fgColor = expanded;
+                state.pixelAutoContrast = false;
+                updateColorTriggerUI();
+                positionPixelCursorFromHex(expanded);
+                scheduleGenerate();
+            }
+        });
+        pixelHexInput.addEventListener('blur', (e) => {
+            e.target.value = state.fgColor.toUpperCase();
+        });
+        pixelHexInput.addEventListener('focus', () => { openPixelColorPickerSheet(); });
+        pixelHexInput.addEventListener('click', (e) => { e.stopPropagation(); openPixelColorPickerSheet(); });
+    }
+    if (pixelTriggerBtn && pixelHexInput) {
+        pixelTriggerBtn.addEventListener('click', (e) => {
+            if (e.target !== pixelHexInput && e.target !== document.getElementById('pixel-color-trigger-preview')) {
+                pixelHexInput.focus(); openPixelColorPickerSheet();
+            }
+        });
+    }
+
+
 
     window.addEventListener('scroll', handleMobileScroll, { passive: true });
     window.addEventListener('resize', handleMobileScroll, { passive: true });
