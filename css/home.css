@@ -312,6 +312,32 @@ body {
     margin: 0;
 }
 
+.gallery-card-link {
+    color: var(--accent-readable);
+    font-size: 0.9rem;
+    font-weight: 500;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    margin-top: auto;
+    padding-top: 0.5rem;
+    transition: color 0.15s ease;
+}
+
+.gallery-card-link:hover {
+    color: var(--text-main);
+}
+
+.gallery-card-link svg {
+    transition: transform 0.15s ease;
+}
+
+.gallery-card-link:hover svg {
+    transform: translateX(3px);
+}
+
+
 /* Shortcut section */
 .shortcut-section {
     margin-bottom: 8rem;
