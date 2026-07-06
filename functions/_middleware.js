@@ -14,9 +14,8 @@ function getHeaderHTML(activePage = '', showBadge = '', sidebarToggle = false) {
         </div>
         <div class="header-right">
             <nav class="header-nav" aria-label="Main Navigation">
-                <a href="/" class="nav-link ${activePage === 'app' ? 'active' : ''}">App</a>
-                <a href="/about/" class="nav-link ${activePage === 'about' ? 'active' : ''}">About</a>
-                <a href="/api/" class="nav-link ${activePage === 'api' ? 'active' : ''}">API</a>
+                <a href="/app/" class="nav-link ${activePage === 'app' ? 'active' : ''}">App</a>
+                <a href="/api/" class="nav-link ${activePage === 'api' ? 'active' : ''}">Docs</a>
             </nav>
             <button id="theme-toggle" class="theme-toggle" aria-label="Toggle theme">
                 <svg class="sun-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
@@ -33,9 +32,8 @@ function getHeaderHTML(activePage = '', showBadge = '', sidebarToggle = false) {
     ${!sidebarToggle ? `
     <div id="mobile-nav-menu" class="mobile-nav-menu">
         <nav class="mobile-menu-nav">
-            <a href="/" class="mobile-menu-link ${activePage === 'app' ? 'active' : ''}">App</a>
-            <a href="/about/" class="mobile-menu-link ${activePage === 'about' ? 'active' : ''}">About</a>
-            <a href="/api/" class="mobile-menu-link ${activePage === 'api' ? 'active' : ''}">API</a>
+            <a href="/app/" class="mobile-menu-link ${activePage === 'app' ? 'active' : ''}">App</a>
+            <a href="/api/" class="mobile-menu-link ${activePage === 'api' ? 'active' : ''}">Docs</a>
         </nav>
     </div>
     ` : ''}
@@ -45,7 +43,7 @@ function getHeaderHTML(activePage = '', showBadge = '', sidebarToggle = false) {
 function getFooterHTML() {
     return `
     <footer class="page-footer">
-        <p class="footer-copyright">&copy; 2026 QR Maker. All rights reserved. <br> <a href="/terms/" class="footer-link footer-terms">Terms of Service</a > | <a href="/terms/#privacy-policy" class="footer-link">Privacy Policy</a> <span class="footer-app-link"> | <a href="/" class="footer-link">QR Maker</a></span></p>
+        <p class="footer-copyright">&copy; 2026 QR Maker | <a href="/terms/" class="footer-link footer-terms">Terms</a> | <a href="/terms/#privacy-policy" class="footer-link">Privacy</a> | <a href="/api/" class="footer-link">API</a> | <a href="/" class="footer-link">About</a><span class="footer-app-link"> | <a href="/app/" class="footer-link">QR Maker</a></span></p>
     </footer>
     `;
 }

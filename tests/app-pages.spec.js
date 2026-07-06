@@ -29,7 +29,7 @@ test.beforeEach(({ page }) => {
 test.describe('Pages and Layout Tests', () => {
 
   test('Main App Page loads successfully', async ({ page }) => {
-    const response = await page.goto('/');
+    const response = await page.goto('/app/');
     expect(response?.status()).toBe(200);
 
     // Verify main app title/logo text
@@ -40,7 +40,7 @@ test.describe('Pages and Layout Tests', () => {
   });
 
   test('About Page loads successfully', async ({ page }) => {
-    const response = await page.goto('/about/');
+    const response = await page.goto('/');
     expect(response?.status()).toBe(200);
     // The main heading on the About page is "Meet QR Maker"
     await expect(page.locator('h1')).toContainText('Meet QR Maker');
@@ -71,7 +71,7 @@ test.describe('Pages and Layout Tests', () => {
   });
 
   test('Theme switcher updates page classes and saves preference', async ({ page }) => {
-    await page.goto('/');
+    await page.goto('/app/');
     
     // Clear storage to start fresh
     await page.evaluate(() => localStorage.removeItem('qrm-theme'));
@@ -97,7 +97,7 @@ test.describe('Pages and Layout Tests', () => {
   });
 
   test('Visual layout comparison (Light vs Dark)', async ({ page }) => {
-    await page.goto('/');
+    await page.goto('/app/');
 
     // Force Dark Theme
     await page.evaluate(() => {
@@ -126,7 +126,7 @@ test.describe('Pages and Layout Tests', () => {
 
   test.describe('Accessibility Audits', () => {
     test('Main App Page is accessible', async ({ page }) => {
-      await page.goto('/');
+      await page.goto('/app/');
       const accessibilityResults = await new AxeBuilder({ page })
         .disableRules(['color-contrast']) // Ignore color-contrast if custom theme gradients are dynamic
         .analyze();
@@ -134,7 +134,7 @@ test.describe('Pages and Layout Tests', () => {
     });
 
     test('About Page is accessible', async ({ page }) => {
-      await page.goto('/about/');
+      await page.goto('/');
       const accessibilityResults = await new AxeBuilder({ page }).analyze();
       expect(accessibilityResults.violations).toEqual([]);
     });
