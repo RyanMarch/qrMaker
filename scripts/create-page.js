@@ -95,8 +95,7 @@ function run() {
         <!-- Sidebar Navigation -->
         <nav class="page-sidebar" aria-label="Sections">
             <div class="sidebar-site-nav">
-                <a href="/" class="sidebar-site-link">App</a>
-                <a href="/about/" class="sidebar-site-link">About</a>
+                <a href="/app/" class="sidebar-site-link">App</a>
                 <a href="/api/" class="sidebar-site-link">API</a>
             </div>
             <hr class="sidebar-divider">

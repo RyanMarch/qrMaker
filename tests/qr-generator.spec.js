@@ -33,7 +33,7 @@ async function getCanvasImage(page) {
 test.describe('QR Code Generation and Customization', () => {
 
   test('QR code preview displays on load', async ({ page }) => {
-    await page.goto('/');
+    await page.goto('/app/');
     
     // Assert canvas is visible
     const canvas = page.locator('#qr-canvas');
@@ -46,7 +46,7 @@ test.describe('QR Code Generation and Customization', () => {
   });
 
   test('URL content input adjusts the QR code', async ({ page }) => {
-    await page.goto('/');
+    await page.goto('/app/');
 
     const initialImage = await getCanvasImage(page);
 
@@ -61,7 +61,7 @@ test.describe('QR Code Generation and Customization', () => {
   });
 
   test('Segmented style controls adjust the QR code', async ({ page }) => {
-    await page.goto('/');
+    await page.goto('/app/');
 
     const initialImage = await getCanvasImage(page);
 
@@ -85,7 +85,7 @@ test.describe('QR Code Generation and Customization', () => {
   });
 
   test('Slider controls adjust the QR code margins and background corner radius', async ({ page }) => {
-    await page.goto('/');
+    await page.goto('/app/');
 
     const initialImage = await getCanvasImage(page);
 
@@ -111,7 +111,7 @@ test.describe('QR Code Generation and Customization', () => {
   });
 
   test('Export PNG downloads high-fidelity copy matching visual expectations', async ({ page }) => {
-    await page.goto('/');
+    await page.goto('/app/');
 
     // Configure a specific QR code state
     await page.locator('#input-url').fill('https://qrmaker.ryanmarch.me');
@@ -141,7 +141,7 @@ test.describe('QR Code Generation and Customization', () => {
   });
 
   test('Resilience: Empty text input displays default/empty state gracefully', async ({ page }) => {
-    await page.goto('/');
+    await page.goto('/app/');
 
     // Select text tab
     await page.locator('#tab-text').click();
@@ -158,7 +158,7 @@ test.describe('QR Code Generation and Customization', () => {
   });
 
   test('Resilience: Uploading an invalid logo file displays a user friendly toast/error', async ({ page }) => {
-    await page.goto('/');
+    await page.goto('/app/');
 
     // Create a dummy non-image file
     const invalidFilePath = 'temp-dummy-text-file.txt';
