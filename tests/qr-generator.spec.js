@@ -181,4 +181,38 @@ test.describe('QR Code Generation and Customization', () => {
       }
     }
   });
+
+  test('Custom color pickers respond to pointer interactions', async ({ page }) => {
+    await page.goto('/app/');
+
+    // Open background color picker
+    await page.locator('#color-trigger-preview').click();
+    await expect(page.locator('#color-picker-sheet')).toHaveClass(/open/);
+
+    // Get initial hex value
+    const initialBgHex = await page.locator('#color-hex-input').inputValue();
+
+    // Click canvas to select a color
+    const canvasBg = page.locator('#color-spectrum-canvas');
+    await canvasBg.click({ position: { x: 100, y: 50 } });
+
+    // Verify hex input changes
+    const updatedBgHex = await page.locator('#color-hex-input').inputValue();
+    expect(updatedBgHex).not.toEqual(initialBgHex);
+
+    // Open pixel color picker
+    await page.locator('#pixel-color-trigger-preview').click();
+    await expect(page.locator('#pixel-color-picker-sheet')).toHaveClass(/open/);
+
+    // Get initial pixel hex value
+    const initialPixelHex = await page.locator('#pixel-color-hex-input').inputValue();
+
+    // Click pixel canvas to select a color
+    const canvasPixel = page.locator('#pixel-color-spectrum-canvas');
+    await canvasPixel.click({ position: { x: 150, y: 70 } });
+
+    // Verify pixel hex input changes
+    const updatedPixelHex = await page.locator('#pixel-color-hex-input').inputValue();
+    expect(updatedPixelHex).not.toEqual(initialPixelHex);
+  });
 });

@@ -457,7 +457,6 @@ function positionPixelCursorFromHex(hex) {
     }
 }
 
-let isDraggingPixelSpectrum = false;
 function initPixelSpectrumEvents(canvas) {
     if (canvas.dataset.eventsInitialized) return;
     canvas.dataset.eventsInitialized = 'true';
@@ -465,11 +464,9 @@ function initPixelSpectrumEvents(canvas) {
 
     const handleColorSelect = (e) => {
         const rect = canvas.getBoundingClientRect();
-        const clientX = e.touches ? e.touches[0].clientX : e.clientX;
-        const clientY = e.touches ? e.touches[0].clientY : e.clientY;
-        const x = Math.max(0, Math.min(rect.width - 1, clientX - rect.left));
-        const y = Math.max(0, Math.min(rect.height - 1, clientY - rect.top));
-        const rawY = clientY - rect.top;
+        const x = Math.max(0, Math.min(rect.width - 1, e.clientX - rect.left));
+        const y = Math.max(0, Math.min(rect.height - 1, e.clientY - rect.top));
+        const rawY = e.clientY - rect.top;
 
         let hex;
         if (rawY <= 3) hex = '#ffffff';
@@ -489,13 +486,21 @@ function initPixelSpectrumEvents(canvas) {
         scheduleGenerate();
     };
 
-    container.addEventListener('mousedown', (e) => { isDraggingPixelSpectrum = true; handleColorSelect(e); });
-    window.addEventListener('mousemove', (e) => { if (isDraggingPixelSpectrum) handleColorSelect(e); });
-    window.addEventListener('mouseup', () => { isDraggingPixelSpectrum = false; });
-
-    container.addEventListener('touchstart', (e) => { isDraggingPixelSpectrum = true; handleColorSelect(e); }, { passive: true });
-    window.addEventListener('touchmove', (e) => { if (isDraggingPixelSpectrum) handleColorSelect(e); }, { passive: true });
-    window.addEventListener('touchend', () => { isDraggingPixelSpectrum = false; });
+    container.addEventListener('pointerdown', (e) => {
+        container.setPointerCapture(e.pointerId);
+        handleColorSelect(e);
+    });
+    container.addEventListener('pointermove', (e) => {
+        if (container.hasPointerCapture(e.pointerId)) {
+            handleColorSelect(e);
+        }
+    });
+    container.addEventListener('pointerup', (e) => {
+        container.releasePointerCapture(e.pointerId);
+    });
+    container.addEventListener('pointercancel', (e) => {
+        container.releasePointerCapture(e.pointerId);
+    });
 }
 
 function selectPixelSwatch(colorHex) {
@@ -609,7 +614,6 @@ function positionCursorFromHex(hex) {
     }
 }
 
-let isDraggingSpectrum = false;
 function initSpectrumEvents(canvas) {
     if (canvas.dataset.eventsInitialized) return;
     canvas.dataset.eventsInitialized = 'true';
@@ -617,11 +621,9 @@ function initSpectrumEvents(canvas) {
 
     const handleColorSelect = (e) => {
         const rect = canvas.getBoundingClientRect();
-        const clientX = e.touches ? e.touches[0].clientX : e.clientX;
-        const clientY = e.touches ? e.touches[0].clientY : e.clientY;
-        const x = Math.max(0, Math.min(rect.width - 1, clientX - rect.left));
-        const y = Math.max(0, Math.min(rect.height - 1, clientY - rect.top));
-        const rawY = clientY - rect.top;
+        const x = Math.max(0, Math.min(rect.width - 1, e.clientX - rect.left));
+        const y = Math.max(0, Math.min(rect.height - 1, e.clientY - rect.top));
+        const rawY = e.clientY - rect.top;
 
         let hex;
         if (rawY <= 3) hex = '#ffffff';
@@ -637,12 +639,21 @@ function initSpectrumEvents(canvas) {
         updateThemeColor(hex);
     };
 
-    container.addEventListener('mousedown', (e) => { isDraggingSpectrum = true; handleColorSelect(e); });
-    window.addEventListener('mousemove', (e) => { if (isDraggingSpectrum) handleColorSelect(e); });
-    window.addEventListener('mouseup', () => { isDraggingSpectrum = false; });
-    container.addEventListener('touchstart', (e) => { isDraggingSpectrum = true; handleColorSelect(e); e.preventDefault(); }, { passive: false });
-    container.addEventListener('touchmove', (e) => { if (isDraggingSpectrum) { handleColorSelect(e); e.preventDefault(); } }, { passive: false });
-    container.addEventListener('touchend', () => { isDraggingSpectrum = false; });
+    container.addEventListener('pointerdown', (e) => {
+        container.setPointerCapture(e.pointerId);
+        handleColorSelect(e);
+    });
+    container.addEventListener('pointermove', (e) => {
+        if (container.hasPointerCapture(e.pointerId)) {
+            handleColorSelect(e);
+        }
+    });
+    container.addEventListener('pointerup', (e) => {
+        container.releasePointerCapture(e.pointerId);
+    });
+    container.addEventListener('pointercancel', (e) => {
+        container.releasePointerCapture(e.pointerId);
+    });
 }
 
 function togglePasswordVisibility() {
