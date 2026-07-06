@@ -1262,8 +1262,8 @@ label {
 }
 
 
-/* ---- Password input ---- */
-.password-wrapper {
+/* ---- Masked input ---- */
+.masked-wrapper {
     position: relative;
 }
 
@@ -1272,11 +1272,11 @@ label {
     text-security: disc !important;
 }
 
-.password-wrapper .text-input {
+.masked-wrapper .text-input {
     padding-right: 2.5rem;
 }
 
-.password-toggle {
+.mask-toggle {
     position: absolute;
     right: 0.625rem;
     top: 50%;
@@ -1292,7 +1292,7 @@ label {
     transition: color 0.15s;
 }
 
-.password-toggle:hover {
+.mask-toggle:hover {
     color: var(--text-muted);
 }
 
@@ -3780,4 +3780,63 @@ body.has-global-header {
 
 .main-app-footer {
     flex-shrink: 0;
+}
+
+/* Heading Anchor Links */
+.page-content h1,
+.page-content h2,
+.page-content h3 {
+    position: relative;
+    scroll-margin-top: 80px;
+}
+
+.heading-anchor {
+    position: absolute;
+    left: -28px;
+    top: 50%;
+    transform: translateY(-50%);
+    opacity: 0;
+    transition: opacity 0.2s, color 0.2s, transform 0.2s;
+    color: var(--text-subtle);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.page-content h1:hover .heading-anchor,
+.page-content h2:hover .heading-anchor,
+.page-content h3:hover .heading-anchor {
+    opacity: 0.7;
+}
+
+.heading-anchor:hover {
+    opacity: 1 !important;
+    color: var(--accent);
+}
+
+.heading-anchor svg {
+    width: 16px;
+    height: 16px;
+    pointer-events: none;
+}
+
+.heading-anchor.copied {
+    opacity: 1 !important;
+    color: #10b981;
+    transform: translateY(-50%) scale(1.1);
+}
+
+@media (max-width: 640px) {
+    .heading-anchor {
+        left: -20px;
+    }
+
+    .heading-anchor svg {
+        width: 14px;
+        height: 14px;
+    }
 }

@@ -656,9 +656,9 @@ function initSpectrumEvents(canvas) {
     });
 }
 
-function togglePasswordVisibility() {
+function toggleKeyVisibility() {
     const input = document.getElementById('input-wifi-key');
-    const btn = document.getElementById('password-toggle-btn');
+    const btn = document.getElementById('key-visibility-toggle-btn');
     const showing = input.classList.contains('masked-input');
     showing ? input.classList.remove('masked-input') : input.classList.add('masked-input');
     btn.querySelector('.eye-icon').style.display = showing ? 'none' : '';
