@@ -112,7 +112,7 @@
                 <h3 style="margin-top: 2rem; font-size: 1rem;">Plus Endpoint</h3>
                 <p>Higher rate limits, requires Bearer API Key.</p>
                 <div class="endpoint-block">
-                    <span class="method get" style="background: #10b981; color: white;">GET</span>
+                    <span class="method get">GET</span>
                     <code class="endpoint-url">https://qrmaker.ryanmarch.me/api/plus</code>
                 </div>
 
@@ -196,7 +196,7 @@
                     bypass the public rate limits, allowing up to 20 requests per 10 seconds.
                 </p>
                 <div class="code-block-wrapper" style="margin-bottom: 2.5rem;">
-                    <pre><code class="language-http">Authorization: Bearer YOUR_API_KEY</code></pre>
+                    <pre tabindex="0"><code class="language-http">Authorization: Bearer YOUR_API_KEY</code></pre>
                 </div>
 
                 <h3 style="margin-top: 2rem; margin-bottom: 1rem; font-size: 1.25rem;">Request an API Key</h3>
@@ -275,7 +275,7 @@
                 <h2>Query Parameters</h2>
                 <p>Customize your generated QR codes by appending the following parameters to the URL query string.</p>
 
-                <div class="table-wrapper">
+                <div class="table-wrapper" tabindex="0">
                     <table class="params-table">
                         <thead>
                             <tr>
@@ -425,17 +425,17 @@
                     <div class="format-card">
                         <h3>PNG Image (Default)</h3>
                         <p>Returns raw image binary data directly. Ideal for embedding in static markups.</p>
-                        <pre><code>Content-Type: image/png</code></pre>
+                        <pre tabindex="0"><code>Content-Type: image/png</code></pre>
                     </div>
                     <div class="format-card">
                         <h3>SVG XML</h3>
                         <p>Returns standard, lightweight XML vector code.</p>
-                        <pre><code>Content-Type: image/svg+xml; charset=utf-8</code></pre>
+                        <pre tabindex="0"><code>Content-Type: image/svg+xml; charset=utf-8</code></pre>
                     </div>
                     <div class="format-card">
                         <h3>Base64 Data JSON</h3>
                         <p>Returns a clean JSON object containing a Base64-encoded Data URI string.</p>
-                        <pre><code class="language-json">{
+                        <pre tabindex="0"><code class="language-json">{
   "data": "data:image/png;base64,iVBORw0KGgo..."
 }</code></pre>
                     </div>
@@ -460,7 +460,7 @@
                             <div class="form-group">
                                 <label for="play-fg">Foreground Color</label>
                                 <div class="color-picker-input-wrapper">
-                                    <input type="color" id="play-fg-picker" value="#000">
+                                    <input type="color" id="play-fg-picker" value="#000" aria-label="Choose foreground color">
                                     <input type="text" id="play-fg" value="000" pattern="^[0-9a-fA-F]{6}$"
                                         maxlength="6">
                                 </div>
@@ -468,7 +468,7 @@
                             <div class="form-group">
                                 <label for="play-bg">Background Color</label>
                                 <div class="color-picker-input-wrapper">
-                                    <input type="color" id="play-bg-picker" value="#ffffff">
+                                    <input type="color" id="play-bg-picker" value="#ffffff" aria-label="Choose background color">
                                     <input type="text" id="play-bg" value="ffffff" pattern="^[0-9a-fA-F]{6}$"
                                         maxlength="6">
                                 </div>
@@ -541,7 +541,7 @@
 
 
                     <div class="url-output">
-                        <label>Request URL</label>
+                        <label for="playground-url">Request URL</label>
                         <div class="url-field">
                             <input type="text" id="playground-url" readonly>
                             <button class="btn-copy" id="btn-copy-url" title="Copy URL">
@@ -577,8 +577,8 @@
                             Embed QR codes directly in your HTML pages using a standard <code>&lt;img&gt;</code> tag.
                             Unauthenticated requests are subject to rate limits.
                         </p>
-                        <div class="code-block-wrapper">
-                            <pre><code class="language-html">&lt;img src="https://qrmaker.ryanmarch.me/api/qr?content=https%3A%2F%2Fqrmaker.ryanmarch.me&amp;size=512&amp;fgColor=327DFF" alt="QR Code" /&gt;</code></pre>
+                        <div class="code-block-wrapper" tabindex="0">
+                            <pre tabindex="0"><code class="language-html">&lt;img src="https://qrmaker.ryanmarch.me/api/qr?content=https%3A%2F%2Fqrmaker.ryanmarch.me&amp;size=512&amp;fgColor=327DFF" alt="QR Code" /&gt;</code></pre>
                             <button class="btn-copy-code" data-target="html">Copy</button>
                         </div>
                         <p style="margin-top: 12px; font-size: 13px; color: var(--text-secondary);">
@@ -588,15 +588,15 @@
                         </p>
                     </div>
                     <div class="tab-content" id="tab-curl">
-                        <div class="code-block-wrapper">
-                            <pre><code class="language-bash"># Download a high-res custom SVG QR code using your API Key
+                        <div class="code-block-wrapper" tabindex="0">
+                            <pre tabindex="0"><code class="language-bash"># Download a high-res custom SVG QR code using your API Key
 curl -H "Authorization: Bearer YOUR_API_KEY" -o qr.svg "https://qrmaker.ryanmarch.me/api/plus?content=https%3A%2F%2Fqrmaker.ryanmarch.me&amp;format=svg&amp;fgColor=327DFF"</code></pre>
                             <button class="btn-copy-code" data-target="curl">Copy</button>
                         </div>
                     </div>
                     <div class="tab-content" id="tab-js">
-                        <div class="code-block-wrapper">
-                            <pre><code class="language-javascript">// Fetch Base64 data from the API using your API Key
+                        <div class="code-block-wrapper" tabindex="0">
+                            <pre tabindex="0"><code class="language-javascript">// Fetch Base64 data from the API using your API Key
 fetch("https://qrmaker.ryanmarch.me/api/plus?content=https%3A%2F%2Fqrmaker.ryanmarch.me&amp;format=base64", {
   headers: {
     "Authorization": "Bearer YOUR_API_KEY"
@@ -616,7 +616,7 @@ fetch("https://qrmaker.ryanmarch.me/api/plus?content=https%3A%2F%2Fqrmaker.ryanm
                             key private while allowing direct inline images on the frontend.
                         </p>
                         <div class="code-block-wrapper">
-                            <pre><code class="language-javascript">// Example Node.js/Express proxy endpoint (/api/qr)
+                            <pre tabindex="0"><code class="language-javascript">// Example Node.js/Express proxy endpoint (/api/qr)
 const express = require('express');
 const fetch = require('node-fetch'); // or global fetch in Node 18+
 const app = express();

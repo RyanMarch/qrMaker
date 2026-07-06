@@ -14,7 +14,7 @@
     --accent-readable: #86efac;
     --text-main: #fafafa;
     --text-muted: #d4d4d8;
-    --text-subtle: #a1a1aa;
+    --text-subtle: #b8b8be;
     --border-color: #393941;
     --border-color-strong: #505067;
     --input-bg: #121214;
@@ -454,7 +454,7 @@ body {
 }
 
 .method.get {
-    background-color: #10b981;
+    background-color: #047857;
 }
 
 .endpoint-url {

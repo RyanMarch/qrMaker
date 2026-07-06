@@ -573,7 +573,7 @@ body {
 }
 
 .feature-detail-card a {
-    color: var(--accent-hover);
+    color: var(--accent-readable);
     text-decoration: none;
     font-weight: 800;
 }

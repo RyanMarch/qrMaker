@@ -61,6 +61,7 @@
     <global-header active-page="app"></global-header>
 
     <main class="container" id="tool-container">
+        <h1 class="sr-only" style="position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); border: 0;">QR Maker - Beautiful Custom QR Code Generator</h1>
 
         <!-- Preview Column -->
         <section class="preview-section" aria-label="QR Code Preview">
@@ -218,8 +219,8 @@
                             </svg>
                             Contact
                         </button>
-                        <div class="tab-more-container" id="tab-more-container">
-                            <button class="tab" id="tab-more" role="button" aria-haspopup="true" aria-expanded="false"
+                        <div class="tab-more-container" id="tab-more-container" role="none">
+                            <button class="tab" id="tab-more" role="tab" aria-haspopup="true" aria-expanded="false"
                                 onclick="toggleTabDropdown(event)">
                                 <span class="tab-more-btn-content"
                                     style="display: flex; flex-direction: column; align-items: center; gap: 0.25rem;">
@@ -705,7 +706,7 @@
                     </div>
 
                     <div class="inspector-row">
-                        <div class="property-label">Radius</div>
+                        <label for="bg-corners-slider" class="property-label">Radius</label>
                         <div class="property-control slider-row">
                             <input type="range" id="bg-corners-slider" min="0" max="100" value="50"
                                 oninput="updateCornerRadiusLabel(); scheduleGenerate()">
@@ -714,7 +715,7 @@
                     </div>
 
                     <div class="inspector-row">
-                        <div class="property-label">Margin</div>
+                        <label for="margin-slider" class="property-label">Margin</label>
                         <div class="property-control slider-row">
                             <input type="range" id="margin-slider" min="0" max="10" value="2"
                                 oninput="updateMarginLabel(); scheduleGenerate()">
@@ -802,7 +803,7 @@
                         </div>
 
                         <div class="inspector-row" style="margin-top: 0.5rem;">
-                            <div class="property-label">Icon Size</div>
+                            <label for="icon-size-slider" class="property-label">Icon Size</label>
                             <div class="property-control slider-row">
                                 <input type="range" id="icon-size-slider" min="10" max="30" value="20"
                                     oninput="updateIconSizeLabel(); scheduleGenerate()">
@@ -881,7 +882,7 @@
 
                         <div class="logo-controls" id="logo-controls" style="display: none; margin-top: 0.5rem;">
                             <div class="inspector-row">
-                                <div class="property-label">Logo Size</div>
+                                <label for="logo-size-slider" class="property-label">Logo Size</label>
                                 <div class="property-control slider-row">
                                     <input type="range" id="logo-size-slider" min="10" max="30" value="20"
                                         oninput="updateLogoSizeLabel(); scheduleGenerate()">
@@ -1055,7 +1056,7 @@
                                         <div class="api-cta-tag">DEVELOPER API</div>
                                         <!-- <div class="api-cta-badge">REST</div> -->
                                     </div>
-                                    <h4 class="api-cta-title">Integrate programmatically</h4>
+                                    <h2 class="api-cta-title">Integrate programmatically</h2>
                                     <p class="api-cta-desc">Generate custom QR codes dynamically on the fly with our
                                         lightning-fast API service.</p>
                                     <div class="api-cta-code">
@@ -1079,7 +1080,7 @@
                             <div class="shortcut-cta-tag">APPLE SHORTCUTS</div>
                         </div>
 
-                        <h4 class="shortcut-cta-title">Create from share sheet</h4>
+                        <h2 class="shortcut-cta-title">Create from share sheet</h2>
 
                         <p class="shortcut-cta-desc">Download an iOS/macOS system shortcut to instantly turn highlighted
                             text or links into custom QR codes within any app.</p>
