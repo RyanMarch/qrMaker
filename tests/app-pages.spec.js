@@ -51,17 +51,17 @@ test.describe('Pages and Layout Tests', () => {
     expect(response?.status()).toBe(200);
     await expect(page.locator('h1')).toContainText('Developer API');
   });
-  
+
   test('User Documentation Page loads successfully', async ({ page }) => {
     const response = await page.goto('/docs/');
     expect(response?.status()).toBe(200);
-    await expect(page.locator('h1')).toContainText('User Manual & Guide');
+    await expect(page.locator('h1')).toContainText('User Guide');
   });
 
   test('Terms and Privacy Page loads successfully', async ({ page }) => {
     const response = await page.goto('/terms/');
     expect(response?.status()).toBe(200);
-    
+
     // The terms page contains multiple h1 sections (e.g. Terms and Conditions, Privacy Policy)
     const headings = page.locator('h1');
     await expect(headings.first()).toContainText('Terms and Conditions');
@@ -78,7 +78,7 @@ test.describe('Pages and Layout Tests', () => {
 
   test('Theme switcher updates page classes and saves preference', async ({ page }) => {
     await page.goto('/app/');
-    
+
     // Clear storage to start fresh
     await page.evaluate(() => localStorage.removeItem('qrm-theme'));
     await page.reload();

@@ -172,8 +172,7 @@
                         <p>Download an iOS/macOS shortcut to generate QR codes from the share sheet.
                         </p>
                     </div>
-                    <a href="/shortcut"
-                        id="btn-download-shortcut" class="btn-download" target="_blank" rel="noopener">
+                    <a href="/shortcut" id="btn-download-shortcut" class="btn-download" target="_blank" rel="noopener">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16"
                             height="16" style="display: inline-block; vertical-align: text-top; margin-right: 4px;">
                             <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />
@@ -446,7 +445,8 @@
             <!-- Playground / Try it out -->
             <article id="playground" class="doc-section">
                 <h2>Interactive Playground</h2>
-                <p>Construct your API request parameters below and preview the generated QR code instantly.</p>
+                <p>Construct your API request with parameters below and preview the generated QR code instantly in your
+                    browser.</p>
 
                 <div class="playground-wrapper">
                     <div class="playground-controls">
@@ -459,7 +459,8 @@
                             <div class="form-group">
                                 <label for="play-fg">Foreground Color</label>
                                 <div class="color-picker-input-wrapper">
-                                    <input type="color" id="play-fg-picker" value="#000" aria-label="Choose foreground color">
+                                    <input type="color" id="play-fg-picker" value="#000"
+                                        aria-label="Choose foreground color">
                                     <input type="text" id="play-fg" value="000" pattern="^[0-9a-fA-F]{6}$"
                                         maxlength="6">
                                 </div>
@@ -467,7 +468,8 @@
                             <div class="form-group">
                                 <label for="play-bg">Background Color</label>
                                 <div class="color-picker-input-wrapper">
-                                    <input type="color" id="play-bg-picker" value="#ffffff" aria-label="Choose background color">
+                                    <input type="color" id="play-bg-picker" value="#ffffff"
+                                        aria-label="Choose background color">
                                     <input type="text" id="play-bg" value="ffffff" pattern="^[0-9a-fA-F]{6}$"
                                         maxlength="6">
                                 </div>
@@ -577,7 +579,8 @@
                             Unauthenticated requests are subject to rate limits.
                         </p>
                         <div class="code-block-wrapper" tabindex="0">
-                            <pre tabindex="0"><code class="language-html">&lt;img src="https://qrmaker.ryanmarch.me/api/qr?content=https%3A%2F%2Fqrmaker.ryanmarch.me&amp;size=512&amp;fgColor=327DFF" alt="QR Code" /&gt;</code></pre>
+                            <pre
+                                tabindex="0"><code class="language-html">&lt;img src="https://qrmaker.ryanmarch.me/api/qr?content=https%3A%2F%2Fqrmaker.ryanmarch.me&amp;size=512&amp;fgColor=327DFF" alt="QR Code" /&gt;</code></pre>
                             <button class="btn-copy-code" data-target="html">Copy</button>
                         </div>
                         <p style="margin-top: 12px; font-size: 13px; color: var(--text-secondary);">
@@ -588,7 +591,8 @@
                     </div>
                     <div class="tab-content" id="tab-curl">
                         <div class="code-block-wrapper" tabindex="0">
-                            <pre tabindex="0"><code class="language-bash"># Download a high-res custom SVG QR code using your API Key
+                            <pre
+                                tabindex="0"><code class="language-bash"># Download a high-res custom SVG QR code using your API Key
 curl -H "Authorization: Bearer YOUR_API_KEY" -o qr.svg "https://qrmaker.ryanmarch.me/api/plus?content=https%3A%2F%2Fqrmaker.ryanmarch.me&amp;format=svg&amp;fgColor=327DFF"</code></pre>
                             <button class="btn-copy-code" data-target="curl">Copy</button>
                         </div>
