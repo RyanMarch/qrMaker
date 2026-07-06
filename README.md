@@ -13,7 +13,7 @@
 
 It runs entirely in your web browser. There are no databases, accounts, or trackers. 
 
-For developers, the project includes a companion API hosted on Cloudflare Pages to generate QR codes on the fly. For desktop and mobile integration, it features a native Apple Shortcut to capture data straight from your system sharing utilities.
+For developers, the project includes a companion API to generate custom QR codes on the fly. For desktop and mobile integration, it features a native Apple Shortcut to capture data straight from your system sharing utilities.
 
 <p align="center">
   <!-- <img src="about/images/app-overview.png" alt="QR Maker Interface (Dark)" width="48%" /> -->
@@ -72,7 +72,7 @@ QR Maker integrates deeply with your desktop or mobile environments for faster w
 
 ### Native Apple Shortcut
 Skip copying and pasting entirely. Use this Apple Shortcut to instantly turn any highlighted text, link, or phone number into a customized QR code directly from your Mac's right-click Quick Actions menu or your iPhone/iPad's native Share Sheet.
-* **Download link:** [Get the Apple Shortcut](https://www.icloud.com/shortcuts/a308b98b830943278700d20e5ff07bc6)
+* **Download link:** [Get the Apple Shortcut](https://qrmaker.ryanmarch.me/shortcut)
 
 ### Offline App
 Install QR Maker directly to your system hard drive to design, configure, and download custom QR codes completely offline:
@@ -95,7 +95,7 @@ For an interactive experience, please visit the hosted **[Developer API Document
 * Auto-generated **Code Examples** (JavaScript, Python, curl, etc.)
 * Self-service **API Key Registration**
 
-The project's serverless API is hosted on Cloudflare Pages, allowing developers to request custom QR codes programmatically using simple web requests.
+The project's API allows developers to request custom QR codes programmatically using simple web requests.
 
 <p align="center">
   <img src="about/images/api-docs-interactive-playground.png" alt="Interactive API Documentation Playground" width="90%" />

@@ -15,7 +15,7 @@ function getHeaderHTML(activePage = '', showBadge = '', sidebarToggle = false) {
         <div class="header-right">
             <nav class="header-nav" aria-label="Main Navigation">
                 <a href="/app/" class="nav-link ${activePage === 'app' ? 'active' : ''}">App</a>
-                <a href="/api/" class="nav-link ${activePage === 'api' ? 'active' : ''}">Docs</a>
+                <a href="/docs/" class="nav-link ${activePage === 'docs' || activePage === 'api' ? 'active' : ''}">Docs</a>
             </nav>
             <button id="theme-toggle" class="theme-toggle" aria-label="Toggle theme">
                 <svg class="sun-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
@@ -33,7 +33,7 @@ function getHeaderHTML(activePage = '', showBadge = '', sidebarToggle = false) {
     <div id="mobile-nav-menu" class="mobile-nav-menu">
         <nav class="mobile-menu-nav">
             <a href="/app/" class="mobile-menu-link ${activePage === 'app' ? 'active' : ''}">App</a>
-            <a href="/api/" class="mobile-menu-link ${activePage === 'api' ? 'active' : ''}">Docs</a>
+            <a href="/docs/" class="mobile-menu-link ${activePage === 'docs' || activePage === 'api' ? 'active' : ''}">Docs</a>
         </nav>
     </div>
     ` : ''}
@@ -43,7 +43,7 @@ function getHeaderHTML(activePage = '', showBadge = '', sidebarToggle = false) {
 function getFooterHTML() {
     return `
     <footer class="page-footer">
-        <p class="footer-copyright">&copy; 2026 QR Maker | <a href="/terms/" class="footer-link footer-terms">Terms</a> | <a href="/terms/#privacy-policy" class="footer-link">Privacy</a> | <a href="/api/" class="footer-link">API</a> | <a href="/" class="footer-link">About</a><span class="footer-app-link"> | <a href="/app/" class="footer-link">QR Maker</a></span></p>
+        <p class="footer-copyright">&copy; 2026 QR Maker | <a href="/terms/" class="footer-link footer-terms">Terms</a> | <a href="/terms/#privacy-policy" class="footer-link">Privacy</a> | <a href="/docs/" class="footer-link">Docs</a> | <a href="/api/" class="footer-link">API</a> | <a href="/" class="footer-link">About</a><span class="footer-app-link"> | <a href="/app/" class="footer-link">QR Maker</a></span></p>
     </footer>
     `;
 }
@@ -106,6 +106,9 @@ class TemplateHandler {
 
 export async function onRequest(context) {
     const url = new URL(context.request.url);
+    if (url.pathname === '/shortcut' || url.pathname === '/shortcut/') {
+        return Response.redirect('https://www.icloud.com/shortcuts/11c29006a41f48df90dfadf85cd86dc1', 302);
+    }
     if ((url.hostname === 'localhost' || url.hostname === '127.0.0.1') && url.pathname === '/sw.js') {
         return new Response(`
             self.addEventListener('install', () => { self.skipWaiting(); });
@@ -119,6 +122,31 @@ export async function onRequest(context) {
         `, {
             headers: { 'Content-Type': 'application/javascript', 'Cache-Control': 'no-store' }
         });
+    }
+
+    const rangeHeader = context.request.headers.get('range');
+    if (rangeHeader && url.pathname.endsWith('.mp4')) {
+        const fullResponse = await context.next();
+        if (fullResponse.status === 200) {
+            const arrayBuffer = await fullResponse.arrayBuffer();
+            const totalLength = arrayBuffer.byteLength;
+
+            const parts = rangeHeader.replace(/bytes=/, "").split("-");
+            const start = parseInt(parts[0], 10);
+            const end = parts[1] ? parseInt(parts[1], 10) : totalLength - 1;
+
+            const chunk = arrayBuffer.slice(start, end + 1);
+            const headers = new Headers(fullResponse.headers);
+            headers.set('Content-Range', `bytes ${start}-${end}/${totalLength}`);
+            headers.set('Content-Length', chunk.byteLength.toString());
+            headers.set('Accept-Ranges', 'bytes');
+
+            return new Response(chunk, {
+                status: 206,
+                statusText: 'Partial Content',
+                headers
+            });
+        }
     }
 
     let response = await context.next();

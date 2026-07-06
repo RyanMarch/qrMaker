@@ -61,7 +61,9 @@
     <global-header active-page="app"></global-header>
 
     <main class="container" id="tool-container">
-        <h1 class="sr-only" style="position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); border: 0;">QR Maker - Beautiful Custom QR Code Generator</h1>
+        <h1 class="sr-only"
+            style="position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); border: 0;">
+            QR Maker - Beautiful Custom QR Code Generator</h1>
 
         <!-- Preview Column -->
         <section class="preview-section" aria-label="QR Code Preview">
@@ -309,13 +311,12 @@
                             </div>
                             <div class="control-group">
                                 <label for="input-wifi-key">Key</label>
-                                <div class="password-wrapper">
+                                <div class="masked-wrapper">
                                     <input type="text" id="input-wifi-key" class="text-input masked-input"
-                                        placeholder="Network Key" oninput="scheduleGenerate()" autocomplete="off"
-                                        spellcheck="false">
-                                    <button class="password-toggle" id="password-toggle-btn"
-                                        onclick="togglePasswordVisibility()" aria-label="Toggle password visibility"
-                                        title="Show/hide password">
+                                        placeholder="Network Key" oninput="scheduleGenerate()" spellcheck="false">
+                                    <button class="mask-toggle" id="key-visibility-toggle-btn"
+                                        onclick="toggleKeyVisibility()" aria-label="Toggle visibility"
+                                        title="Show/hide key">
                                         <svg class="eye-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                                             stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16"
                                             height="16">
@@ -503,21 +504,24 @@
                             <div style="display: flex; gap: 0.5rem; align-items: flex-end; width: 100%;">
                                 <!-- Background Color Trigger Column -->
                                 <div style="flex: 1; display: flex; flex-direction: column; gap: 0.25rem;">
-                                    <span style="font-size: 0.725rem; color: var(--text-subtle); font-weight: 500; user-select: none;">Background</span>
+                                    <span
+                                        style="font-size: 0.725rem; color: var(--text-subtle); font-weight: 500; user-select: none;">Background</span>
                                     <div class="color-trigger-btn" id="color-trigger-btn">
                                         <span class="color-trigger-preview" id="color-trigger-preview"
                                             onclick="toggleColorPickerSheet(); event.stopPropagation();"
                                             title="Toggle background color picker"></span>
-                                        <input type="text" class="color-trigger-hex" id="color-hex-input" value="#FFFFFF"
-                                            maxlength="7" placeholder="#FFFFFF" aria-label="Background color code"
-                                            autocomplete="off">
+                                        <input type="text" class="color-trigger-hex" id="color-hex-input"
+                                            value="#FFFFFF" maxlength="7" placeholder="#FFFFFF"
+                                            aria-label="Background color code" autocomplete="off">
                                     </div>
                                 </div>
 
                                 <!-- Link Toggle Button (Aligned with buttons) -->
-                                <button type="button" class="color-match-btn active" id="pixel-auto-btn" onclick="togglePixelAutoContrast()"
-                                    title="Auto Contrast (Sync with Background)" style="margin-top: 0; margin-bottom: 0; align-self: flex-end;">
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16">
+                                <button type="button" class="color-match-btn active" id="pixel-auto-btn"
+                                    onclick="togglePixelAutoContrast()" title="Auto Contrast (Sync with Background)"
+                                    style="margin-top: 0; margin-bottom: 0; align-self: flex-end;">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                        stroke-linecap="round" stroke-linejoin="round" width="16" height="16">
                                         <circle cx="12" cy="12" r="10"></circle>
                                         <path d="M12 2v20"></path>
                                         <path d="M12 18a6 6 0 0 0 0-12v12z" fill="currentColor"></path>
@@ -526,13 +530,15 @@
 
                                 <!-- Pixel Color Trigger Column -->
                                 <div style="flex: 1; display: flex; flex-direction: column; gap: 0.25rem;">
-                                    <span style="font-size: 0.725rem; color: var(--text-subtle); font-weight: 500; user-select: none;">Pixels</span>
+                                    <span
+                                        style="font-size: 0.725rem; color: var(--text-subtle); font-weight: 500; user-select: none;">Pixels</span>
                                     <div class="color-trigger-btn" id="pixel-color-trigger-btn">
                                         <span class="color-trigger-preview" id="pixel-color-trigger-preview"
                                             onclick="togglePixelColorPickerSheet(); event.stopPropagation();"
                                             title="Toggle pixel color picker"></span>
-                                        <input type="text" class="color-trigger-hex" id="pixel-color-hex-input" value="#000000"
-                                            maxlength="7" placeholder="#000000" aria-label="Pixel color code" autocomplete="off">
+                                        <input type="text" class="color-trigger-hex" id="pixel-color-hex-input"
+                                            value="#000000" maxlength="7" placeholder="#000000"
+                                            aria-label="Pixel color code" autocomplete="off">
                                     </div>
                                 </div>
                             </div>
@@ -634,19 +640,26 @@
                                             style="background-color: #ffffff;" onclick="selectPixelSwatch('#ffffff')"
                                             title="White"></button>
                                         <button type="button" class="swatch-btn color-swatch"
-                                            style="background-color: #ef4444;" onclick="selectPixelSwatch('#ef4444')"></button>
+                                            style="background-color: #ef4444;"
+                                            onclick="selectPixelSwatch('#ef4444')"></button>
                                         <button type="button" class="swatch-btn color-swatch"
-                                            style="background-color: #f97316;" onclick="selectPixelSwatch('#f97316')"></button>
+                                            style="background-color: #f97316;"
+                                            onclick="selectPixelSwatch('#f97316')"></button>
                                         <button type="button" class="swatch-btn color-swatch"
-                                            style="background-color: #eab308;" onclick="selectPixelSwatch('#eab308')"></button>
+                                            style="background-color: #eab308;"
+                                            onclick="selectPixelSwatch('#eab308')"></button>
                                         <button type="button" class="swatch-btn color-swatch"
-                                            style="background-color: #22c55e;" onclick="selectPixelSwatch('#22c55e')"></button>
+                                            style="background-color: #22c55e;"
+                                            onclick="selectPixelSwatch('#22c55e')"></button>
                                         <button type="button" class="swatch-btn color-swatch"
-                                            style="background-color: #06b6d4;" onclick="selectPixelSwatch('#06b6d4')"></button>
+                                            style="background-color: #06b6d4;"
+                                            onclick="selectPixelSwatch('#06b6d4')"></button>
                                         <button type="button" class="swatch-btn color-swatch"
-                                            style="background-color: #0044ff;" onclick="selectPixelSwatch('#0044ff')"></button>
+                                            style="background-color: #0044ff;"
+                                            onclick="selectPixelSwatch('#0044ff')"></button>
                                         <button type="button" class="swatch-btn color-swatch"
-                                            style="background-color: #8E00FE;" onclick="selectPixelSwatch('#8E00FE')"></button>
+                                            style="background-color: #8E00FE;"
+                                            onclick="selectPixelSwatch('#8E00FE')"></button>
                                     </div>
                                 </div>
                             </div>
@@ -1057,7 +1070,7 @@
                                         <!-- <div class="api-cta-badge">REST</div> -->
                                     </div>
                                     <h2 class="api-cta-title">Integrate programmatically</h2>
-                                    <p class="api-cta-desc">Generate custom QR codes dynamically on the fly with our
+                                    <p class="api-cta-desc">Generate custom QR codes dynamically on the fly with a
                                         lightning-fast API service.</p>
                                     <div class="api-cta-code">
                                         <code>GET /api/qr?text=Hello+World</code>
@@ -1086,7 +1099,7 @@
                             text or links into custom QR codes within any app.</p>
 
                         <div class="shortcut-card-widget-centered">
-                            <a href="https://www.icloud.com/shortcuts/a308b98b830943278700d20e5ff07bc6">
+                            <a href="/shortcut">
                                 <div class="sidebar-native-shortcuts-card">
                                     <div class="card-top-row">
                                         <svg class="widget-qr-icon" viewBox="0 0 24 24" fill="none" stroke="#ffffff"
@@ -1115,7 +1128,7 @@
                         </div>
 
                         <div class="shortcut-badge-centered-wrapper">
-                            <a href="https://www.icloud.com/shortcuts/a308b98b830943278700d20e5ff07bc6"
+                            <a href="/shortcut"
                                 class="sidebar-apple-shortcuts-badge" target="_blank" rel="noopener">
                                 <picture class="apple-shortcuts-logo">
                                     <source srcset="/assets/images/shortcuts-icon.avif" type="image/avif">
