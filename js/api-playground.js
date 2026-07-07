@@ -172,7 +172,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 },
                 item: [
                     {
-                        name: "Generate QR Code (Public)",
+                        name: "Generate QR Code (Free)",
                         request: {
                             method: "GET",
                             header: [],
@@ -182,7 +182,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         response: []
                     },
                     {
-                        name: "Generate QR Code (Secure)",
+                        name: "Generate QR Code (Plus)",
                         request: {
                             method: "GET",
                             header: [{ key: "Authorization", value: "Bearer YOUR_API_KEY", type: "text", description: "Replace YOUR_API_KEY with your generated API key" }],
