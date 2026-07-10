@@ -117,9 +117,9 @@ The project's API allows developers to request custom QR codes programmatically 
 
 [![Interactive API Documentation Playground](assets/images/api-docs-interactive-playground.png)][api]
 
-| | |
+| Code examples and Downloads | Postman & Bruno collection examples |
 | :---: | :---: |
-| Code examples and Downloads [![API Documentation Resources](assets/images/api-docs-resources.png)][api] | Postman & Bruno collection examples [![API Documentation Bruno Example](assets/images/api-docs-bruno-example.png)][api] |
+| [![API Documentation Resources](assets/images/api-docs-resources.png)][api] | [![API Documentation Bruno Example](assets/images/api-docs-bruno-example.png)][api] |
 
 ### Endpoints
 
@@ -128,8 +128,7 @@ QR Maker provides two endpoints depending on your integration needs:
 #### 1. Public Endpoint (Rate-limited, no authentication required)
 Recommended for simple HTML `<img>` tag embeds.
 ```http
-GET [https://qrmaker.ryanmarch.me/api/qr](https://qrmaker.ryanmarch.me/api/qr)
-
+GET https://qrmaker.ryanmarch.me/api/qr
 ```
 
 #### 2. Secure Endpoint (20 req/10s limit, requires Bearer API Key)
@@ -137,8 +136,7 @@ GET [https://qrmaker.ryanmarch.me/api/qr](https://qrmaker.ryanmarch.me/api/qr)
 Recommended for server-side proxies, custom scripts, and high-volume integrations.
 
 ```http
-GET [https://qrmaker.ryanmarch.me/api/plus](https://qrmaker.ryanmarch.me/api/plus)
-
+GET https://qrmaker.ryanmarch.me/api/plus
 ```
 
 ### Authentication
@@ -183,8 +181,7 @@ Returns a raw PNG image file.
 You can embed the API URL directly in a standard `<img>` tag. Unauthenticated requests are allowed (subject to rate limiting):
 
 ```html
-<img src="[https://qrmaker.ryanmarch.me/api/qr?content=Hello&size=512&fgColor=ff0000](https://qrmaker.ryanmarch.me/api/qr?content=Hello&size=512&fgColor=ff0000)" alt="QR Code" />
-
+<img src="https://qrmaker.ryanmarch.me/api/qr?content=Hello&size=512&fgColor=ffffff&bgColor=1B5256" alt="QR Code for Hello" />
 ```
 
 #### 2. SVG
