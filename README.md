@@ -1,24 +1,32 @@
 <div align="center">
-  <img src="assets/favicon/web-app-manifest-512x512.png" alt="QR Maker Logo" width="128" height="128" />
 
-  <h1>QR Maker</h1>
-  <p><i>A simple, browser-based tool to create and style beautiful QR codes.</i></p>
+<div style="max-width: 80%">
 
-  [![Launch App](https://img.shields.io/badge/Launch_QR_Maker-3b82f6?style=for-the-badge&logoColor=white)](https://qrmaker.ryanmarch.me)
+[![QR Maker Logo](assets/images/qrmaker-logo-with-text.png)][demo]
+
 </div>
+
+# QR Maker
+
+<span style="font-size: 20px; font-weight: 600;">A simple, browser-based tool to create and style beautiful QR codes.</span>
+
+[![Launch App](https://img.shields.io/badge/Launch_QR_Maker-3b82f6?style=for-the-badge&logoColor=white)][demo]
+
+</div>
+
 
 ## Overview
 
-[QR Maker](https://qrmaker.ryanmarch.me) is a lightweight web application for designing custom QR codes. It lets you change pixel shapes, corner marker styles, colors, and add logos or icons.
+[QR Maker][demo]is a lightweight web application for designing custom QR codes. It lets you change pixel shapes, corner marker styles, colors, and add logos or icons.
 
 It runs entirely in your web browser. There are no databases, accounts, or trackers. 
 
 For developers, the project includes a companion API to generate custom QR codes on the fly. For desktop and mobile integration, it features a native Apple Shortcut to capture data straight from your system sharing utilities.
 
-<p align="center">
-  <!-- <img src="about/images/app-overview.png" alt="QR Maker Interface (Dark)" width="48%" /> -->
-  <img src="about/images/app-overview-light-theme.png" alt="QR Maker Interface (Light)" width="85%" />
-</p>
+
+View the website for all features and integrations: **[Open QR Maker website][demo]**
+
+[![QR Maker Interface (Light)](assets/images/app-overview-light-theme.png)][demo]
 
 ## Table of Contents
 
@@ -58,9 +66,7 @@ And more:
 * **Custom Logos:** Drag and drop your own PNG or JPG logo file directly into the center.
 * **Card Backings:** Adjust the size of the icon and place a square, rounded, or circular backing card behind it to clear out overlapping QR modules.
 
-<p align="center">
-  <img src="about/images/app-icon-emoji-alien.png" alt="Custom Emoji and Styling" width="70%" />
-</p>
+[![Custom Emoji and Styling](assets/images/app-icon-emoji-alien.png)][demo]
 
 ### 4. High-Quality Outputs & Sharing
 * **File Formats:** Download your QR code as a vector-based SVG (ideal for print layouts) or as a PNG (available in 512px, 1024px, and 2048px widths).
@@ -72,7 +78,18 @@ QR Maker integrates deeply with your desktop or mobile environments for faster w
 
 ### Native Apple Shortcut
 Skip copying and pasting entirely. Use this Apple Shortcut to instantly turn any highlighted text, link, or phone number into a customized QR code directly from your Mac's right-click Quick Actions menu or your iPhone/iPad's native Share Sheet.
-* **Download link:** [Get the Apple Shortcut](https://qrmaker.ryanmarch.me/shortcut)
+
+**[Get the Apple Shortcut][shortcut]**:
+
+<p align="center">
+  <a href="https://qrmaker.ryanmarch.me/shortcut">
+    <img src="assets/images/shortcuts-module.png" alt="Apple Shortcuts module" width="350" />
+  </a>
+  <br />
+  <a href="https://qrmaker.ryanmarch.me/shortcut">
+    <img src="assets/images/shortcuts-add-button.png" alt="Add to Apple Shortcuts button" width="260" />
+  </a>
+</p>
 
 ### Offline App
 Install QR Maker directly to your system hard drive to design, configure, and download custom QR codes completely offline:
@@ -80,6 +97,7 @@ Install QR Maker directly to your system hard drive to design, configure, and do
 * **iOS / iPadOS (Safari):** Tap the standard **Share** button and select **Add to Home Screen**.
 * **Chrome / Edge / Firefox:** Click the installation indicator icon in the address URL bar to add the app directly to your desktop workspace or device app drawer.
 
+[![QR Maker mobile device web app](assets/images/qr-maker-multi-device.png)][demo]
 
 ## Tips for Success
 
@@ -97,9 +115,11 @@ For an interactive experience, please visit the hosted **[Developer API Document
 
 The project's API allows developers to request custom QR codes programmatically using simple web requests.
 
-<p align="center">
-  <img src="about/images/api-docs-interactive-playground.png" alt="Interactive API Documentation Playground" width="90%" />
-</p>
+[![Interactive API Documentation Playground](assets/images/api-docs-interactive-playground.png)][api]
+
+| | |
+| :---: | :---: |
+| Code examples and Downloads [![API Documentation Resources](assets/images/api-docs-resources.png)][api] | Postman & Bruno collection examples [![API Documentation Bruno Example](assets/images/api-docs-bruno-example.png)][api] |
 
 ### Endpoints
 
@@ -108,7 +128,8 @@ QR Maker provides two endpoints depending on your integration needs:
 #### 1. Public Endpoint (Rate-limited, no authentication required)
 Recommended for simple HTML `<img>` tag embeds.
 ```http
-GET https://qrmaker.ryanmarch.me/api/qr
+GET [https://qrmaker.ryanmarch.me/api/qr](https://qrmaker.ryanmarch.me/api/qr)
+
 ```
 
 #### 2. Secure Endpoint (20 req/10s limit, requires Bearer API Key)
@@ -116,9 +137,9 @@ GET https://qrmaker.ryanmarch.me/api/qr
 Recommended for server-side proxies, custom scripts, and high-volume integrations.
 
 ```http
-GET https://qrmaker.ryanmarch.me/api/plus
-```
+GET [https://qrmaker.ryanmarch.me/api/plus](https://qrmaker.ryanmarch.me/api/plus)
 
+```
 
 ### Authentication
 
@@ -126,10 +147,10 @@ For the secure `/api/plus` endpoint, requests must include the API Key in the `A
 
 ```http
 Authorization: Bearer YOUR_API_KEY
+
 ```
 
-You may obtain a free API key by visiting the [Developer API Documentation](https://qrmaker.ryanmarch.me/api/#request-an-api-key) page and clicking the "Generate API Key" button.
-
+You may obtain a free API key by visiting the [Developer API Documentation](https://www.google.com/search?q=https://qrmaker.ryanmarch.me/api/%23request-an-api-key) page and clicking the "Generate API Key" button.
 
 ### Parameters
 
@@ -160,8 +181,10 @@ Returns a raw PNG image file.
 * **Content-Type:** `image/png`
 * **Direct embedding:**
 You can embed the API URL directly in a standard `<img>` tag. Unauthenticated requests are allowed (subject to rate limiting):
+
 ```html
-<img src="https://qrmaker.ryanmarch.me/api/qr?content=Hello&size=512&fgColor=ff0000" alt="QR Code" />
+<img src="[https://qrmaker.ryanmarch.me/api/qr?content=Hello&size=512&fgColor=ff0000](https://qrmaker.ryanmarch.me/api/qr?content=Hello&size=512&fgColor=ff0000)" alt="QR Code" />
+
 ```
 
 #### 2. SVG
@@ -176,13 +199,13 @@ Returns a JSON object wrapping a Data URL.
 
 * **Content-Type:** `application/json`
 * **Payload:**
+
 ```json
 {
   "data": "data:image/png;base64,iVBORw0KGgoAAA..."
 }
+
 ```
-
-
 
 > [!NOTE]
 > Successful API requests return cache-control headers (`Cache-Control: public, max-age=31536000, immutable`) so browsers and edge networks cache images indefinitely.
@@ -209,3 +232,7 @@ QR Maker is built directly on standard web technologies to keep page load times 
 ## License
 
 MIT License. Designed and maintained by [Ryan March](https://ryanmarch.me).
+
+[demo]: https://qrmaker.ryanmarch.me
+[shortcut]: https://qrmaker.ryanmarch.me/shortcut
+[api]: https://qrmaker.ryanmarch.me/api

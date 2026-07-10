@@ -9,12 +9,12 @@ function getHeaderHTML(activePage = '', showBadge = '', sidebarToggle = false) {
         <div class="header-left">
             <a href="/" class="logo-link">
                 <picture class="light-only">
-                    <source type="image/avif" srcset="/assets/images/qrMaker-logo.avif">
-                    <img src="/assets/images/qrMaker-logo.png" alt="QR Maker icon" width="30" height="30" style="margin-top: 5px;">
+                    <source type="image/avif" srcset="/assets/images/qrmaker-logo.avif">
+                    <img src="/assets/images/qrmaker-logo.png" alt="QR Maker icon" width="30" height="30" style="margin-top: 5px;">
                 </picture>
                 <picture class="dark-only">
-                    <source type="image/avif" srcset="/assets/images/qrMaker-logo-invert.avif">
-                    <img src="/assets/images/qrMaker-logo-invert.png" alt="QR Maker icon" width="30" height="30" style="margin-top: 5px;">
+                    <source type="image/avif" srcset="/assets/images/qrmaker-logo-invert.avif">
+                    <img src="/assets/images/qrmaker-logo-invert.png" alt="QR Maker icon" width="30" height="30" style="margin-top: 5px;">
                 </picture>
                 <span class="logo-text">QR Maker</span>
                 ${badgeHTML}
