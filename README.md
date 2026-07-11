@@ -2,7 +2,7 @@
 
 <div style="max-width: 80%">
 
-[![QR Maker Logo](assets/images/qrmaker-logo-with-text.png)][demo]
+[![QR Maker Logo](assets/images/qr-maker-logo-with-text.png)][demo]
 
 </div>
 
